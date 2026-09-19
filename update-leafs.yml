@@ -1,9 +1,9 @@
-name: Update Leafs Data Daily
+name: Update Leafs Data Hourly
 
 on:
   schedule:
-    - cron: "0 8 * * *"   # Runs every day at 8 AM Eastern
-  workflow_dispatch:       # Allows manual run
+    - cron: "*/10 * * * *"   # Runs every 10 minutes
+  workflow_dispatch:
 
 jobs:
   update:
@@ -15,37 +15,60 @@ jobs:
 
     - name: Fetch NHL data
       run: |
-        curl -s https://statsapi.web.nhl.com/api/v1/teams/10?expand=team.schedule.next >> next.json
-        curl -s https://statsapi.web.nhl.com/api/v1/teams/10?expand=team.schedule.previous >> last.json
+        curl -s https://statsapi.web.nhl.com/api/v1/teams/10?expand=team.schedule.next > next.json
+        curl -s https://statsapi.web.nhl.com/api/v1/teams/10?expand=team.schedule.previous > last.json
 
-    - name: Build JSON file
+        GAME_PK=$(jq -r '.teams[0].nextGameSchedule.dates[0].games[0].gamePk' next.json)
+        curl -s https://statsapi.web.nhl.com/api/v1/game/$GAME_PK/feed/live > live.json
+
+    - name: Build JSON
       run: |
-        NEXT_GAME=$(jq '.teams[0].nextGameSchedule.dates[0].games[0]' next.json)
-        LAST_GAME=$(jq '.teams[0].previousGameSchedule.dates[0].games[0]' last.json)
+        NEXT=$(jq '.teams[0].nextGameSchedule.dates[0].games[0]' next.json)
+        LAST=$(jq '.teams[0].previousGameSchedule.dates[0].games[0]' last.json)
+        LIVE=$(jq '.liveData' live.json)
 
-        NEXT_HOME=$(echo $NEXT_GAME | jq -r '.teams.home.team.name')
-        NEXT_AWAY=$(echo $NEXT_GAME | jq -r '.teams.away.team.name')
-        NEXT_DATE=$(echo $NEXT_GAME | jq -r '.gameDate')
+        NEXT_HOME=$(echo $NEXT | jq -r '.teams.home.team.name')
+        NEXT_AWAY=$(echo $NEXT | jq -r '.teams.away.team.name')
+        NEXT_DATE=$(echo $NEXT | jq -r '.gameDate')
 
-        LAST_HOME=$(echo $LAST_GAME | jq -r '.teams.home.team.name')
-        LAST_AWAY=$(echo $LAST_GAME | jq -r '.teams.away.team.name')
-        LAST_HOME_SCORE=$(echo $LAST_GAME | jq -r '.teams.home.score')
-        LAST_AWAY_SCORE=$(echo $LAST_GAME | jq -r '.teams.away.score')
-        LAST_DATE=$(echo $LAST_GAME | jq -r '.gameDate')
+        LAST_HOME=$(echo $LAST | jq -r '.teams.home.team.name')
+        LAST_AWAY=$(echo $LAST | jq -r '.teams.away.team.name')
+        LAST_HOME_SCORE=$(echo $LAST | jq -r '.teams.home.score')
+        LAST_AWAY_SCORE=$(echo $LAST | jq -r '.teams.away.score')
+        LAST_DATE=$(echo $LAST | jq -r '.gameDate')
+
+        LIVE_STATUS=$(echo $LIVE | jq -r '.plays.currentPlay.about.periodType')
+        LIVE_PERIOD=$(echo $LIVE | jq -r '.plays.currentPlay.about.ordinalNum')
+        LIVE_TIME=$(echo $LIVE | jq -r '.plays.currentPlay.about.periodTimeRemaining')
+        LIVE_HOME=$(echo $LIVE | jq -r '.boxscore.teams.home.team.name')
+        LIVE_AWAY=$(echo $LIVE | jq -r '.boxscore.teams.away.team.name')
+        LIVE_HOME_SCORE=$(echo $LIVE | jq -r '.boxscore.teams.home.teamStats.goals')
+        LIVE_AWAY_SCORE=$(echo $LIVE | jq -r '.boxscore.teams.away.teamStats.goals')
 
         echo "{
           \"next\": {
             \"home\": \"$NEXT_HOME\",
             \"away\": \"$NEXT_AWAY\",
             \"date\": \"$NEXT_DATE\",
-            \"time\": \"TBD\"
+            \"time\": \"19:00\",
+            \"status\": \"Scheduled\"
+          },
+          \"live\": {
+            \"home\": \"$LIVE_HOME\",
+            \"away\": \"$LIVE_AWAY\",
+            \"homeScore\": $LIVE_HOME_SCORE,
+            \"awayScore\": $LIVE_AWAY_SCORE,
+            \"period\": \"$LIVE_PERIOD\",
+            \"timeRemaining\": \"$LIVE_TIME\",
+            \"status\": \"$LIVE_STATUS\"
           },
           \"last\": {
             \"home\": \"$LAST_HOME\",
             \"away\": \"$LAST_AWAY\",
             \"homeScore\": $LAST_HOME_SCORE,
             \"awayScore\": $LAST_AWAY_SCORE,
-            \"date\": \"$LAST_DATE\"
+            \"date\": \"$LAST_DATE\",
+            \"status\": \"Final\"
           }
         }" > leafs.json
 
@@ -54,5 +77,5 @@ jobs:
         git config user.name "github-actions"
         git config user.email "github-actions@github.com"
         git add leafs.json
-        git commit -m "Auto-update Leafs data"
+        git commit -m "Auto-update Leafs live data"
         git push
