@@ -1,0 +1,15 @@
+{
+  "next": {
+    "home": "Toronto Maple Leafs",
+    "away": "Ottawa Senators",
+    "date": "2026-09-25",
+    "time": "19:00"
+  },
+  "last": {
+    "home": "Toronto Maple Leafs",
+    "away": "Montreal Canadiens",
+    "homeScore": 4,
+    "awayScore": 2,
+    "date": "2026-09-18"
+  }
+}
