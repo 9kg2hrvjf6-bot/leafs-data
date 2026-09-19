@@ -2,7 +2,8 @@ name: Update Leafs Data Daily
 
 on:
   schedule:
-    - cron: "0 8 * * *"   # Runs every day at 8 AM Eastern
+    - cron: "0 * * * *"
+   # Runs every day at 8 AM Eastern
   workflow_dispatch:       # Allows manual run
 
 jobs:
