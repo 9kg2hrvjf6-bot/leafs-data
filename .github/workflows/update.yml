@@ -2,7 +2,7 @@ name: Update Leafs, Jays & Raptors Live Data
 
 on:
   schedule:
-    - cron: "*/2 * * * *"
+    - cron: "*/1 * * * *"
   workflow_dispatch:
 
 # Lets the workflow push leafs.json back to the repo
