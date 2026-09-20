@@ -34,11 +34,19 @@ jobs:
           HEADERS = {"User-Agent": "Mozilla/5.0 (compatible; leafs-ticker/1.0)"}
           OUT_FILE = "leafs.json"
           RAPTORS_ID = 1610612761
+          # NBA.com is picky about bots, so look like a normal browser when talking to it
+          NBA_HEADERS = {
+              "User-Agent": ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+                             "(KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"),
+              "Referer": "https://www.nba.com/",
+              "Origin": "https://www.nba.com",
+              "Accept": "application/json, text/plain, */*",
+          }
 
 
-          def get(url):
+          def get(url, headers=None):
               try:
-                  req = urllib.request.Request(url, headers=HEADERS)
+                  req = urllib.request.Request(url, headers=headers or HEADERS)
                   with urllib.request.urlopen(req, timeout=30) as r:
                       return json.loads(r.read().decode("utf-8"))
               except Exception as e:
@@ -123,55 +131,103 @@ jobs:
 
 
           # ---------------------------------------------------------------- NBA
-          def raptors():
-              sched = get("https://cdn.nba.com/static/json/staticData/scheduleLeagueV2.json")
+          # Both sources are converted to the same shape:
+          #   {"status": 1|2|3, "text": str, "away": tri, "home": tri,
+          #    "ascore": int, "hscore": int, "utc": iso, "pre": bool}
+          def nba_games_from_cdn():
+              sched = get("https://cdn.nba.com/static/json/staticData/scheduleLeagueV2.json", NBA_HEADERS)
               if not sched:
-                  return "RAPTORS: NO DATA | "
+                  return None
+              sb = get("https://cdn.nba.com/static/json/liveData/scoreboard/todaysScoreboard_00.json",
+                       NBA_HEADERS) or {}
+              by_id = {g.get("gameId"): g for g in sb.get("scoreboard", {}).get("games", [])}
 
-              games = []
+              out = []
               for d in sched.get("leagueSchedule", {}).get("gameDates", []):
                   for g in d.get("games", []):
-                      if RAPTORS_ID in (g.get("homeTeam", {}).get("teamId"), g.get("awayTeam", {}).get("teamId")):
-                          games.append(g)
-              games.sort(key=lambda g: g.get("gameDateTimeUTC", ""))
+                      h, a = g.get("homeTeam", {}), g.get("awayTeam", {})
+                      if RAPTORS_ID not in (h.get("teamId"), a.get("teamId")):
+                          continue
+                      live = by_id.get(g.get("gameId"), {})   # overlay live data when available
+                      out.append({
+                          "status": live.get("gameStatus", g.get("gameStatus")),
+                          "text": live.get("gameStatusText", g.get("gameStatusText", "")),
+                          "away": a.get("teamTricode", ""),
+                          "home": h.get("teamTricode", ""),
+                          "ascore": live.get("awayTeam", {}).get("score", a.get("score", 0)),
+                          "hscore": live.get("homeTeam", {}).get("score", h.get("score", 0)),
+                          "utc": g.get("gameDateTimeUTC", ""),
+                          "pre": g.get("gameLabel") == "Preseason",
+                      })
+              return out or None
 
-              # Overlay the live scoreboard so in-progress / just-finished games are current
-              sb = get("https://cdn.nba.com/static/json/liveData/scoreboard/todaysScoreboard_00.json") or {}
-              by_id = {g.get("gameId"): g for g in sb.get("scoreboard", {}).get("games", [])}
-              for g in games:
-                  s = by_id.get(g.get("gameId"))
-                  if not s:
+
+          def nba_games_from_espn():
+              def num(c):
+                  s = c.get("score")
+                  if isinstance(s, dict):
+                      s = s.get("displayValue", s.get("value"))
+                  try:
+                      return int(float(s))
+                  except (TypeError, ValueError):
+                      return 0
+
+              out = {}
+              for seasontype, pre in (("1", True), ("2", False)):    # 1 = preseason, 2 = regular season
+                  data = get("https://site.api.espn.com/apis/site/v2/sports/basketball/nba/teams/tor/"
+                             f"schedule?seasontype={seasontype}")
+                  if not data:
                       continue
-                  g["gameStatus"] = s.get("gameStatus", g.get("gameStatus"))
-                  g["gameStatusText"] = s.get("gameStatusText", g.get("gameStatusText"))
-                  for side in ("homeTeam", "awayTeam"):
-                      if "score" in s.get(side, {}):
-                          g[side]["score"] = s[side]["score"]
+                  for ev in data.get("events", []):
+                      comp = (ev.get("competitions") or [{}])[0]
+                      sides = {c.get("homeAway"): c for c in comp.get("competitors", [])}
+                      if "home" not in sides or "away" not in sides:
+                          continue
+                      stype = (comp.get("status") or ev.get("status") or {}).get("type", {})
+                      out[ev.get("id")] = {
+                          "status": {"pre": 1, "in": 2, "post": 3}.get(stype.get("state"), 1),
+                          "text": stype.get("shortDetail", ""),
+                          "away": sides["away"].get("team", {}).get("abbreviation", ""),
+                          "home": sides["home"].get("team", {}).get("abbreviation", ""),
+                          "ascore": num(sides["away"]),
+                          "hscore": num(sides["home"]),
+                          "utc": ev.get("date") or comp.get("date") or "",
+                          "pre": pre,
+                      }
+              return list(out.values()) or None
 
-              def tri(g, side):
-                  return g[side].get("teamTricode", "")
 
-              live = next((g for g in games if g.get("gameStatus") == 2), None)
+          def raptors():
+              games = nba_games_from_cdn()
+              if not games:
+                  print("NBA.com feed unavailable, trying ESPN", file=sys.stderr)
+                  games = nba_games_from_espn()
+              if not games:
+                  return "RAPTORS: NO DATA | "
+
+              games = [g for g in games if g["utc"]]
+              games.sort(key=lambda g: g["utc"])
+
+              live = next((g for g in games if g["status"] == 2), None)
               if live:
-                  txt = (live.get("gameStatusText") or "LIVE").strip().upper()
-                  return (f"RAPTORS LIVE: {tri(live,'awayTeam')} {live['awayTeam'].get('score', 0)} @ "
-                          f"{tri(live,'homeTeam')} {live['homeTeam'].get('score', 0)} ({txt}) | ")
+                  txt = (live["text"] or "LIVE").strip().upper()
+                  return (f"RAPTORS LIVE: {live['away']} {live['ascore']} @ "
+                          f"{live['home']} {live['hscore']} ({txt}) | ")
 
-              finals = [g for g in games if g.get("gameStatus") == 3]
-              upcoming = [g for g in games if g.get("gameStatus") == 1]
+              finals = [g for g in games if g["status"] == 3]
+              upcoming = [g for g in games if g["status"] == 1]
 
               out = "RAPTORS "
               if upcoming:
                   g = upcoming[0]
-                  tag = " (PRE)" if g.get("gameLabel") == "Preseason" else ""
-                  out += f"NEXT{tag}: {tri(g,'awayTeam')} @ {tri(g,'homeTeam')} {when(g['gameDateTimeUTC'])} | "
+                  tag = " (PRE)" if g["pre"] else ""
+                  out += f"NEXT{tag}: {g['away']} @ {g['home']} {when(g['utc'])} | "
               else:
                   out += "NEXT: NONE | "
               if finals:
                   g = finals[-1]
-                  tag = " (PRE)" if g.get("gameLabel") == "Preseason" else ""
-                  out += (f"LAST{tag}: {tri(g,'awayTeam')} {g['awayTeam'].get('score', 0)} @ "
-                          f"{tri(g,'homeTeam')} {g['homeTeam'].get('score', 0)} | ")
+                  tag = " (PRE)" if g["pre"] else ""
+                  out += f"LAST{tag}: {g['away']} {g['ascore']} @ {g['home']} {g['hscore']} | "
               else:
                   out += "LAST: NONE | "
               return out
@@ -278,4 +334,5 @@ jobs:
             git commit -m "Auto-update Toronto live sports data"
             git push
           fi
+
 
