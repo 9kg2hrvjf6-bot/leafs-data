@@ -2,7 +2,7 @@ name: Update Leafs & Jays Live Data
 
 on:
   schedule:
-    - cron: "*/10 * * * *"   # every 10 minutes
+    - cron: "*/10 * * * *"
   workflow_dispatch:
 
 jobs:
@@ -15,7 +15,7 @@ jobs:
 
     - name: Fetch today's Leafs game
       run: |
-        TODAY=$(date -u +"%Y-%m-%d")
+        TODAY=$(TZ="America/Toronto" date +"%Y-%m-%d")
         curl -s "https://statsapi.web.nhl.com/api/v1/schedule?teamId=10&date=$TODAY" > leafs_sched.json
 
         GAME_PK=$(jq -r '.dates[0].games[0].gamePk' leafs_sched.json)
@@ -23,13 +23,14 @@ jobs:
 
     - name: Fetch Jays live game
       run: |
-        curl -s "https://statsapi.mlb.com/api/v1/schedule?sportId=1&teamId=141&date=$(date -u +"%Y-%m-%d")" > jays_sched.json
+        TODAY=$(TZ="America/Toronto" date +"%Y-%m-%d")
+        curl -s "https://statsapi.mlb.com/api/v1/schedule?sportId=1&teamId=141&date=$TODAY" > jays_sched.json
+
         MLB_GAME_ID=$(jq -r '.dates[0].games[0].gamePk' jays_sched.json)
         curl -s "https://statsapi.mlb.com/api/v1.1/game/$MLB_GAME_ID/feed/live" > jays_live.json
 
     - name: Build JSON
       run: |
-        # Leafs
         L_STATUS=$(jq -r '.gameData.status.abstractGameState' leafs_live.json)
         L_HOME=$(jq -r '.gameData.teams.home.name' leafs_live.json)
         L_AWAY=$(jq -r '.gameData.teams.away.name' leafs_live.json)
@@ -38,7 +39,6 @@ jobs:
         L_PERIOD=$(jq -r '.liveData.linescore.currentPeriodOrdinal' leafs_live.json)
         L_TIME=$(jq -r '.liveData.linescore.currentPeriodTimeRemaining' leafs_live.json)
 
-        # Jays
         J_STATUS=$(jq -r '.gameData.status.abstractGameState' jays_live.json)
         J_HOME=$(jq -r '.gameData.teams.home.name' jays_live.json)
         J_AWAY=$(jq -r '.gameData.teams.away.name' jays_live.json)
@@ -73,3 +73,4 @@ jobs:
         git add leafs.json
         git commit -m "Auto-update Leafs & Jays live data"
         git push
+
