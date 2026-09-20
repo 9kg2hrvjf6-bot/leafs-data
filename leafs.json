@@ -1,1 +1,20 @@
 
+{
+  "leafs": {
+    "status": "In Progress",
+    "home": "Toronto Maple Leafs",
+    "away": "Montreal Canadiens",
+    "homeScore": 2,
+    "awayScore": 1,
+    "period": "2nd",
+    "timeRemaining": "14:22"
+  },
+  "jays": {
+    "status": "Final",
+    "home": "New York Yankees",
+    "away": "Toronto Blue Jays",
+    "homeScore": 3,
+    "awayScore": 5,
+    "inning": "Final"
+  }
+}
