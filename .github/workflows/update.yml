@@ -23,7 +23,7 @@ jobs:
       - name: Build leafs.json
         env:
           # Add this under Settings > Secrets and variables > Actions > New repository secret
-          BDL_KEY: ${{ 89b7b95f-f68c-45cf-a8ee-21243314f76f }}
+          BDL_KEY: ${{ }}
         run: |
           python3 - <<'PY'
           import json
