@@ -1,20 +1,5 @@
-
 {
-  "leafs": {
-    "status": "In Progress",
-    "home": "Toronto Maple Leafs",
-    "away": "Montreal Canadiens",
-    "homeScore": 2,
-    "awayScore": 1,
-    "period": "2nd",
-    "timeRemaining": "14:22"
-  },
-  "jays": {
-    "status": "Final",
-    "home": "New York Yankees",
-    "away": "Toronto Blue Jays",
-    "homeScore": 3,
-    "awayScore": 5,
-    "inning": "Final"
-  }
+  "leafs": "LEAFS NEXT (PRE): OTT @ TOR 09/23 7:00PM | LAST (PRE): TOR 3 @ MTL 4 | ",
+  "raptors": "RAPTORS: NO DATA | ",
+  "jays": "BLUE JAYS NEXT: TOR @ TEX TODAY 2:35PM | LAST: TOR 2 @ TEX 6 | "
 }
