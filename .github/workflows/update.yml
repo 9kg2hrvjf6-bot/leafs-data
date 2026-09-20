@@ -44,6 +44,9 @@ jobs:
           }
 
 
+          ERRORS = []   # written to debug.json so failures are visible without opening the Actions log
+
+
           def get(url, headers=None):
               try:
                   req = urllib.request.Request(url, headers=headers or HEADERS)
@@ -51,6 +54,7 @@ jobs:
                       return json.loads(r.read().decode("utf-8"))
               except Exception as e:
                   print(f"FETCH FAILED: {url}\n  {e}", file=sys.stderr)
+                  ERRORS.append(f"{url.split('?')[0][8:90]} -> {str(e)[:80]}")
                   return None
 
 
@@ -135,7 +139,11 @@ jobs:
           #   {"status": 1|2|3, "text": str, "away": tri, "home": tri,
           #    "ascore": int, "hscore": int, "utc": iso, "pre": bool}
           def nba_games_from_cdn():
-              sched = get("https://cdn.nba.com/static/json/staticData/scheduleLeagueV2.json", NBA_HEADERS)
+              sched = None
+              for name in ("scheduleLeagueV2.json", "scheduleLeagueV2_1.json"):
+                  sched = get(f"https://cdn.nba.com/static/json/staticData/{name}", NBA_HEADERS)
+                  if sched:
+                      break
               if not sched:
                   return None
               sb = get("https://cdn.nba.com/static/json/liveData/scoreboard/todaysScoreboard_00.json",
@@ -174,8 +182,12 @@ jobs:
 
               out = {}
               for seasontype, pre in (("1", True), ("2", False)):    # 1 = preseason, 2 = regular season
-                  data = get("https://site.api.espn.com/apis/site/v2/sports/basketball/nba/teams/tor/"
-                             f"schedule?seasontype={seasontype}")
+                  data = None
+                  for team in ("tor", "28"):                          # abbreviation, then ESPN team id
+                      data = get("https://site.api.espn.com/apis/site/v2/sports/basketball/nba/teams/"
+                                 f"{team}/schedule?seasontype={seasontype}")
+                      if data:
+                          break
                   if not data:
                       continue
                   for ev in data.get("events", []):
@@ -318,6 +330,10 @@ jobs:
                   json.dump(result, f, indent=2)
                   f.write("\n")
 
+              with open("debug.json", "w") as f:
+                  json.dump({"errors": [clean(e) for e in ERRORS[-8:]]}, f, indent=2)
+                  f.write("\n")
+
 
           if __name__ == "__main__":
               main()
@@ -327,12 +343,13 @@ jobs:
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@users.noreply.github.com"
-          git add leafs.json
+          git add leafs.json debug.json
           if git diff --staged --quiet; then
             echo "No changes to commit"
           else
             git commit -m "Auto-update Toronto live sports data"
             git push
           fi
+
 
 
