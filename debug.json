@@ -5,6 +5,7 @@
     "site.api.espn.com/apis/site/v2/sports/basketball/nba/teams/tor/schedule -> HTTP Error 403: Forbidden",
     "site.api.espn.com/apis/site/v2/sports/basketball/nba/teams/28/schedule -> HTTP Error 403: Forbidden",
     "site.api.espn.com/apis/site/v2/sports/basketball/nba/teams/tor/schedule -> HTTP Error 403: Forbidden",
-    "site.api.espn.com/apis/site/v2/sports/basketball/nba/teams/28/schedule -> HTTP Error 403: Forbidden"
+    "site.api.espn.com/apis/site/v2/sports/basketball/nba/teams/28/schedule -> HTTP Error 403: Forbidden",
+    "BDL_KEY secret not set - skipped BallDontLie"
   ]
 }
