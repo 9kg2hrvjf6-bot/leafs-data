@@ -17,6 +17,7 @@ jobs:
       run: |
         TODAY=$(TZ="America/Toronto" date +"%Y-%m-%d")
         curl -s "https://statsapi.web.nhl.com/api/v1/schedule?teamId=10&date=$TODAY" > leafs_sched.json
+        cat leafs_sched.json
 
         GAME_PK=$(jq -r '.dates[0].games[0].gamePk' leafs_sched.json)
         curl -s "https://statsapi.web.nhl.com/api/v1/game/$GAME_PK/feed/live" > leafs_live.json
