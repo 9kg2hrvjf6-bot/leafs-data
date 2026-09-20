@@ -1,4 +1,4 @@
-name: Update Leafs & Jays Live Data
+name: Update Leafs, Jays & Raptors Live Data
 
 on:
   schedule:
@@ -16,62 +16,129 @@ jobs:
     - name: Fetch today's Leafs game
       run: |
         TODAY=$(TZ="America/Toronto" date +"%Y-%m-%d")
-        curl -s "https://statsapi.web.nhl.com/api/v1/schedule?teamId=10&date=$TODAY" > leafs_sched.json
-        cat leafs_sched.json
-
-        GAME_PK=$(jq -r '.dates[0].games[0].gamePk' leafs_sched.json)
-        curl -s "https://statsapi.web.nhl.com/api/v1/game/$GAME_PK/feed/live" > leafs_live.json
+        
+        # Use the modern NHL API to get the schedule
+        curl -s "https://nhle.com" > leafs_sched.json
+        
+        # Extract the game ID for the Maple Leafs (Team ID 10)
+        # Note: If no game is found, GAME_ID will be empty or null
+        GAME_ID=$(jq -r --argjson teamId 10 '.gameWeek[0].games[] | select(.homeTeam.id == $teamId or .awayTeam.id == $teamId) | .id' leafs_sched.json 2>/dev/null || echo "null")
+        
+        if [ "$GAME_ID" != "null" ] && [ ! -z "$GAME_ID" ]; then
+          # Fetch modern live game boxscore
+          curl -s "https://nhle.com" > leafs_live.json
+        else
+          echo "{}" > leafs_live.json
+        fi
 
     - name: Fetch Jays live game
       run: |
         TODAY=$(TZ="America/Toronto" date +"%Y-%m-%d")
         curl -s "https://statsapi.mlb.com/api/v1/schedule?sportId=1&teamId=141&date=$TODAY" > jays_sched.json
 
-        MLB_GAME_ID=$(jq -r '.dates[0].games[0].gamePk' jays_sched.json)
-        curl -s "https://statsapi.mlb.com/api/v1.1/game/$MLB_GAME_ID/feed/live" > jays_live.json
+        # Safeguard if no Jays game today
+        MLB_GAME_ID=$(jq -r '.dates[0].games[0].gamePk // empty' jays_sched.json)
+        
+        if [ ! -z "$MLB_GAME_ID" ]; then
+          curl -s "https://statsapi.mlb.com/api/v1.1/game/$MLB_GAME_ID/feed/live" > jays_live.json
+        else
+          echo "{}" > jays_live.json
+        fi
+
+    - name: Fetch Raptors live game
+      run: |
+        TODAY=$(TZ="America/Toronto" date +"%Y%m%d")
+        # Query the daily NBA scoreboard
+        curl -s "https://nba.net" > raptors_sched.json
+
+        # Extract game context if Raptors (Team ID: 1610612761) are playing
+        RAPTORS_GAME=$(jq '.games[] | select(.hTeam.teamId == "1610612761" or .vTeam.teamId == "1610612761")' raptors_sched.json 2>/dev/null || echo "null")
+        
+        if [ "$RAPTORS_GAME" != "null" ] && [ ! -z "$RAPTORS_GAME" ]; then
+          echo "$RAPTORS_GAME" > raptors_live.json
+        else
+          echo "{}" > raptors_live.json
+        fi
 
     - name: Build JSON
       run: |
-        L_STATUS=$(jq -r '.gameData.status.abstractGameState' leafs_live.json)
-        L_HOME=$(jq -r '.gameData.teams.home.name' leafs_live.json)
-        L_AWAY=$(jq -r '.gameData.teams.away.name' leafs_live.json)
-        L_HOME_SCORE=$(jq -r '.liveData.linescore.teams.home.goals' leafs_live.json)
-        L_AWAY_SCORE=$(jq -r '.liveData.linescore.teams.away.goals' leafs_live.json)
-        L_PERIOD=$(jq -r '.liveData.linescore.currentPeriodOrdinal' leafs_live.json)
-        L_TIME=$(jq -r '.liveData.linescore.currentPeriodTimeRemaining' leafs_live.json)
+        # Use safe fallback strings to prevent syntax breaks when creating the JSON payload
+        
+        # Parse Leafs Data (Modern NHL API Structure)
+        if [ -s leafs_live.json ] && [ "$(cat leafs_live.json)" != "{}" ]; then
+          L_STATUS=$(jq -r '.gameState // "UNKNOWN"' leafs_live.json)
+          L_HOME=$(jq -r '.homeTeam.name.default // "Away Team"' leafs_live.json)
+          L_AWAY=$(jq -r '.awayTeam.name.default // "Home Team"' leafs_live.json)
+          L_HOME_SCORE=$(jq -r '.homeTeam.score // 0' leafs_live.json)
+          L_AWAY_SCORE=$(jq -r '.awayTeam.score // 0' leafs_live.json)
+          L_PERIOD=$(jq -r '.periodDescriptor.number // 0' leafs_live.json)
+          L_TIME=$(jq -r '.clock.timeRemaining // "00:00"' leafs_live.json)
+        else
+          L_STATUS="No Game"; L_HOME="N/A"; L_AWAY="N/A"; L_HOME_SCORE=0; L_AWAY_SCORE=0; L_PERIOD="N/A"; L_TIME="N/A"
+        fi
 
-        J_STATUS=$(jq -r '.gameData.status.abstractGameState' jays_live.json)
-        J_HOME=$(jq -r '.gameData.teams.home.name' jays_live.json)
-        J_AWAY=$(jq -r '.gameData.teams.away.name' jays_live.json)
-        J_HOME_SCORE=$(jq -r '.liveData.linescore.teams.home.runs' jays_live.json)
-        J_AWAY_SCORE=$(jq -r '.liveData.linescore.teams.away.runs' jays_live.json)
-        J_INNING=$(jq -r '.liveData.linescore.currentInningOrdinal' jays_live.json)
+        # Parse Jays Data (MLB API Structure)
+        if [ -s jays_live.json ] && [ "$(cat jays_live.json)" != "{}" ]; then
+          J_STATUS=$(jq -r '.gameData.status.abstractGameState // "UNKNOWN"' jays_live.json)
+          J_HOME=$(jq -r '.gameData.teams.home.name // "Home Team"' jays_live.json)
+          J_AWAY=$(jq -r '.gameData.teams.away.name // "Away Team"' jays_live.json)
+          J_HOME_SCORE=$(jq -r '.liveData.linescore.teams.home.runs // 0' jays_live.json)
+          J_AWAY_SCORE=$(jq -r '.liveData.linescore.teams.away.runs // 0' jays_live.json)
+          J_INNING=$(jq -r '.liveData.linescore.currentInningOrdinal // "N/A"' jays_live.json)
+        else
+          J_STATUS="No Game"; J_HOME="N/A"; J_AWAY="N/A"; J_HOME_SCORE=0; J_AWAY_SCORE=0; J_INNING="N/A"
+        fi
 
-        echo "{
-          \"leafs\": {
-            \"status\": \"$L_STATUS\",
-            \"home\": \"$L_HOME\",
-            \"away\": \"$L_AWAY\",
-            \"homeScore\": $L_HOME_SCORE,
-            \"awayScore\": $L_AWAY_SCORE,
-            \"period\": \"$L_PERIOD\",
-            \"timeRemaining\": \"$L_TIME\"
-          },
-          \"jays\": {
-            \"status\": \"$J_STATUS\",
-            \"home\": \"$J_HOME\",
-            \"away\": \"$J_AWAY\",
-            \"homeScore\": $J_HOME_SCORE,
-            \"awayScore\": $J_AWAY_SCORE,
-            \"inning\": \"$J_INNING\"
-          }
-        }" > leafs.json
+        # Parse Raptors Data (NBA Scoreboard Structure)
+        if [ -s raptors_live.json ] && [ "$(cat raptors_live.json)" != "{}" ]; then
+          # Map status codes (e.g., 1 = scheduled, 2 = in-progress, 3 = finished)
+          R_STATUS_CODE=$(jq -r '.statusNum // 1' raptors_live.json)
+          if [ "$R_STATUS_CODE" = "1" ]; then R_STATUS="Scheduled"; elif [ "$R_STATUS_CODE" = "2" ]; then R_STATUS="Live"; else R_STATUS="Final"; fi
+          
+          R_HOME=$(jq -r '.hTeam.triCode // "Home"' raptors_live.json)
+          R_AWAY=$(jq -r '.vTeam.triCode // "Away"' raptors_live.json)
+          R_HOME_SCORE=$(jq -r '.hTeam.score // 0' raptors_live.json)
+          R_AWAY_SCORE=$(jq -r '.vTeam.score // 0' raptors_live.json)
+          R_QUARTER=$(jq -r '.period.current // 0' raptors_live.json)
+          R_TIME=$(jq -r '.clock // "00:00"' raptors_live.json)
+        else
+          R_STATUS="No Game"; R_HOME="N/A"; R_AWAY="N/A"; R_HOME_SCORE=0; R_AWAY_SCORE=0; R_QUARTER="N/A"; R_TIME="N/A"
+        fi
+
+        # Safely construct the finalized JSON file using jq to handle formatting and escaping
+        jq -n \
+          --arg l_status "$L_STATUS" \
+          --arg l_home "$L_HOME" \
+          --arg l_away "$L_AWAY" \
+          --argjson l_home_score "$L_HOME_SCORE" \
+          --argjson l_away_score "$L_AWAY_SCORE" \
+          --arg l_period "$L_PERIOD" \
+          --arg l_time "$L_TIME" \
+          --arg j_status "$J_STATUS" \
+          --arg j_home "$J_HOME" \
+          --arg j_away "$J_AWAY" \
+          --argjson j_home_score "$J_HOME_SCORE" \
+          --argjson j_away_score "$J_AWAY_SCORE" \
+          --arg j_inning "$J_INNING" \
+          --arg r_status "$R_STATUS" \
+          --arg r_home "$R_HOME" \
+          --arg r_away "$R_AWAY" \
+          --argjson r_home_score "$R_HOME_SCORE" \
+          --argjson r_away_score "$R_AWAY_SCORE" \
+          --arg r_quarter "$R_QUARTER" \
+          --arg r_time "$R_TIME" \
+          '{
+            leafs: { status: $l_status, home: $l_home, away: $l_away, homeScore: $l_home_score, awayScore: $l_away_score, period: $l_period, timeRemaining: $l_time },
+            jays: { status: $j_status, home: $j_home, away: $j_away, homeScore: $j_home_score, awayScore: $j_away_score, inning: $j_inning },
+            raptors: { status: $r_status, home: $r_home, away: $r_away, homeScore: $r_home_score, awayScore: $r_away_score, quarter: $r_quarter, timeRemaining: $r_time }
+          }' > leafs.json
 
     - name: Commit updated JSON
       run: |
         git config user.name "github-actions"
         git config user.email "github-actions@github.com"
         git add leafs.json
-        git commit -m "Auto-update Leafs & Jays live data"
-        git push
+        # Only commit and push if the file actually changed to avoid build errors
+        git diff --quiet && git diff --staged --quiet || (git commit -m "Auto-update Toronto Live Sports Data" && git push)
+
 
