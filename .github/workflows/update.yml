@@ -21,6 +21,9 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Build leafs.json
+        env:
+          # Add this under Settings > Secrets and variables > Actions > New repository secret
+          BDL_KEY: ${{ secrets.BDL_KEY }}
         run: |
           python3 - <<'PY'
           import json
@@ -34,6 +37,12 @@ jobs:
           HEADERS = {"User-Agent": "Mozilla/5.0 (compatible; leafs-ticker/1.0)"}
           OUT_FILE = "leafs.json"
           RAPTORS_ID = 1610612761
+          ESPN_HEADERS = {
+              "User-Agent": ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+                             "(KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"),
+              "Referer": "https://www.espn.com/",
+              "Accept": "application/json, text/plain, */*",
+          }
           # NBA.com is picky about bots, so look like a normal browser when talking to it
           NBA_HEADERS = {
               "User-Agent": ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
@@ -185,7 +194,7 @@ jobs:
                   data = None
                   for team in ("tor", "28"):                          # abbreviation, then ESPN team id
                       data = get("https://site.api.espn.com/apis/site/v2/sports/basketball/nba/teams/"
-                                 f"{team}/schedule?seasontype={seasontype}")
+                                 f"{team}/schedule?seasontype={seasontype}", ESPN_HEADERS)
                       if data:
                           break
                   if not data:
@@ -209,11 +218,59 @@ jobs:
               return list(out.values()) or None
 
 
+          def nba_games_from_bdl():
+              key = os.environ.get("BDL_KEY", "").strip()
+              if not key:
+                  ERRORS.append("BDL_KEY secret not set - skipped BallDontLie")
+                  return None
+
+              today = datetime.now(TZ).date()
+              start = (today - timedelta(days=150)).isoformat()
+              end = (today + timedelta(days=60)).isoformat()
+              headers = {"Authorization": key, "User-Agent": HEADERS["User-Agent"]}   # raw key, no "Bearer"
+              url = ("https://api.balldontlie.io/v1/games?team_ids%5B%5D=28"
+                     f"&start_date={start}&end_date={end}&per_page=100")
+
+              out = []
+              cursor = None
+              for _ in range(3):                                   # follow pagination, max 3 requests
+                  data = get(url + (f"&cursor={cursor}" if cursor else ""), headers)
+                  if not data:
+                      return out or None
+                  for g in data.get("data", []):
+                      st = g.get("status_state") or ""
+                      if st in ("postponed", "canceled"):
+                          continue
+                      if st == "final" or g.get("status") == "Final":
+                          status = 3
+                      elif st == "in_progress":
+                          status = 2
+                      else:
+                          status = 1
+                      out.append({
+                          "status": status,
+                          "text": f"{g.get('status', '')} {g.get('time', '')}".strip(),
+                          "away": g.get("visitor_team", {}).get("abbreviation", ""),
+                          "home": g.get("home_team", {}).get("abbreviation", ""),
+                          "ascore": g.get("visitor_team_score") or 0,
+                          "hscore": g.get("home_team_score") or 0,
+                          "utc": g.get("datetime") or g.get("date") or "",
+                          "pre": False,
+                      })
+                  cursor = (data.get("meta") or {}).get("next_cursor")
+                  if not cursor:
+                      break
+              return out or None
+
+
           def raptors():
               games = nba_games_from_cdn()
               if not games:
                   print("NBA.com feed unavailable, trying ESPN", file=sys.stderr)
                   games = nba_games_from_espn()
+              if not games:
+                  print("ESPN unavailable, trying BallDontLie", file=sys.stderr)
+                  games = nba_games_from_bdl()
               if not games:
                   return "RAPTORS: NO DATA | "
 
@@ -350,6 +407,3 @@ jobs:
             git commit -m "Auto-update Toronto live sports data"
             git push
           fi
-
-
-
