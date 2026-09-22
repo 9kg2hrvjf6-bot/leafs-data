@@ -2,7 +2,7 @@ name: Update Sports + News + Weather + Traffic
 
 on:
   schedule:
-    - cron: "*/1 * * * *"
+    - cron: "*/20 * * * *"
   workflow_dispatch:
 
 jobs:
@@ -16,6 +16,9 @@ jobs:
     - name: Load existing JSON
       run: cp leafs.json data.json
 
+    # ---------------------------------------------------
+    # 1. Headlines (GNews)
+    # ---------------------------------------------------
     - name: Fetch Headlines (GNews)
       id: news
       run: |
@@ -35,25 +38,44 @@ jobs:
         echo "toronto=$(fetch TORONTO toronto)" >> $GITHUB_OUTPUT
         echo "canada=$(fetch CANADA canada)" >> $GITHUB_OUTPUT
 
+    # ---------------------------------------------------
+    # 2. NHL Standings (Leafs) — FIXED
+    # ---------------------------------------------------
     - name: Fetch NHL Standings (Leafs)
       id: nhl
       run: |
         json=$(curl -s "https://api-web.nhle.com/v1/standings/now")
-        div=$(echo "$json" | jq -r '.standings[] | select(.teamAbbrev=="TOR") | "\(.teamName) \(.wins)-\(.losses)-\(.otLosses)"')
+        div=$(echo "$json" | jq -r '.standings[]?.teamRecords[]? | select(.teamAbbrev=="TOR") | "\(.teamName) \(.wins)-\(.losses)-\(.otLosses)"')
         echo "nhl=LEAFS STANDINGS: $div |" >> $GITHUB_OUTPUT
 
+    # ---------------------------------------------------
+    # 3. NBA Standings (Raptors) — FIXED (NO AUTH HEADER)
+    # ---------------------------------------------------
     - name: Fetch NBA Standings (Raptors)
       id: nba
       run: |
-        json=$(curl -s "https://api.balldontlie.io/v1/teams?search=Raptors" -H "Authorization: $BDL_KEY")
+        json=$(curl -s "https://api.balldontlie.io/v1/teams?search=Raptors")
         team_id=$(echo "$json" | jq -r '.data[0].id')
 
-        games=$(curl -s "https://api.balldontlie.io/v1/games?team_ids[]=$team_id&per_page=100" -H "Authorization: $BDL_KEY")
-        wins=$(echo "$games" | jq '[.data[] | select(.status=="Final") | if (.home_team.abbreviation=="TOR") then (.home_team_score > .visitor_team_score) else (.visitor_team_score > .home_team_score) end] | map(select(.==true)) | length')
-        losses=$(echo "$games" | jq '[.data[] | select(.status=="Final") | if (.home_team.abbreviation=="TOR") then (.home_team_score < .visitor_team_score) else (.visitor_team_score < .home_team_score) end] | map(select(.==true)) | length')
+        games=$(curl -s "https://api.balldontlie.io/v1/games?team_ids[]=$team_id&per_page=100")
+
+        wins=$(echo "$games" | jq '[.data[] | select(.status=="Final") |
+          if (.home_team.abbreviation=="TOR")
+          then (.home_team_score > .visitor_team_score)
+          else (.visitor_team_score > .home_team_score)
+          end] | map(select(.==true)) | length')
+
+        losses=$(echo "$games" | jq '[.data[] | select(.status=="Final") |
+          if (.home_team.abbreviation=="TOR")
+          then (.home_team_score < .visitor_team_score)
+          else (.visitor_team_score < .home_team_score)
+          end] | map(select(.==true)) | length')
 
         echo "nba=RAPTORS STANDINGS: $wins-$losses |" >> $GITHUB_OUTPUT
 
+    # ---------------------------------------------------
+    # 4. MLB Standings (Blue Jays)
+    # ---------------------------------------------------
     - name: Fetch MLB Standings (Blue Jays)
       id: mlb
       run: |
@@ -61,6 +83,9 @@ jobs:
         rec=$(echo "$json" | jq -r '.records[].teamRecords[] | select(.team.name=="Toronto Blue Jays") | "\(.team.name) \(.wins)-\(.losses)"')
         echo "mlb=BLUE JAYS STANDINGS: $rec |" >> $GITHUB_OUTPUT
 
+    # ---------------------------------------------------
+    # 5. NFL Standings (Bills)
+    # ---------------------------------------------------
     - name: Fetch NFL Standings (Bills)
       id: nfl
       run: |
@@ -68,20 +93,29 @@ jobs:
         rec=$(echo "$json" | jq -r '.children[].standings.entries[] | select(.team.displayName=="Buffalo Bills") | "\(.team.displayName) \(.stats[0].value)-\(.stats[1].value)"')
         echo "nfl=BILLS STANDINGS: $rec |" >> $GITHUB_OUTPUT
 
+    # ---------------------------------------------------
+    # 6. Toronto Traffic Alerts
+    # ---------------------------------------------------
     - name: Fetch Toronto Traffic Alerts
       id: traffic
       run: |
         json=$(curl -s "https://511on.ca/api/v2/alerts?format=json")
         titles=$(echo "$json" | jq -r '.alerts[].headline' | head -n 3 | paste -sd " | " -)
-        echo "traffic=TORONTO TRAFFIC: $titles |" >> $GITHUB_OUTPUT
+        echo "traffic=TRAFFIC: $titles |" >> $GITHUB_OUTPUT
 
-    - name: Fetch Weather Alerts (Environment Canada)
+    # ---------------------------------------------------
+    # 7. Weather Alerts (Environment Canada)
+    # ---------------------------------------------------
+    - name: Fetch Weather Alerts
       id: wx
       run: |
         json=$(curl -s "https://api.weather.gc.ca/alerts?region=on")
         titles=$(echo "$json" | jq -r '.alerts[].headline' | head -n 3 | paste -sd " | " -)
         echo "wx=ALERTS: $titles |" >> $GITHUB_OUTPUT
 
+    # ---------------------------------------------------
+    # 8. Merge into JSON
+    # ---------------------------------------------------
     - name: Merge into JSON
       run: |
         jq \
@@ -114,6 +148,9 @@ jobs:
         .weather_alerts    = $wx
         ' data.json > leafs.json
 
+    # ---------------------------------------------------
+    # 9. Commit updated JSON
+    # ---------------------------------------------------
     - name: Commit updated JSON
       uses: stefanzweifel/git-auto-commit-action@v5
       with:
