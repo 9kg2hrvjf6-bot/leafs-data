@@ -63,22 +63,28 @@ jobs:
 
         leafs_next_utc=$(echo "$sched" | jq -r '.games[0].startTimeUTC')
 
-        leafs_next_opponent=$(echo "$sched" | jq -r '.games[0] |
-          if .homeTeam.abbrev=="TOR" then .awayTeam.abbrev else .homeTeam.abbrev end')
+        leafs_next_opponent=$(echo "$sched" | jq -r '
+          .games[0] |
+          if .homeTeam.abbrev=="TOR" then .awayTeam.abbrev else .homeTeam.abbrev end
+        ')
 
         live=$(curl -s "https://api-web.nhle.com/v1/scoreboard/now" \
-          | jq -r '.games[] 
+          | jq -r '
+            .games[]
             | select(.homeTeam.abbrev=="TOR" or .awayTeam.abbrev=="TOR")
             | if .gameState=="LIVE" then
                 "\(.awayTeam.abbrev) \(.awayTeam.score) @ \(.homeTeam.abbrev) \(.homeTeam.score) \(.periodDescriptor.number)P \(.timeRemaining)"
-              else empty end')
+              else empty end
+          ')
 
         final=$(curl -s "https://api-web.nhle.com/v1/scoreboard/now" \
-          | jq -r '.games[] 
+          | jq -r '
+            .games[]
             | select(.homeTeam.abbrev=="TOR" or .awayTeam.abbrev=="TOR")
             | if .gameState=="FINAL" then
                 "\(.awayTeam.abbrev) \(.awayTeam.score) @ \(.homeTeam.abbrev) \(.homeTeam.score)"
-              else empty end')
+              else empty end
+          ')
 
         echo "leafs_next_utc=$leafs_next_utc" >> $GITHUB_OUTPUT
         echo "leafs_next_opponent=$leafs_next_opponent" >> $GITHUB_OUTPUT
@@ -87,6 +93,7 @@ jobs:
 
     # ---------------------------------------------------
     # NBA Raptors — Next Game + Opponent + LIVE + FINAL
+    # (ESPN SAFE QUOTING VERSION)
     # ---------------------------------------------------
     - name: Raptors Data (NBA / ESPN)
       id: nba
@@ -103,24 +110,37 @@ jobs:
 
         raptors_next_utc=$(echo "$sched" | jq -r '.events[0].date')
 
-        raptors_next_opponent=$(echo "$sched" | jq -r '.events[0].competitions[0].competitors[]
-          | select(.team.abbreviation!="TOR") | .team.abbreviation')
+        raptors_next_opponent=$(echo "$sched" | jq -r '
+          .events[0].competitions[0].competitors[]
+          | select(.team.abbreviation!="TOR")
+          | .team.abbreviation
+        ')
 
         live=$(curl -s "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard" \
-          | jq -r '.events[] 
+          | jq -r '
+            .events[]
             | select(.competitions[0].competitors[].team.abbreviation=="TOR")
             | if .status.type.state=="in" then
-                .competitions[0].competitors[] |
-                "\(.team.abbreviation) \(.score)" | paste -sd " @ " -
-              else empty end')
+                [
+                  .competitions[0].competitors[]
+                  | "\(.team.abbreviation) \(.score)"
+                ]
+                | join(" @ ")
+              else empty end
+          ')
 
         final=$(curl -s "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard" \
-          | jq -r '.events[] 
+          | jq -r '
+            .events[]
             | select(.competitions[0].competitors[].team.abbreviation=="TOR")
             | if .status.type.completed==true then
-                .competitions[0].competitors[] |
-                "\(.team.abbreviation) \(.score)" | paste -sd " @ " -
-              else empty end')
+                [
+                  .competitions[0].competitors[]
+                  | "\(.team.abbreviation) \(.score)"
+                ]
+                | join(" @ ")
+              else empty end
+          ')
 
         echo "raptors_next_utc=$raptors_next_utc" >> $GITHUB_OUTPUT
         echo "raptors_next_opponent=$raptors_next_opponent" >> $GITHUB_OUTPUT
@@ -145,18 +165,24 @@ jobs:
 
         jays_next_utc=$(echo "$sched" | jq -r '.dates[0].games[0].gameDate')
 
-        jays_next_opponent=$(echo "$sched" | jq -r '.dates[0].games[0].teams |
-          if .home.team.id==141 then .away.team.abbreviation else .home.team.abbreviation end')
+        jays_next_opponent=$(echo "$sched" | jq -r '
+          .dates[0].games[0].teams
+          | if .home.team.id==141 then .away.team.abbreviation else .home.team.abbreviation end
+        ')
 
         live=$(curl -s "https://statsapi.mlb.com/api/v1.1/game/141/feed/live" \
-          | jq -r 'if .gameData.status.abstractGameState=="Live" then
+          | jq -r '
+            if .gameData.status.abstractGameState=="Live" then
               "\(.liveData.linescore.teams.away.team.abbreviation) \(.liveData.linescore.teams.away.runs) @ \(.liveData.linescore.teams.home.team.abbreviation) \(.liveData.linescore.teams.home.runs)"
-            else empty end')
+            else empty end
+          ')
 
         final=$(curl -s "https://statsapi.mlb.com/api/v1.1/game/141/feed/live" \
-          | jq -r 'if .gameData.status.abstractGameState=="Final" then
+          | jq -r '
+            if .gameData.status.abstractGameState=="Final" then
               "\(.liveData.linescore.teams.away.team.abbreviation) \(.liveData.linescore.teams.away.runs) @ \(.liveData.linescore.teams.home.team.abbreviation) \(.liveData.linescore.teams.home.runs)"
-            else empty end')
+            else empty end
+          ')
 
         echo "jays_next_utc=$jays_next_utc" >> $GITHUB_OUTPUT
         echo "jays_next_opponent=$jays_next_opponent" >> $GITHUB_OUTPUT
@@ -242,5 +268,3 @@ jobs:
       with:
         commit_message: "Update sports/news/weather/traffic"
         file_pattern: leafs.json
-
-       
