@@ -22,8 +22,9 @@ jobs:
 
       - name: Build leafs.json
         env:
-          # Add this under Settings > Secrets and variables > Actions > New repository secret
-         BDL_KEY: ${{ secrets.BDL_KEY }}
+          # Optional: only needed if you still want a GitHub-side Raptors fallback.
+          # Settings > Secrets and variables > Actions > New repository secret
+          BDL_KEY: ${{ secrets.BDL_KEY }}
         run: |
           python3 - <<'PY'
           import json
@@ -128,10 +129,12 @@ jobs:
                               last = g
 
               out = "LEAFS "
+              next_utc = ""
               if nxt:
                   tag = " (PRE)" if nxt.get("gameType") == 1 else ""
                   out += (f"NEXT{tag}: {nxt['awayTeam'].get('abbrev','')} @ "
                           f"{nxt['homeTeam'].get('abbrev','')} {when(nxt['startTimeUTC'])} | ")
+                  next_utc = nxt.get("startTimeUTC", "")
               else:
                   out += "NEXT: NONE | "
               if last:
@@ -140,7 +143,28 @@ jobs:
                           f"{last['homeTeam'].get('abbrev','')} {nhl_score(last,'homeTeam')} | ")
               else:
                   out += "LAST: NONE | "
-              return out
+              return out, next_utc
+
+
+          def leafs_standings():
+              """One line: division rank + record + points, e.g. 'LEAFS 3RD ATLANTIC 10-5-2 21PTS | '"""
+              data = get("https://api-web.nhle.com/v1/standings/now")
+              if not data:
+                  return ""
+              rows = data.get("standings", [])
+              tor = next((r for r in rows if r.get("teamAbbrev", {}).get("default") == "TOR"), None)
+              if not tor:
+                  return ""
+              div = tor.get("divisionAbbrev", "")
+              div_name = {"A": "ATLANTIC", "M": "METRO", "C": "CENTRAL", "P": "PACIFIC"}.get(div, div)
+              same_div = [r for r in rows if r.get("divisionAbbrev") == div]
+              same_div.sort(key=lambda r: (-(r.get("points", 0)), -(r.get("wins", 0))))
+              rank = next((i + 1 for i, r in enumerate(same_div)
+                           if r.get("teamAbbrev", {}).get("default") == "TOR"), 0)
+              ord_suffix = "TH" if 11 <= rank % 100 <= 13 else {1: "ST", 2: "ND", 3: "RD"}.get(rank % 10, "TH")
+              w, l, otl = tor.get("wins", 0), tor.get("losses", 0), tor.get("otLosses", 0)
+              pts = tor.get("points", 0)
+              return f"LEAFS {rank}{ord_suffix} {div_name} {w}-{l}-{otl} {pts}PTS | "
 
 
           # ---------------------------------------------------------------- NBA
@@ -342,9 +366,11 @@ jobs:
               finals = [g for g in games if state(g) == "Final"]
 
               out = "BLUE JAYS "
+              next_utc = ""
               if upcoming:
                   g = upcoming[0]
                   out += f"NEXT: {abbr(g,'away')} @ {abbr(g,'home')} {when(g['gameDate'])} | "
+                  next_utc = g.get("gameDate", "")
               else:
                   out += "NEXT: NONE | "
               if finals:
@@ -353,7 +379,26 @@ jobs:
                           f"{abbr(g,'home')} {runs(g,'home')} | ")
               else:
                   out += "LAST: NONE | "
-              return out
+              return out, next_utc
+
+
+          def jays_standings():
+              """One line: division rank + record + games back, e.g. 'JAYS 2ND AL EAST 15-10 GB 2.5 | '"""
+              data = get("https://statsapi.mlb.com/api/v1/standings?leagueId=103,104"
+                         f"&season={datetime.now(TZ).year}&standingsTypes=regularSeason")
+              if not data:
+                  return ""
+              for rec in data.get("records", []):
+                  for tr in rec.get("teamRecords", []):
+                      if tr.get("team", {}).get("id") == 141:
+                          rank = int(tr.get("divisionRank", 0) or 0)
+                          ord_suffix = ("TH" if 11 <= rank % 100 <= 13
+                                        else {1: "ST", 2: "ND", 3: "RD"}.get(rank % 10, "TH"))
+                          w, l = tr.get("wins", 0), tr.get("losses", 0)
+                          gb = tr.get("gamesBack", "-")
+                          gb_txt = "" if gb in ("-", "0.0", None) else f" GB {gb}"
+                          return f"JAYS {rank}{ord_suffix} AL EAST {w}-{l}{gb_txt} | "
+              return ""
 
 
           # ---------------------------------------------------------------- main
@@ -371,15 +416,35 @@ jobs:
                       old = {}
 
               result = {}
-              for key, fn in (("leafs", leafs), ("raptors", raptors), ("jays", jays)):
+
+              # Sources that return (ticker_text, next_game_utc)
+              for key, fn in (("leafs", leafs), ("jays", jays)):
                   try:
-                      text = clean(fn())
+                      text, next_utc = fn()
+                      text = clean(text)
                   except Exception as e:  # never let one source break the others
                       print(f"{key} failed: {e!r}", file=sys.stderr)
-                      text = f"{key.upper()}: ERROR | "
-                  # If a source is down, keep the last good text instead of overwriting it
+                      text, next_utc = f"{key.upper()}: ERROR | ", ""
                   if ("NO DATA" in text or "ERROR" in text) and isinstance(old.get(key), str):
                       text = old[key]
+                      next_utc = old.get(f"{key}_next_utc", next_utc)
+                  result[key] = text
+                  result[f"{key}_next_utc"] = next_utc
+                  print(f"{key}: {text}  (next: {next_utc or 'none'})")
+
+              # Plain ticker-text sources
+              for key, fn in (("raptors", raptors),
+                               ("leafs_standings", leafs_standings),
+                               ("jays_standings", jays_standings)):
+                  try:
+                      text = clean(fn())
+                  except Exception as e:
+                      print(f"{key} failed: {e!r}", file=sys.stderr)
+                      text = f"{key.upper()}: ERROR | " if key == "raptors" else ""
+                  if key == "raptors" and ("NO DATA" in text or "ERROR" in text) and isinstance(old.get(key), str):
+                      text = old[key]
+                  elif key != "raptors" and not text and isinstance(old.get(key), str):
+                      text = old[key]   # standings lines: keep yesterday's rather than show nothing
                   result[key] = text
                   print(f"{key}: {text}")
 
