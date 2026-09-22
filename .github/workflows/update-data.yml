@@ -39,17 +39,21 @@ jobs:
         echo "canada=$(fetch CANADA canada)" >> $GITHUB_OUTPUT
 
     # ---------------------------------------------------
-    # 2. NHL Standings (Leafs) — FIXED
+    # 2. NHL Standings (Leafs)
     # ---------------------------------------------------
     - name: Fetch NHL Standings (Leafs)
       id: nhl
       run: |
         json=$(curl -s "https://api-web.nhle.com/v1/standings/now")
-        div=$(echo "$json" | jq -r '.standings[]?.teamRecords[]? | select(.teamAbbrev=="TOR") | "\(.teamName) \(.wins)-\(.losses)-\(.otLosses)"')
+        div=$(echo "$json" | jq -r '
+          .standings[]?.teamRecords[]?
+          | select(.teamAbbrev=="TOR")
+          | "\(.teamName) \(.wins)-\(.losses)-\(.otLosses)"
+        ')
         echo "nhl=LEAFS STANDINGS: $div |" >> $GITHUB_OUTPUT
 
     # ---------------------------------------------------
-    # 3. NBA Standings (Raptors) — ESPN (WORKS IN ACTIONS)
+    # 3. NBA Standings (Raptors) — ESPN FIX
     # ---------------------------------------------------
     - name: Fetch NBA Standings (Raptors)
       id: nba
@@ -57,7 +61,7 @@ jobs:
         json=$(curl -s "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/standings")
 
         rec=$(echo "$json" | jq -r '
-          .children[].standings.entries[]
+          .leagues[0].teams[]
           | select(.team.displayName=="Toronto Raptors")
           | "\(.team.displayName) \(.stats[0].value)-\(.stats[1].value) (\(.stats[12].value)th East)"
         ')
@@ -71,7 +75,11 @@ jobs:
       id: mlb
       run: |
         json=$(curl -s "https://statsapi.mlb.com/api/v1/standings?leagueId=103")
-        rec=$(echo "$json" | jq -r '.records[].teamRecords[] | select(.team.name=="Toronto Blue Jays") | "\(.team.name) \(.wins)-\(.losses)"')
+        rec=$(echo "$json" | jq -r '
+          .records[].teamRecords[]
+          | select(.team.name=="Toronto Blue Jays")
+          | "\(.team.name) \(.wins)-\(.losses)"
+        ')
         echo "mlb=BLUE JAYS STANDINGS: $rec |" >> $GITHUB_OUTPUT
 
     # ---------------------------------------------------
@@ -81,7 +89,11 @@ jobs:
       id: nfl
       run: |
         json=$(curl -s "https://site.api.espn.com/apis/site/v2/sports/football/nfl/standings")
-        rec=$(echo "$json" | jq -r '.children[].standings.entries[] | select(.team.displayName=="Buffalo Bills") | "\(.team.displayName) \(.stats[0].value)-\(.stats[1].value)"')
+        rec=$(echo "$json" | jq -r '
+          .children[].standings.entries[]
+          | select(.team.displayName=="Buffalo Bills")
+          | "\(.team.displayName) \(.stats[0].value)-\(.stats[1].value)"
+        ')
         echo "nfl=BILLS STANDINGS: $rec |" >> $GITHUB_OUTPUT
 
     # ---------------------------------------------------
