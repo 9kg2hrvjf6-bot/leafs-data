@@ -53,7 +53,7 @@ jobs:
         echo "nhl=LEAFS STANDINGS: $div |" >> $GITHUB_OUTPUT
 
     # ---------------------------------------------------
-    # 3. NBA Standings (Raptors) — ESPN FIX
+    # 3. NBA Standings (Raptors) — RECURSIVE ESPN FIX
     # ---------------------------------------------------
     - name: Fetch NBA Standings (Raptors)
       id: nba
@@ -61,8 +61,8 @@ jobs:
         json=$(curl -s "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/standings")
 
         rec=$(echo "$json" | jq -r '
-          .leagues[0].teams[]
-          | select(.team.displayName=="Toronto Raptors")
+          .. | objects
+          | select(.team?.displayName? == "Toronto Raptors")
           | "\(.team.displayName) \(.stats[0].value)-\(.stats[1].value) (\(.stats[12].value)th East)"
         ')
 
