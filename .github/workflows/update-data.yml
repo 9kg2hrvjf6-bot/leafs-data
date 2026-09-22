@@ -49,29 +49,20 @@ jobs:
         echo "nhl=LEAFS STANDINGS: $div |" >> $GITHUB_OUTPUT
 
     # ---------------------------------------------------
-    # 3. NBA Standings (Raptors) — FIXED (NO AUTH HEADER)
+    # 3. NBA Standings (Raptors) — ESPN (WORKS IN ACTIONS)
     # ---------------------------------------------------
     - name: Fetch NBA Standings (Raptors)
       id: nba
       run: |
-        json=$(curl -s "https://api.balldontlie.io/v1/teams?search=Raptors")
-        team_id=$(echo "$json" | jq -r '.data[0].id')
+        json=$(curl -s "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/standings")
 
-        games=$(curl -s "https://api.balldontlie.io/v1/games?team_ids[]=$team_id&per_page=100")
+        rec=$(echo "$json" | jq -r '
+          .children[].standings.entries[]
+          | select(.team.displayName=="Toronto Raptors")
+          | "\(.team.displayName) \(.stats[0].value)-\(.stats[1].value) (\(.stats[12].value)th East)"
+        ')
 
-        wins=$(echo "$games" | jq '[.data[] | select(.status=="Final") |
-          if (.home_team.abbreviation=="TOR")
-          then (.home_team_score > .visitor_team_score)
-          else (.visitor_team_score > .home_team_score)
-          end] | map(select(.==true)) | length')
-
-        losses=$(echo "$games" | jq '[.data[] | select(.status=="Final") |
-          if (.home_team.abbreviation=="TOR")
-          then (.home_team_score < .visitor_team_score)
-          else (.visitor_team_score < .home_team_score)
-          end] | map(select(.==true)) | length')
-
-        echo "nba=RAPTORS STANDINGS: $wins-$losses |" >> $GITHUB_OUTPUT
+        echo "nba=RAPTORS STANDINGS: $rec |" >> $GITHUB_OUTPUT
 
     # ---------------------------------------------------
     # 4. MLB Standings (Blue Jays)
