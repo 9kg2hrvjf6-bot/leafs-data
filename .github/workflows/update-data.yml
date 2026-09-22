@@ -20,22 +20,34 @@ jobs:
       run: cp leafs.json data.json
 
     # ---------------------------------------------------
+    # GLOBAL USER-AGENT (Chrome spoof)
+    # ---------------------------------------------------
+    - name: Set UA
+      id: ua
+      run: |
+        echo "UA=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36" >> $GITHUB_OUTPUT
+
+    # ---------------------------------------------------
     # 1. Headlines (GNews)
     # ---------------------------------------------------
     - name: Fetch Headlines (GNews)
       id: news
       run: |
+        UA="${{ steps.ua.outputs.UA }}"
+
         fetch() {
           topic="$1"
           query="$2"
           url="https://gnews.io/api/v4/search?q=${query}&lang=en&country=ca&max=3&apikey=${GNEWS_KEY}"
-          json=$(curl -s "$url")
-          echo "$json" | jq empty 2>/dev/null
+
+          raw=$(curl -s -A "$UA" "$url")
+          echo "$raw" | jq empty 2>/dev/null
           if [ $? -ne 0 ]; then
             echo "$topic=" >> $GITHUB_OUTPUT
             return
           fi
-          titles=$(echo "$json" | jq -r '.articles[].title' | paste -sd " | " -)
+
+          titles=$(echo "$raw" | jq -r '.articles[].title' | paste -sd " | " -)
           echo "$topic=$titles |" >> $GITHUB_OUTPUT
         }
 
@@ -48,14 +60,12 @@ jobs:
     # ---------------------------------------------------
     # 2. Leafs Standings + Next Game (NHL)
     # ---------------------------------------------------
-    -name: Leafs Standings + Next Game
+    - name: Leafs Standings + Next Game
       id: nhl
       run: |
-        UA="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36"
+        UA="${{ steps.ua.outputs.UA }}"
 
         raw=$(curl -s -A "$UA" "https://api-web.nhle.com/v1/standings/now")
-
-        # Validate JSON
         echo "$raw" | jq empty 2>/dev/null
         if [ $? -ne 0 ]; then
           echo "nhl_rec=" >> $GITHUB_OUTPUT
@@ -70,7 +80,6 @@ jobs:
         ')
 
         sched=$(curl -s -A "$UA" "https://api-web.nhle.com/v1/club-schedule/TOR/now")
-
         echo "$sched" | jq empty 2>/dev/null
         if [ $? -ne 0 ]; then
           echo "nhl_next=" >> $GITHUB_OUTPUT
@@ -82,12 +91,14 @@ jobs:
         echo "nhl_rec=LEAFS STANDINGS: $rec |" >> $GITHUB_OUTPUT
 
     # ---------------------------------------------------
-    # 3. Raptors Standings + Next Game (NBA)
+    # 3. Raptors Standings + Next Game (NBA / ESPN)
     # ---------------------------------------------------
     - name: Raptors Standings + Next Game
       id: nba
       run: |
-        raw=$(curl -s "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/standings")
+        UA="${{ steps.ua.outputs.UA }}"
+
+        raw=$(curl -s -A "$UA" "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/standings")
         echo "$raw" | jq empty 2>/dev/null
         if [ $? -ne 0 ]; then
           echo "nba_rec=" >> $GITHUB_OUTPUT
@@ -101,7 +112,7 @@ jobs:
           | "\(.team.displayName) \(.stats[0].value)-\(.stats[1].value) (\(.stats[12].value)th East)"
         ')
 
-        sched=$(curl -s "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/teams/tor/schedule")
+        sched=$(curl -s -A "$UA" "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/teams/tor/schedule")
         echo "$sched" | jq empty 2>/dev/null
         if [ $? -ne 0 ]; then
           echo "nba_next=" >> $GITHUB_OUTPUT
@@ -118,7 +129,9 @@ jobs:
     - name: Jays Standings + Next Game
       id: mlb
       run: |
-        raw=$(curl -s "https://statsapi.mlb.com/api/v1/standings?leagueId=103")
+        UA="${{ steps.ua.outputs.UA }}"
+
+        raw=$(curl -s -A "$UA" "https://statsapi.mlb.com/api/v1/standings?leagueId=103")
         echo "$raw" | jq empty 2>/dev/null
         if [ $? -ne 0 ]; then
           echo "mlb_rec=" >> $GITHUB_OUTPUT
@@ -132,7 +145,7 @@ jobs:
           | "\(.team.name) \(.wins)-\(.losses)"
         ')
 
-        sched=$(curl -s "https://statsapi.mlb.com/api/v1/schedule?sportId=1&teamId=141")
+        sched=$(curl -s -A "$UA" "https://statsapi.mlb.com/api/v1/schedule?sportId=1&teamId=141")
         echo "$sched" | jq empty 2>/dev/null
         if [ $? -ne 0 ]; then
           echo "mlb_next=" >> $GITHUB_OUTPUT
@@ -149,7 +162,9 @@ jobs:
     - name: Fetch Toronto Traffic Alerts
       id: traffic
       run: |
-        raw=$(curl -s "https://511on.ca/api/v2/alerts?format=json")
+        UA="${{ steps.ua.outputs.UA }}"
+
+        raw=$(curl -s -A "$UA" "https://511on.ca/api/v2/alerts?format=json")
         echo "$raw" | jq empty 2>/dev/null
         if [ $? -ne 0 ]; then
           echo "traffic=" >> $GITHUB_OUTPUT
@@ -165,7 +180,9 @@ jobs:
     - name: Fetch Weather Alerts
       id: wx
       run: |
-        raw=$(curl -s "https://api.weather.gc.ca/alerts?region=on")
+        UA="${{ steps.ua.outputs.UA }}"
+
+        raw=$(curl -s -A "$UA" "https://api.weather.gc.ca/alerts?region=on")
         echo "$raw" | jq empty 2>/dev/null
         if [ $? -ne 0 ]; then
           echo "wx=" >> $GITHUB_OUTPUT
