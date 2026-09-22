@@ -41,48 +41,67 @@ jobs:
         echo "canada=$(fetch CANADA canada)" >> $GITHUB_OUTPUT
 
     # ---------------------------------------------------
-    # 2. NHL Standings (Leafs)
+    # 2. NHL Standings + Next Game (Leafs)
     # ---------------------------------------------------
-    - name: Fetch NHL Standings (Leafs)
+    - name: Leafs Standings + Next Game
       id: nhl
       run: |
-        json=$(curl -s "https://api-web.nhle.com/v1/standings/now")
-        div=$(echo "$json" | jq -r '
+        # Standings
+        standings=$(curl -s "https://api-web.nhle.com/v1/standings/now")
+        rec=$(echo "$standings" | jq -r '
           .standings[]?.teamRecords[]?
           | select(.teamAbbrev=="TOR")
           | "\(.teamName) \(.wins)-\(.losses)-\(.otLosses)"
         ')
-        echo "nhl=LEAFS STANDINGS: $div |" >> $GITHUB_OUTPUT
+
+        # Next Game
+        sched=$(curl -s "https://api-web.nhle.com/v1/club-schedule/TOR/now")
+        next=$(echo "$sched" | jq -r '.games[0].startTimeUTC')
+
+        echo "nhl_rec=LEAFS STANDINGS: $rec |" >> $GITHUB_OUTPUT
+        echo "nhl_next=$next" >> $GITHUB_OUTPUT
 
     # ---------------------------------------------------
-    # 3. NBA Standings (Raptors) — Recursive ESPN
+    # 3. Raptors Standings + Next Game (NBA)
     # ---------------------------------------------------
-    - name: Fetch NBA Standings (Raptors)
+    - name: Raptors Standings + Next Game
       id: nba
       run: |
+        # Standings
         json=$(curl -s "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/standings")
-
         rec=$(echo "$json" | jq -r '
           .. | objects
           | select(.team?.displayName? == "Toronto Raptors")
           | "\(.team.displayName) \(.stats[0].value)-\(.stats[1].value) (\(.stats[12].value)th East)"
         ')
 
-        echo "nba=RAPTORS STANDINGS: $rec |" >> $GITHUB_OUTPUT
+        # Next Game
+        sched=$(curl -s "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/teams/tor/schedule")
+        next=$(echo "$sched" | jq -r '.events[0].date')
+
+        echo "nba_rec=RAPTORS STANDINGS: $rec |" >> $GITHUB_OUTPUT
+        echo "nba_next=$next" >> $GITHUB_OUTPUT
 
     # ---------------------------------------------------
-    # 4. MLB Standings (Blue Jays)
+    # 4. Jays Standings + Next Game (MLB)
     # ---------------------------------------------------
-    - name: Fetch MLB Standings (Blue Jays)
+    - name: Jays Standings + Next Game
       id: mlb
       run: |
+        # Standings
         json=$(curl -s "https://statsapi.mlb.com/api/v1/standings?leagueId=103")
         rec=$(echo "$json" | jq -r '
           .records[].teamRecords[]
           | select(.team.name=="Toronto Blue Jays")
           | "\(.team.name) \(.wins)-\(.losses)"
         ')
-        echo "mlb=BLUE JAYS STANDINGS: $rec |" >> $GITHUB_OUTPUT
+
+        # Next Game
+        sched=$(curl -s "https://statsapi.mlb.com/api/v1/schedule?sportId=1&teamId=141")
+        next=$(echo "$sched" | jq -r '.dates[0].games[0].gameDate')
+
+        echo "mlb_rec=BLUE JAYS STANDINGS: $rec |" >> $GITHUB_OUTPUT
+        echo "mlb_next=$next" >> $GITHUB_OUTPUT
 
     # ---------------------------------------------------
     # 5. Toronto Traffic Alerts
@@ -115,9 +134,12 @@ jobs:
           --arg jays    "${{ steps.news.outputs.jays }}" \
           --arg toronto "${{ steps.news.outputs.toronto }}" \
           --arg canada  "${{ steps.news.outputs.canada }}" \
-          --arg nhl     "${{ steps.nhl.outputs.nhl }}" \
-          --arg nba     "${{ steps.nba.outputs.nba }}" \
-          --arg mlb     "${{ steps.mlb.outputs.mlb }}" \
+          --arg nhlrec  "${{ steps.nhl.outputs.nhl_rec }}" \
+          --arg nhlnext "${{ steps.nhl.outputs.nhl_next }}" \
+          --arg nbarec  "${{ steps.nba.outputs.nba_rec }}" \
+          --arg nbanext "${{ steps.nba.outputs.nba_next }}" \
+          --arg mlbrec  "${{ steps.mlb.outputs.mlb_rec }}" \
+          --arg mlbnext "${{ steps.mlb.outputs.mlb_next }}" \
           --arg traffic "${{ steps.traffic.outputs.traffic }}" \
           --arg wx      "${{ steps.wx.outputs.wx }}" \
         '
@@ -125,9 +147,13 @@ jobs:
         .raptors_headlines = $raps    |
         .jays_headlines    = $jays    |
 
-        .leafs_standings   = $nhl     |
-        .raptors_standings = $nba     |
-        .jays_standings    = $mlb     |
+        .leafs_standings   = $nhlrec  |
+        .raptors_standings = $nbarec  |
+        .jays_standings    = $mlbrec  |
+
+        .leafs_next_utc    = $nhlnext |
+        .raptors_next_utc  = $nbanext |
+        .jays_next_utc     = $mlbnext |
 
         .toronto_headlines = $toronto |
         .canada_headlines  = $canada  |
