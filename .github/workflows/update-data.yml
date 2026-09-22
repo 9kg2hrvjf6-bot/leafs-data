@@ -48,10 +48,14 @@ jobs:
     # ---------------------------------------------------
     # 2. Leafs Standings + Next Game (NHL)
     # ---------------------------------------------------
-    - name: Leafs Standings + Next Game
+    -name: Leafs Standings + Next Game
       id: nhl
       run: |
-        raw=$(curl -s "https://api-web.nhle.com/v1/standings/now")
+        UA="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36"
+
+        raw=$(curl -s -A "$UA" "https://api-web.nhle.com/v1/standings/now")
+
+        # Validate JSON
         echo "$raw" | jq empty 2>/dev/null
         if [ $? -ne 0 ]; then
           echo "nhl_rec=" >> $GITHUB_OUTPUT
@@ -65,7 +69,8 @@ jobs:
           | "\(.teamName) \(.wins)-\(.losses)-\(.otLosses)"
         ')
 
-        sched=$(curl -s "https://api-web.nhle.com/v1/club-schedule/TOR/now")
+        sched=$(curl -s -A "$UA" "https://api-web.nhle.com/v1/club-schedule/TOR/now")
+
         echo "$sched" | jq empty 2>/dev/null
         if [ $? -ne 0 ]; then
           echo "nhl_next=" >> $GITHUB_OUTPUT
