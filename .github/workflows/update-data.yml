@@ -30,36 +30,51 @@ jobs:
           query="$2"
           url="https://gnews.io/api/v4/search?q=${query}&lang=en&country=ca&max=3&apikey=${GNEWS_KEY}"
           json=$(curl -s "$url")
+          echo "$json" | jq empty 2>/dev/null
+          if [ $? -ne 0 ]; then
+            echo "$topic=" >> $GITHUB_OUTPUT
+            return
+          fi
           titles=$(echo "$json" | jq -r '.articles[].title' | paste -sd " | " -)
-          echo "$topic: $titles |"
+          echo "$topic=$titles |" >> $GITHUB_OUTPUT
         }
 
-        echo "leafs=$(fetch LEAFS toronto%20maple%20leafs)" >> $GITHUB_OUTPUT
-        echo "raptors=$(fetch RAPTORS toronto%20raptors)" >> $GITHUB_OUTPUT
-        echo "jays=$(fetch BLUE%20JAYS toronto%20blue%20jays)" >> $GITHUB_OUTPUT
-        echo "toronto=$(fetch TORONTO toronto)" >> $GITHUB_OUTPUT
-        echo "canada=$(fetch CANADA canada)" >> $GITHUB_OUTPUT
+        fetch leafs   "toronto%20maple%20leafs"
+        fetch raptors "toronto%20raptors"
+        fetch jays    "toronto%20blue%20jays"
+        fetch toronto "toronto"
+        fetch canada  "canada"
 
     # ---------------------------------------------------
-    # 2. NHL Standings + Next Game (Leafs)
+    # 2. Leafs Standings + Next Game (NHL)
     # ---------------------------------------------------
     - name: Leafs Standings + Next Game
       id: nhl
       run: |
-        # Standings
-        standings=$(curl -s "https://api-web.nhle.com/v1/standings/now")
-        rec=$(echo "$standings" | jq -r '
+        raw=$(curl -s "https://api-web.nhle.com/v1/standings/now")
+        echo "$raw" | jq empty 2>/dev/null
+        if [ $? -ne 0 ]; then
+          echo "nhl_rec=" >> $GITHUB_OUTPUT
+          echo "nhl_next=" >> $GITHUB_OUTPUT
+          exit 0
+        fi
+
+        rec=$(echo "$raw" | jq -r '
           .standings[]?.teamRecords[]?
           | select(.teamAbbrev=="TOR")
           | "\(.teamName) \(.wins)-\(.losses)-\(.otLosses)"
         ')
 
-        # Next Game
         sched=$(curl -s "https://api-web.nhle.com/v1/club-schedule/TOR/now")
-        next=$(echo "$sched" | jq -r '.games[0].startTimeUTC')
+        echo "$sched" | jq empty 2>/dev/null
+        if [ $? -ne 0 ]; then
+          echo "nhl_next=" >> $GITHUB_OUTPUT
+        else
+          next=$(echo "$sched" | jq -r '.games[0].startTimeUTC')
+          echo "nhl_next=$next" >> $GITHUB_OUTPUT
+        fi
 
         echo "nhl_rec=LEAFS STANDINGS: $rec |" >> $GITHUB_OUTPUT
-        echo "nhl_next=$next" >> $GITHUB_OUTPUT
 
     # ---------------------------------------------------
     # 3. Raptors Standings + Next Game (NBA)
@@ -67,20 +82,30 @@ jobs:
     - name: Raptors Standings + Next Game
       id: nba
       run: |
-        # Standings
-        json=$(curl -s "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/standings")
-        rec=$(echo "$json" | jq -r '
+        raw=$(curl -s "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/standings")
+        echo "$raw" | jq empty 2>/dev/null
+        if [ $? -ne 0 ]; then
+          echo "nba_rec=" >> $GITHUB_OUTPUT
+          echo "nba_next=" >> $GITHUB_OUTPUT
+          exit 0
+        fi
+
+        rec=$(echo "$raw" | jq -r '
           .. | objects
           | select(.team?.displayName? == "Toronto Raptors")
           | "\(.team.displayName) \(.stats[0].value)-\(.stats[1].value) (\(.stats[12].value)th East)"
         ')
 
-        # Next Game
         sched=$(curl -s "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/teams/tor/schedule")
-        next=$(echo "$sched" | jq -r '.events[0].date')
+        echo "$sched" | jq empty 2>/dev/null
+        if [ $? -ne 0 ]; then
+          echo "nba_next=" >> $GITHUB_OUTPUT
+        else
+          next=$(echo "$sched" | jq -r '.events[0].date')
+          echo "nba_next=$next" >> $GITHUB_OUTPUT
+        fi
 
         echo "nba_rec=RAPTORS STANDINGS: $rec |" >> $GITHUB_OUTPUT
-        echo "nba_next=$next" >> $GITHUB_OUTPUT
 
     # ---------------------------------------------------
     # 4. Jays Standings + Next Game (MLB)
@@ -88,20 +113,30 @@ jobs:
     - name: Jays Standings + Next Game
       id: mlb
       run: |
-        # Standings
-        json=$(curl -s "https://statsapi.mlb.com/api/v1/standings?leagueId=103")
-        rec=$(echo "$json" | jq -r '
+        raw=$(curl -s "https://statsapi.mlb.com/api/v1/standings?leagueId=103")
+        echo "$raw" | jq empty 2>/dev/null
+        if [ $? -ne 0 ]; then
+          echo "mlb_rec=" >> $GITHUB_OUTPUT
+          echo "mlb_next=" >> $GITHUB_OUTPUT
+          exit 0
+        fi
+
+        rec=$(echo "$raw" | jq -r '
           .records[].teamRecords[]
           | select(.team.name=="Toronto Blue Jays")
           | "\(.team.name) \(.wins)-\(.losses)"
         ')
 
-        # Next Game
         sched=$(curl -s "https://statsapi.mlb.com/api/v1/schedule?sportId=1&teamId=141")
-        next=$(echo "$sched" | jq -r '.dates[0].games[0].gameDate')
+        echo "$sched" | jq empty 2>/dev/null
+        if [ $? -ne 0 ]; then
+          echo "mlb_next=" >> $GITHUB_OUTPUT
+        else
+          next=$(echo "$sched" | jq -r '.dates[0].games[0].gameDate')
+          echo "mlb_next=$next" >> $GITHUB_OUTPUT
+        fi
 
         echo "mlb_rec=BLUE JAYS STANDINGS: $rec |" >> $GITHUB_OUTPUT
-        echo "mlb_next=$next" >> $GITHUB_OUTPUT
 
     # ---------------------------------------------------
     # 5. Toronto Traffic Alerts
@@ -109,8 +144,14 @@ jobs:
     - name: Fetch Toronto Traffic Alerts
       id: traffic
       run: |
-        json=$(curl -s "https://511on.ca/api/v2/alerts?format=json")
-        titles=$(echo "$json" | jq -r '.alerts[].headline' | head -n 3 | paste -sd " | " -)
+        raw=$(curl -s "https://511on.ca/api/v2/alerts?format=json")
+        echo "$raw" | jq empty 2>/dev/null
+        if [ $? -ne 0 ]; then
+          echo "traffic=" >> $GITHUB_OUTPUT
+          exit 0
+        fi
+
+        titles=$(echo "$raw" | jq -r '.alerts[].headline' | head -n 3 | paste -sd " | " -)
         echo "traffic=TRAFFIC: $titles |" >> $GITHUB_OUTPUT
 
     # ---------------------------------------------------
@@ -119,8 +160,14 @@ jobs:
     - name: Fetch Weather Alerts
       id: wx
       run: |
-        json=$(curl -s "https://api.weather.gc.ca/alerts?region=on")
-        titles=$(echo "$json" | jq -r '.alerts[].headline' | head -n 3 | paste -sd " | " -)
+        raw=$(curl -s "https://api.weather.gc.ca/alerts?region=on")
+        echo "$raw" | jq empty 2>/dev/null
+        if [ $? -ne 0 ]; then
+          echo "wx=" >> $GITHUB_OUTPUT
+          exit 0
+        fi
+
+        titles=$(echo "$raw" | jq -r '.alerts[].headline' | head -n 3 | paste -sd " | " -)
         echo "wx=ALERTS: $titles |" >> $GITHUB_OUTPUT
 
     # ---------------------------------------------------
