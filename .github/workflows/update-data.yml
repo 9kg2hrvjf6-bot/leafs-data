@@ -51,19 +51,31 @@ jobs:
     - name: Leafs Data (NHL)
       id: nhl
       run: |
-        sched=$(curl -s "https://api-web.nhle.com/v1/club-schedule-season/TOR/2024")
+        sched=$(curl -s "https://api-web.nhle.com/v1/club-schedule/TOR/now")
+
+        echo "$sched" | jq empty 2>/dev/null || {
+          echo "leafs_next_utc=" >> $GITHUB_OUTPUT
+          echo "leafs_next_opponent=" >> $GITHUB_OUTPUT
+          echo "nhl_live=" >> $GITHUB_OUTPUT
+          echo "nhl_final=" >> $GITHUB_OUTPUT
+          exit 0
+        }
+
         leafs_next_utc=$(echo "$sched" | jq -r '.games[0].startTimeUTC')
+
         leafs_next_opponent=$(echo "$sched" | jq -r '.games[0] |
           if .homeTeam.abbrev=="TOR" then .awayTeam.abbrev else .homeTeam.abbrev end')
 
         live=$(curl -s "https://api-web.nhle.com/v1/scoreboard/now" \
-          | jq -r '.games[] | select(.homeTeam.abbrev=="TOR" or .awayTeam.abbrev=="TOR")
+          | jq -r '.games[] 
+            | select(.homeTeam.abbrev=="TOR" or .awayTeam.abbrev=="TOR")
             | if .gameState=="LIVE" then
                 "\(.awayTeam.abbrev) \(.awayTeam.score) @ \(.homeTeam.abbrev) \(.homeTeam.score) \(.periodDescriptor.number)P \(.timeRemaining)"
               else empty end')
 
         final=$(curl -s "https://api-web.nhle.com/v1/scoreboard/now" \
-          | jq -r '.games[] | select(.homeTeam.abbrev=="TOR" or .awayTeam.abbrev=="TOR")
+          | jq -r '.games[] 
+            | select(.homeTeam.abbrev=="TOR" or .awayTeam.abbrev=="TOR")
             | if .gameState=="FINAL" then
                 "\(.awayTeam.abbrev) \(.awayTeam.score) @ \(.homeTeam.abbrev) \(.homeTeam.score)"
               else empty end')
@@ -80,19 +92,31 @@ jobs:
       id: nba
       run: |
         sched=$(curl -s "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/teams/tor/schedule")
+
+        echo "$sched" | jq empty 2>/dev/null || {
+          echo "raptors_next_utc=" >> $GITHUB_OUTPUT
+          echo "raptors_next_opponent=" >> $GITHUB_OUTPUT
+          echo "nba_live=" >> $GITHUB_OUTPUT
+          echo "nba_final=" >> $GITHUB_OUTPUT
+          exit 0
+        }
+
         raptors_next_utc=$(echo "$sched" | jq -r '.events[0].date')
+
         raptors_next_opponent=$(echo "$sched" | jq -r '.events[0].competitions[0].competitors[]
           | select(.team.abbreviation!="TOR") | .team.abbreviation')
 
         live=$(curl -s "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard" \
-          | jq -r '.events[] | select(.competitions[0].competitors[].team.abbreviation=="TOR")
+          | jq -r '.events[] 
+            | select(.competitions[0].competitors[].team.abbreviation=="TOR")
             | if .status.type.state=="in" then
                 .competitions[0].competitors[] |
                 "\(.team.abbreviation) \(.score)" | paste -sd " @ " -
               else empty end')
 
         final=$(curl -s "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard" \
-          | jq -r '.events[] | select(.competitions[0].competitors[].team.abbreviation=="TOR")
+          | jq -r '.events[] 
+            | select(.competitions[0].competitors[].team.abbreviation=="TOR")
             | if .status.type.completed==true then
                 .competitions[0].competitors[] |
                 "\(.team.abbreviation) \(.score)" | paste -sd " @ " -
@@ -110,7 +134,17 @@ jobs:
       id: mlb
       run: |
         sched=$(curl -s "https://statsapi.mlb.com/api/v1/schedule?sportId=1&teamId=141")
+
+        echo "$sched" | jq empty 2>/dev/null || {
+          echo "jays_next_utc=" >> $GITHUB_OUTPUT
+          echo "jays_next_opponent=" >> $GITHUB_OUTPUT
+          echo "mlb_live=" >> $GITHUB_OUTPUT
+          echo "mlb_final=" >> $GITHUB_OUTPUT
+          exit 0
+        }
+
         jays_next_utc=$(echo "$sched" | jq -r '.dates[0].games[0].gameDate')
+
         jays_next_opponent=$(echo "$sched" | jq -r '.dates[0].games[0].teams |
           if .home.team.id==141 then .away.team.abbreviation else .home.team.abbreviation end')
 
@@ -208,4 +242,5 @@ jobs:
       with:
         commit_message: "Update sports/news/weather/traffic"
         file_pattern: leafs.json
+
        
