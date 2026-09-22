@@ -2,7 +2,7 @@ name: Update Leafs, Jays & Raptors Live Data
 
 on:
   schedule:
-    - cron: "*/1 * * * *"
+    - cron: "*/10 * * * *"
   workflow_dispatch:
 
 # Lets the workflow push leafs.json back to the repo
@@ -27,10 +27,13 @@ jobs:
           BDL_KEY: ${{ secrets.BDL_KEY }}
         run: |
           python3 - <<'PY'
+          import html
           import json
           import os
+          import re
           import sys
           import urllib.request
+          import xml.etree.ElementTree as ET
           from datetime import datetime, timedelta
           from zoneinfo import ZoneInfo
 
@@ -52,6 +55,14 @@ jobs:
               "Origin": "https://www.nba.com",
               "Accept": "application/json, text/plain, */*",
           }
+          BROWSER_HEADERS = {
+              "User-Agent": ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+                             "(KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"),
+              "Accept": "application/rss+xml, application/xml, text/xml, */*",
+          }
+          NEWS_FEED = "https://www.cbc.ca/webfeed/rss/rss-canada-toronto"
+          NEWS_HEADLINE_COUNT = 4
+          NEWS_HEADLINE_MAX_LEN = 70
 
 
           ERRORS = []   # written to debug.json so failures are visible without opening the Actions log
@@ -62,6 +73,17 @@ jobs:
                   req = urllib.request.Request(url, headers=headers or HEADERS)
                   with urllib.request.urlopen(req, timeout=30) as r:
                       return json.loads(r.read().decode("utf-8"))
+              except Exception as e:
+                  print(f"FETCH FAILED: {url}\n  {e}", file=sys.stderr)
+                  ERRORS.append(f"{url.split('?')[0][8:90]} -> {str(e)[:80]}")
+                  return None
+
+
+          def get_xml(url, headers=None):
+              try:
+                  req = urllib.request.Request(url, headers=headers or BROWSER_HEADERS)
+                  with urllib.request.urlopen(req, timeout=30) as r:
+                      return ET.fromstring(r.read())
               except Exception as e:
                   print(f"FETCH FAILED: {url}\n  {e}", file=sys.stderr)
                   ERRORS.append(f"{url.split('?')[0][8:90]} -> {str(e)[:80]}")
@@ -401,6 +423,30 @@ jobs:
               return ""
 
 
+          # ---------------------------------------------------------------- News (CBC Toronto RSS)
+          def news():
+              root = get_xml(NEWS_FEED)
+              if root is None:
+                  return ""
+
+              titles = []
+              for item in root.findall("./channel/item"):
+                  t = item.findtext("title")
+                  if not t:
+                      continue
+                  t = html.unescape(t).strip()
+                  t = re.sub(r"\s+", " ", t)             # collapse any embedded newlines/tabs
+                  if len(t) > NEWS_HEADLINE_MAX_LEN:
+                      t = t[:NEWS_HEADLINE_MAX_LEN - 1].rstrip() + "\u2026"
+                  titles.append(t)
+                  if len(titles) >= NEWS_HEADLINE_COUNT:
+                      break
+
+              if not titles:
+                  return ""
+              return "NEWS: " + " | ".join(titles) + " | "
+
+
           # ---------------------------------------------------------------- main
           def clean(s):
               return s.encode("ascii", "ignore").decode("ascii")
@@ -435,7 +481,8 @@ jobs:
               # Plain ticker-text sources
               for key, fn in (("raptors", raptors),
                                ("leafs_standings", leafs_standings),
-                               ("jays_standings", jays_standings)):
+                               ("jays_standings", jays_standings),
+                               ("news", news)):
                   try:
                       text = clean(fn())
                   except Exception as e:
@@ -444,7 +491,7 @@ jobs:
                   if key == "raptors" and ("NO DATA" in text or "ERROR" in text) and isinstance(old.get(key), str):
                       text = old[key]
                   elif key != "raptors" and not text and isinstance(old.get(key), str):
-                      text = old[key]   # standings lines: keep yesterday's rather than show nothing
+                      text = old[key]   # standings/news lines: keep yesterday's rather than show nothing
                   result[key] = text
                   print(f"{key}: {text}")
 
@@ -472,3 +519,4 @@ jobs:
             git commit -m "Auto-update Toronto live sports data"
             git push
           fi
+
