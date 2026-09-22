@@ -83,17 +83,19 @@ jobs:
         echo "mlb=BLUE JAYS STANDINGS: $rec |" >> $GITHUB_OUTPUT
 
     # ---------------------------------------------------
-    # 5. NFL Standings (Bills)
+    # 5. NFL Standings (Bills) — RECURSIVE ESPN FIX
     # ---------------------------------------------------
     - name: Fetch NFL Standings (Bills)
       id: nfl
       run: |
         json=$(curl -s "https://site.api.espn.com/apis/site/v2/sports/football/nfl/standings")
+
         rec=$(echo "$json" | jq -r '
-          .children[].standings.entries[]
-          | select(.team.displayName=="Buffalo Bills")
+          .. | objects
+          | select(.team?.displayName? == "Buffalo Bills")
           | "\(.team.displayName) \(.stats[0].value)-\(.stats[1].value)"
         ')
+
         echo "nfl=BILLS STANDINGS: $rec |" >> $GITHUB_OUTPUT
 
     # ---------------------------------------------------
