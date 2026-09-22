@@ -20,182 +20,139 @@ jobs:
       run: cp leafs.json data.json
 
     # ---------------------------------------------------
-    # GLOBAL USER-AGENT (Chrome spoof)
+    # FREE NEWS (Reddit JSON feeds)
     # ---------------------------------------------------
-    - name: Set UA
-      id: ua
-      run: |
-        echo "UA=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36" >> $GITHUB_OUTPUT
-
-    # ---------------------------------------------------
-    # 1. Headlines (GNews)
-    # ---------------------------------------------------
-    - name: Fetch Headlines (GNews)
+    - name: Fetch Headlines (Reddit)
       id: news
       run: |
-        UA="${{ steps.ua.outputs.UA }}"
-
         fetch() {
           topic="$1"
-          query="$2"
-          url="https://gnews.io/api/v4/search?q=${query}&lang=en&country=ca&max=3&apikey=${GNEWS_KEY}"
+          url="$2"
 
-          raw=$(curl -s -A "$UA" "$url")
-          echo "$raw" | jq empty 2>/dev/null
-          if [ $? -ne 0 ]; then
+          raw=$(curl -s "$url")
+          echo "$raw" | jq empty 2>/dev/null || {
             echo "$topic=" >> $GITHUB_OUTPUT
             return
-          fi
+          }
 
-          titles=$(echo "$raw" | jq -r '.articles[].title' | paste -sd " | " -)
+          titles=$(echo "$raw" | jq -r '.data.children[].data.title' | head -n 3 | paste -sd " | " -)
           echo "$topic=$titles |" >> $GITHUB_OUTPUT
         }
 
-        fetch leafs   "toronto%20maple%20leafs"
-        fetch raptors "toronto%20raptors"
-        fetch jays    "toronto%20blue%20jays"
-        fetch toronto "toronto"
-        fetch canada  "canada"
+        fetch leafs   "https://www.reddit.com/r/leafs.json"
+        fetch raptors "https://www.reddit.com/r/torontoraptors.json"
+        fetch jays    "https://www.reddit.com/r/bluejays.json"
+        fetch toronto "https://www.reddit.com/r/toronto.json"
+        fetch canada  "https://www.reddit.com/r/canada.json"
 
     # ---------------------------------------------------
-    # 2. Leafs Standings + Next Game (NHL)
+    # NHL Leafs — Next Game + Opponent + LIVE + FINAL
     # ---------------------------------------------------
-    - name: Leafs Standings + Next Game
+    - name: Leafs Data (NHL)
       id: nhl
       run: |
-        UA="${{ steps.ua.outputs.UA }}"
+        sched=$(curl -s "https://api-web.nhle.com/v1/club-schedule-season/TOR/2024")
+        leafs_next_utc=$(echo "$sched" | jq -r '.games[0].startTimeUTC')
+        leafs_next_opponent=$(echo "$sched" | jq -r '.games[0] |
+          if .homeTeam.abbrev=="TOR" then .awayTeam.abbrev else .homeTeam.abbrev end')
 
-        raw=$(curl -s -A "$UA" "https://api-web.nhle.com/v1/standings/now")
-        echo "$raw" | jq empty 2>/dev/null
-        if [ $? -ne 0 ]; then
-          echo "nhl_rec=" >> $GITHUB_OUTPUT
-          echo "nhl_next=" >> $GITHUB_OUTPUT
-          exit 0
-        fi
+        live=$(curl -s "https://api-web.nhle.com/v1/scoreboard/now" \
+          | jq -r '.games[] | select(.homeTeam.abbrev=="TOR" or .awayTeam.abbrev=="TOR")
+            | if .gameState=="LIVE" then
+                "\(.awayTeam.abbrev) \(.awayTeam.score) @ \(.homeTeam.abbrev) \(.homeTeam.score) \(.periodDescriptor.number)P \(.timeRemaining)"
+              else empty end')
 
-        rec=$(echo "$raw" | jq -r '
-          .standings[]?.teamRecords[]?
-          | select(.teamAbbrev=="TOR")
-          | "\(.teamName) \(.wins)-\(.losses)-\(.otLosses)"
-        ')
+        final=$(curl -s "https://api-web.nhle.com/v1/scoreboard/now" \
+          | jq -r '.games[] | select(.homeTeam.abbrev=="TOR" or .awayTeam.abbrev=="TOR")
+            | if .gameState=="FINAL" then
+                "\(.awayTeam.abbrev) \(.awayTeam.score) @ \(.homeTeam.abbrev) \(.homeTeam.score)"
+              else empty end')
 
-        sched=$(curl -s -A "$UA" "https://api-web.nhle.com/v1/club-schedule/TOR/now")
-        echo "$sched" | jq empty 2>/dev/null
-        if [ $? -ne 0 ]; then
-          echo "nhl_next=" >> $GITHUB_OUTPUT
-        else
-          next=$(echo "$sched" | jq -r '.games[0].startTimeUTC')
-          echo "nhl_next=$next" >> $GITHUB_OUTPUT
-        fi
-
-        echo "nhl_rec=LEAFS STANDINGS: $rec |" >> $GITHUB_OUTPUT
+        echo "leafs_next_utc=$leafs_next_utc" >> $GITHUB_OUTPUT
+        echo "leafs_next_opponent=$leafs_next_opponent" >> $GITHUB_OUTPUT
+        echo "nhl_live=$live" >> $GITHUB_OUTPUT
+        echo "nhl_final=$final" >> $GITHUB_OUTPUT
 
     # ---------------------------------------------------
-    # 3. Raptors Standings + Next Game (NBA / ESPN)
+    # NBA Raptors — Next Game + Opponent + LIVE + FINAL
     # ---------------------------------------------------
-    - name: Raptors Standings + Next Game
+    - name: Raptors Data (NBA / ESPN)
       id: nba
       run: |
-        UA="${{ steps.ua.outputs.UA }}"
+        sched=$(curl -s "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/teams/tor/schedule")
+        raptors_next_utc=$(echo "$sched" | jq -r '.events[0].date')
+        raptors_next_opponent=$(echo "$sched" | jq -r '.events[0].competitions[0].competitors[]
+          | select(.team.abbreviation!="TOR") | .team.abbreviation')
 
-        raw=$(curl -s -A "$UA" "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/standings")
-        echo "$raw" | jq empty 2>/dev/null
-        if [ $? -ne 0 ]; then
-          echo "nba_rec=" >> $GITHUB_OUTPUT
-          echo "nba_next=" >> $GITHUB_OUTPUT
-          exit 0
-        fi
+        live=$(curl -s "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard" \
+          | jq -r '.events[] | select(.competitions[0].competitors[].team.abbreviation=="TOR")
+            | if .status.type.state=="in" then
+                .competitions[0].competitors[] |
+                "\(.team.abbreviation) \(.score)" | paste -sd " @ " -
+              else empty end')
 
-        rec=$(echo "$raw" | jq -r '
-          .. | objects
-          | select(.team?.displayName? == "Toronto Raptors")
-          | "\(.team.displayName) \(.stats[0].value)-\(.stats[1].value) (\(.stats[12].value)th East)"
-        ')
+        final=$(curl -s "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard" \
+          | jq -r '.events[] | select(.competitions[0].competitors[].team.abbreviation=="TOR")
+            | if .status.type.completed==true then
+                .competitions[0].competitors[] |
+                "\(.team.abbreviation) \(.score)" | paste -sd " @ " -
+              else empty end')
 
-        sched=$(curl -s -A "$UA" "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/teams/tor/schedule")
-        echo "$sched" | jq empty 2>/dev/null
-        if [ $? -ne 0 ]; then
-          echo "nba_next=" >> $GITHUB_OUTPUT
-        else
-          next=$(echo "$sched" | jq -r '.events[0].date')
-          echo "nba_next=$next" >> $GITHUB_OUTPUT
-        fi
-
-        echo "nba_rec=RAPTORS STANDINGS: $rec |" >> $GITHUB_OUTPUT
+        echo "raptors_next_utc=$raptors_next_utc" >> $GITHUB_OUTPUT
+        echo "raptors_next_opponent=$raptors_next_opponent" >> $GITHUB_OUTPUT
+        echo "nba_live=$live" >> $GITHUB_OUTPUT
+        echo "nba_final=$final" >> $GITHUB_OUTPUT
 
     # ---------------------------------------------------
-    # 4. Jays Standings + Next Game (MLB)
+    # MLB Jays — Next Game + Opponent + LIVE + FINAL
     # ---------------------------------------------------
-    - name: Jays Standings + Next Game
+    - name: Jays Data (MLB)
       id: mlb
       run: |
-        UA="${{ steps.ua.outputs.UA }}"
+        sched=$(curl -s "https://statsapi.mlb.com/api/v1/schedule?sportId=1&teamId=141")
+        jays_next_utc=$(echo "$sched" | jq -r '.dates[0].games[0].gameDate')
+        jays_next_opponent=$(echo "$sched" | jq -r '.dates[0].games[0].teams |
+          if .home.team.id==141 then .away.team.abbreviation else .home.team.abbreviation end')
 
-        raw=$(curl -s -A "$UA" "https://statsapi.mlb.com/api/v1/standings?leagueId=103")
-        echo "$raw" | jq empty 2>/dev/null
-        if [ $? -ne 0 ]; then
-          echo "mlb_rec=" >> $GITHUB_OUTPUT
-          echo "mlb_next=" >> $GITHUB_OUTPUT
-          exit 0
-        fi
+        live=$(curl -s "https://statsapi.mlb.com/api/v1.1/game/141/feed/live" \
+          | jq -r 'if .gameData.status.abstractGameState=="Live" then
+              "\(.liveData.linescore.teams.away.team.abbreviation) \(.liveData.linescore.teams.away.runs) @ \(.liveData.linescore.teams.home.team.abbreviation) \(.liveData.linescore.teams.home.runs)"
+            else empty end')
 
-        rec=$(echo "$raw" | jq -r '
-          .records[].teamRecords[]
-          | select(.team.name=="Toronto Blue Jays")
-          | "\(.team.name) \(.wins)-\(.losses)"
-        ')
+        final=$(curl -s "https://statsapi.mlb.com/api/v1.1/game/141/feed/live" \
+          | jq -r 'if .gameData.status.abstractGameState=="Final" then
+              "\(.liveData.linescore.teams.away.team.abbreviation) \(.liveData.linescore.teams.away.runs) @ \(.liveData.linescore.teams.home.team.abbreviation) \(.liveData.linescore.teams.home.runs)"
+            else empty end')
 
-        sched=$(curl -s -A "$UA" "https://statsapi.mlb.com/api/v1/schedule?sportId=1&teamId=141")
-        echo "$sched" | jq empty 2>/dev/null
-        if [ $? -ne 0 ]; then
-          echo "mlb_next=" >> $GITHUB_OUTPUT
-        else
-          next=$(echo "$sched" | jq -r '.dates[0].games[0].gameDate')
-          echo "mlb_next=$next" >> $GITHUB_OUTPUT
-        fi
-
-        echo "mlb_rec=BLUE JAYS STANDINGS: $rec |" >> $GITHUB_OUTPUT
+        echo "jays_next_utc=$jays_next_utc" >> $GITHUB_OUTPUT
+        echo "jays_next_opponent=$jays_next_opponent" >> $GITHUB_OUTPUT
+        echo "mlb_live=$live" >> $GITHUB_OUTPUT
+        echo "mlb_final=$final" >> $GITHUB_OUTPUT
 
     # ---------------------------------------------------
-    # 5. Toronto Traffic Alerts
+    # Toronto Traffic (511 Ontario)
     # ---------------------------------------------------
-    - name: Fetch Toronto Traffic Alerts
+    - name: Toronto Traffic
       id: traffic
       run: |
-        UA="${{ steps.ua.outputs.UA }}"
-
-        raw=$(curl -s -A "$UA" "https://511on.ca/api/v2/alerts?format=json")
-        echo "$raw" | jq empty 2>/dev/null
-        if [ $? -ne 0 ]; then
-          echo "traffic=" >> $GITHUB_OUTPUT
-          exit 0
-        fi
-
+        raw=$(curl -s "https://511on.ca/api/v2/alerts?format=json")
         titles=$(echo "$raw" | jq -r '.alerts[].headline' | head -n 3 | paste -sd " | " -)
-        echo "traffic=TRAFFIC: $titles |" >> $GITHUB_OUTPUT
+        echo "traffic=$titles |" >> $GITHUB_OUTPUT
 
     # ---------------------------------------------------
-    # 6. Weather Alerts (Environment Canada)
+    # Weather Alerts (Environment Canada)
     # ---------------------------------------------------
-    - name: Fetch Weather Alerts
+    - name: Weather Alerts
       id: wx
       run: |
-        UA="${{ steps.ua.outputs.UA }}"
-
-        raw=$(curl -s -A "$UA" "https://api.weather.gc.ca/alerts?region=on")
-        echo "$raw" | jq empty 2>/dev/null
-        if [ $? -ne 0 ]; then
-          echo "wx=" >> $GITHUB_OUTPUT
-          exit 0
-        fi
-
+        raw=$(curl -s "https://api.weather.gc.ca/alerts?region=on")
         titles=$(echo "$raw" | jq -r '.alerts[].headline' | head -n 3 | paste -sd " | " -)
-        echo "wx=ALERTS: $titles |" >> $GITHUB_OUTPUT
+        echo "wx=$titles |" >> $GITHUB_OUTPUT
 
     # ---------------------------------------------------
-    # 7. Merge into JSON
+    # Merge JSON
     # ---------------------------------------------------
-    - name: Merge into JSON
+    - name: Merge JSON
       run: |
         jq \
           --arg leafs   "${{ steps.news.outputs.leafs }}" \
@@ -203,26 +160,39 @@ jobs:
           --arg jays    "${{ steps.news.outputs.jays }}" \
           --arg toronto "${{ steps.news.outputs.toronto }}" \
           --arg canada  "${{ steps.news.outputs.canada }}" \
-          --arg nhlrec  "${{ steps.nhl.outputs.nhl_rec }}" \
-          --arg nhlnext "${{ steps.nhl.outputs.nhl_next }}" \
-          --arg nbarec  "${{ steps.nba.outputs.nba_rec }}" \
-          --arg nbanext "${{ steps.nba.outputs.nba_next }}" \
-          --arg mlbrec  "${{ steps.mlb.outputs.mlb_rec }}" \
-          --arg mlbnext "${{ steps.mlb.outputs.mlb_next }}" \
+          --arg leafs_next_utc "${{ steps.nhl.outputs.leafs_next_utc }}" \
+          --arg leafs_next_opponent "${{ steps.nhl.outputs.leafs_next_opponent }}" \
+          --arg nhl_live "${{ steps.nhl.outputs.nhl_live }}" \
+          --arg nhl_final "${{ steps.nhl.outputs.nhl_final }}" \
+          --arg raps_next_utc "${{ steps.nba.outputs.raptors_next_utc }}" \
+          --arg raps_next_opponent "${{ steps.nba.outputs.raptors_next_opponent }}" \
+          --arg nba_live "${{ steps.nba.outputs.nba_live }}" \
+          --arg nba_final "${{ steps.nba.outputs.nba_final }}" \
+          --arg jays_next_utc "${{ steps.mlb.outputs.jays_next_utc }}" \
+          --arg jays_next_opponent "${{ steps.mlb.outputs.jays_next_opponent }}" \
+          --arg mlb_live "${{ steps.mlb.outputs.mlb_live }}" \
+          --arg mlb_final "${{ steps.mlb.outputs.mlb_final }}" \
           --arg traffic "${{ steps.traffic.outputs.traffic }}" \
-          --arg wx      "${{ steps.wx.outputs.wx }}" \
+          --arg wx "${{ steps.wx.outputs.wx }}" \
         '
         .leafs_headlines   = $leafs   |
         .raptors_headlines = $raps    |
         .jays_headlines    = $jays    |
 
-        .leafs_standings   = $nhlrec  |
-        .raptors_standings = $nbarec  |
-        .jays_standings    = $mlbrec  |
+        .leafs_next_utc    = $leafs_next_utc |
+        .leafs_next_opponent = $leafs_next_opponent |
+        .nhl_live          = $nhl_live |
+        .nhl_final         = $nhl_final |
 
-        .leafs_next_utc    = $nhlnext |
-        .raptors_next_utc  = $nbanext |
-        .jays_next_utc     = $mlbnext |
+        .raptors_next_utc  = $raps_next_utc |
+        .raptors_next_opponent = $raps_next_opponent |
+        .nba_live          = $nba_live |
+        .nba_final         = $nba_final |
+
+        .jays_next_utc     = $jays_next_utc |
+        .jays_next_opponent = $jays_next_opponent |
+        .mlb_live          = $mlb_live |
+        .mlb_final         = $mlb_final |
 
         .toronto_headlines = $toronto |
         .canada_headlines  = $canada  |
@@ -231,10 +201,11 @@ jobs:
         ' data.json > leafs.json
 
     # ---------------------------------------------------
-    # 8. Commit updated JSON
+    # Commit JSON
     # ---------------------------------------------------
     - name: Commit updated JSON
       uses: stefanzweifel/git-auto-commit-action@v5
       with:
         commit_message: "Update sports/news/weather/traffic"
         file_pattern: leafs.json
+       
