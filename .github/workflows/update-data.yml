@@ -1,5 +1,8 @@
 name: Update Sports + News + Weather + Traffic
 
+permissions:
+  contents: write
+
 on:
   schedule:
     - cron: "*/20 * * * *"
