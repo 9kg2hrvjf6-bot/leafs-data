@@ -4,7 +4,15 @@
   "jays": "BLUE JAYS NEXT: TOR @ BAL TODAY 6:35PM | LAST: TOR 3 @ BAL 4 | ",
   "jays_next_utc": "2026-09-22T22:35:00Z",
   "raptors": "RAPTORS: NO DATA | ",
-  "leafs_standings": "LEAFS 8TH ATLANTIC 32-36-14 78PTS | ",
-  "jays_standings": "JAYS 4TH AL EAST 77-80 GB 19.0 | ",
-  "news": "NEWS: 2 dead after shooting outside Scarborough seniors' medical centre: po | 18 injured in suspected arson at Mississauga apartment building | What we know about the suspect in the Belleville, Ont., synagogue sho | Rental rules in Ontario change today. Heres what tenants and landlor | "
+  "leafs_standings": "LEAFS STANDINGS:  |",
+  "jays_standings": "BLUE JAYS STANDINGS:  |",
+  "news": "NEWS: 2 dead after shooting outside Scarborough seniors' medical centre: po | 18 injured in suspected arson at Mississauga apartment building | What we know about the suspect in the Belleville, Ont., synagogue sho | Rental rules in Ontario change today. Heres what tenants and landlor | ",
+  "leafs_headlines": "LEAFS:  |",
+  "raptors_headlines": "RAPTORS:  |",
+  "jays_headlines": "BLUE%20JAYS:  |",
+  "raptors_standings": "RAPTORS STANDINGS:  |",
+  "toronto_headlines": "TORONTO:  |",
+  "canada_headlines": "CANADA:  |",
+  "toronto_traffic": "TRAFFIC:  |",
+  "weather_alerts": "ALERTS:  |"
 }
