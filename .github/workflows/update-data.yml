@@ -153,7 +153,7 @@ jobs:
         echo "   LAST: $last"
 
     # ---------------------------------------------------
-    # NBA Raptors — SAFE JQ
+    # NBA Raptors — SAFE JQ (v2 FIX)
     # ---------------------------------------------------
     - name: Debug Raptors
       run: |
@@ -196,17 +196,33 @@ jobs:
         echo "➡️ Fetching NEXT game..."
         sched=$(curl -s "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/teams/tor")
 
-        if echo "$sched" | jq empty >/dev/null 2>&1; then
-          next_utc=$(echo "$sched" | jq -r '.team.nextEvent.date')
-          next_opp=$(echo "$sched" | jq -r '
-            .team.nextEvent.competitions[0].competitors[]
-            | select(.team.abbreviation!="TOR")
-            | .team.abbreviation
-          ')
-          echo "   NEXT: $next_opp at $next_utc"
-        else
+        # SAFE CHECK: valid JSON
+        if ! echo "$sched" | jq empty >/dev/null 2>&1; then
           echo "   ⚠️ ESPN NEXT-game endpoint returned invalid JSON"
           echo "$sched"
+        else
+          # Handle both object and array formats
+          next_event=$(echo "$sched" | jq -r '
+            .team.nextEvent
+            | if type=="array" then .[0] else . end
+          ')
+
+          if [[ -z "$next_event" || "$next_event" == "null" ]]; then
+            echo "   ⚠️ ESPN returned no nextEvent"
+          else
+            next_utc=$(echo "$sched" | jq -r '
+              (.team.nextEvent | if type=="array" then .[0] else . end).date
+            ')
+
+            next_opp=$(echo "$sched" | jq -r '
+              (.team.nextEvent | if type=="array" then .[0] else . end)
+              .competitions[0].competitors[]
+              | select(.team.abbreviation!="TOR")
+              | .team.abbreviation
+            ')
+
+            echo "   NEXT: $next_opp at $next_utc"
+          fi
         fi
 
         echo "➡️ Fallback search for LAST game..."
