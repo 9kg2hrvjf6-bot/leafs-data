@@ -100,7 +100,7 @@ jobs:
         sb=$(curl -s "https://api-web.nhle.com/v1/scoreboard/now")
 
         # SAFE CHECK: .games must be an array
-        if echo "$sb" | jq -e '.games | type=="array"' >/dev/null; then
+        if echo "$sb" | jq -e '.games | type=="array"' >/dev/null 2>&1; then
           echo "➡️ Parsing LIVE..."
           live=$(echo "$sb" | jq -r '
             .games[]
@@ -126,12 +126,22 @@ jobs:
 
         echo "➡️ Fetching NEXT game..."
         sched=$(curl -s "https://api-web.nhle.com/v1/club-schedule/TOR/now")
-        next_utc=$(echo "$sched" | jq -r '.games[0].startTimeUTC')
-        next_opp=$(echo "$sched" | jq -r '
-          .games[0] |
-          if .homeTeam.abbrev=="TOR" then .awayTeam.abbrev else .homeTeam.abbrev end
-        ')
-        echo "   NEXT: $next_opp at $next_utc"
+
+        # SAFE CHECK: valid JSON AND games array exists
+        if echo "$sched" | jq -e '.games | type=="array"' >/dev/null 2>&1; then
+          next_utc=$(echo "$sched" | jq -r '.games[0].startTimeUTC')
+          next_opp=$(echo "$sched" | jq -r '
+            .games[0] |
+            if .homeTeam.abbrev=="TOR" then .awayTeam.abbrev else .homeTeam.abbrev end
+          ')
+          echo "   NEXT: $next_opp at $next_utc"
+        else
+          echo "   ⚠️ NHL NEXT-game endpoint returned invalid or empty JSON"
+          echo "   Raw response:"
+          echo "$sched"
+          next_utc=""
+          next_opp=""
+        fi
 
         echo "➡️ Fallback search for LAST game..."
         last=$(./fallback.sh "TOR" "NHL" 3 \
@@ -153,7 +163,7 @@ jobs:
         sb=$(curl -s "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard")
 
         # SAFE CHECK: events must be array
-        if echo "$sb" | jq -e '.events | type=="array"' >/dev/null; then
+        if echo "$sb" | jq -e '.events | type=="array"' >/dev/null 2>&1; then
           echo "➡️ Parsing LIVE..."
           live=$(echo "$sb" | jq -r '
             .events[]
@@ -185,13 +195,19 @@ jobs:
 
         echo "➡️ Fetching NEXT game..."
         sched=$(curl -s "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/teams/tor")
-        next_utc=$(echo "$sched" | jq -r '.team.nextEvent.date')
-        next_opp=$(echo "$sched" | jq -r '
-          .team.nextEvent.competitions[0].competitors[]
-          | select(.team.abbreviation!="TOR")
-          | .team.abbreviation
-        ')
-        echo "   NEXT: $next_opp at $next_utc"
+
+        if echo "$sched" | jq empty >/dev/null 2>&1; then
+          next_utc=$(echo "$sched" | jq -r '.team.nextEvent.date')
+          next_opp=$(echo "$sched" | jq -r '
+            .team.nextEvent.competitions[0].competitors[]
+            | select(.team.abbreviation!="TOR")
+            | .team.abbreviation
+          ')
+          echo "   NEXT: $next_opp at $next_utc"
+        else
+          echo "   ⚠️ ESPN NEXT-game endpoint returned invalid JSON"
+          echo "$sched"
+        fi
 
         echo "➡️ Fallback search for LAST game..."
         last=$(./fallback.sh "TOR" "NBA" 3 \
@@ -240,12 +256,18 @@ jobs:
 
         echo "➡️ Fetching NEXT game..."
         sched=$(curl -s "https://statsapi.mlb.com/api/v1/schedule?sportId=1&teamId=141")
-        next_utc=$(echo "$sched" | jq -r '.dates[0].games[0].gameDate')
-        next_opp=$(echo "$sched" | jq -r '
-          .dates[0].games[0].teams |
-          if .home.team.id==141 then .away.team.abbreviation else .home.team.abbreviation end
-        ')
-        echo "   NEXT: $next_opp at $next_utc"
+
+        if echo "$sched" | jq -e '.dates[0].games[0]' >/dev/null 2>&1; then
+          next_utc=$(echo "$sched" | jq -r '.dates[0].games[0].gameDate')
+          next_opp=$(echo "$sched" | jq -r '
+            .dates[0].games[0].teams |
+            if .home.team.id==141 then .away.team.abbreviation else .home.team.abbreviation end
+          ')
+          echo "   NEXT: $next_opp at $next_utc"
+        else
+          echo "   ⚠️ MLB NEXT-game endpoint returned invalid JSON"
+          echo "$sched"
+        fi
 
         echo "➡️ Fallback search for LAST game..."
         last=$(./fallback.sh "TOR" "MLB" 3 \
