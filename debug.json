@@ -7,5 +7,11 @@
     "site.api.espn.com/apis/site/v2/sports/basketball/nba/teams/tor/schedule -> HTTP Error 403: Forbidden",
     "site.api.espn.com/apis/site/v2/sports/basketball/nba/teams/28/schedule -> HTTP Error 403: Forbidden",
     "BDL_KEY secret not set - skipped BallDontLie"
+  ],
+  "news_stats": [
+    "[NEWS] 20 items in feed, 2 matched",
+    "[LEAFS NEWS] 20 items in feed, 0 matched",
+    "[RAPTORS NEWS] 0 items in feed, 0 matched",
+    "[JAYS NEWS] 0 items in feed, 0 matched"
   ]
 }
