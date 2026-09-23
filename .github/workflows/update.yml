@@ -73,7 +73,8 @@ jobs:
           JAYS_KEYWORDS      = ["blue jays", "jays"]
 
 
-          ERRORS = []   # written to debug.json so failures are visible without opening the Actions log
+          ERRORS = []   # fetch failures, written to debug.json
+          NEWS_STATS = []  # per-feed item/match counts, written to debug.json separately
 
 
           def get(url, headers=None):
@@ -439,8 +440,9 @@ jobs:
               if root is None:
                   return ""
 
+              all_items = root.findall("./channel/item")
               titles = []
-              for item in root.findall("./channel/item"):
+              for item in all_items:
                   t = item.findtext("title")
                   if not t:
                       continue
@@ -455,6 +457,11 @@ jobs:
                   titles.append(t)
                   if len(titles) >= count:
                       break
+
+              # Visible in debug.json so a keyword miss (feed OK, 0 matches) can be told
+              # apart from a fetch failure without digging through the Actions log.
+              tag = f"[{prefix.strip(': ')}]" if prefix else "[news]"
+              NEWS_STATS.append(f"{tag} {len(all_items)} items in feed, {len(titles)} matched")
 
               if not titles:
                   return ""
@@ -537,7 +544,10 @@ jobs:
                   f.write("\n")
 
               with open("debug.json", "w") as f:
-                  json.dump({"errors": [clean(e) for e in ERRORS[-8:]]}, f, indent=2)
+                  json.dump({
+                      "errors": [clean(e) for e in ERRORS[-8:]],
+                      "news_stats": [clean(e) for e in NEWS_STATS],
+                  }, f, indent=2)
                   f.write("\n")
 
 
@@ -556,5 +566,3 @@ jobs:
             git commit -m "Auto-update Toronto live sports data"
             git push
           fi
-
-
