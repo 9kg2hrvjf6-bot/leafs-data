@@ -1,4 +1,4 @@
-name: DEBUG Sports + News + Weather + Traffic (Full Logging)
+name: DEBUG Sports + News + Weather + Traffic (Full Logging, Safe JQ)
 
 permissions:
   contents: read
@@ -90,7 +90,7 @@ jobs:
         fetch canada  "https://www.reddit.com/r/canada.json"
 
     # ---------------------------------------------------
-    # NHL Leafs — LIVE, FINAL, LAST (fallback)
+    # NHL Leafs — SAFE JQ
     # ---------------------------------------------------
     - name: Debug Leafs
       run: |
@@ -99,23 +99,30 @@ jobs:
         echo "➡️ Fetching NHL scoreboard..."
         sb=$(curl -s "https://api-web.nhle.com/v1/scoreboard/now")
 
-        echo "➡️ Parsing LIVE..."
-        live=$(echo "$sb" | jq -r '
-          .games[]
-          | select(.homeTeam.abbrev=="TOR" or .awayTeam.abbrev=="TOR")
-          | select(.gameState=="LIVE")
-          | "\(.awayTeam.abbrev) \(.awayTeam.score) @ \(.homeTeam.abbrev) \(.homeTeam.score)"
-        ')
-        echo "   LIVE: $live"
+        # SAFE CHECK: .games must be an array
+        if echo "$sb" | jq -e '.games | type=="array"' >/dev/null; then
+          echo "➡️ Parsing LIVE..."
+          live=$(echo "$sb" | jq -r '
+            .games[]
+            | select(.homeTeam.abbrev=="TOR" or .awayTeam.abbrev=="TOR")
+            | select(.gameState=="LIVE")
+            | "\(.awayTeam.abbrev) \(.awayTeam.score) @ \(.homeTeam.abbrev) \(.homeTeam.score)"
+          ')
+          echo "   LIVE: $live"
 
-        echo "➡️ Parsing FINAL..."
-        final=$(echo "$sb" | jq -r '
-          .games[]
-          | select(.homeTeam.abbrev=="TOR" or .awayTeam.abbrev=="TOR")
-          | select(.gameState=="FINAL")
-          | "\(.awayTeam.abbrev) \(.awayTeam.score) @ \(.homeTeam.abbrev) \(.homeTeam.score)"
-        ')
-        echo "   FINAL: $final"
+          echo "➡️ Parsing FINAL..."
+          final=$(echo "$sb" | jq -r '
+            .games[]
+            | select(.homeTeam.abbrev=="TOR" or .awayTeam.abbrev=="TOR")
+            | select(.gameState=="FINAL")
+            | "\(.awayTeam.abbrev) \(.awayTeam.score) @ \(.homeTeam.abbrev) \(.homeTeam.score)"
+          ')
+          echo "   FINAL: $final"
+        else
+          echo "   ⚠️ NHL scoreboard returned no games (games=null)"
+          live=""
+          final=""
+        fi
 
         echo "➡️ Fetching NEXT game..."
         sched=$(curl -s "https://api-web.nhle.com/v1/club-schedule/TOR/now")
@@ -136,7 +143,7 @@ jobs:
         echo "   LAST: $last"
 
     # ---------------------------------------------------
-    # NBA Raptors — LIVE, FINAL, LAST (fallback)
+    # NBA Raptors — SAFE JQ
     # ---------------------------------------------------
     - name: Debug Raptors
       run: |
@@ -145,29 +152,36 @@ jobs:
         echo "➡️ Fetching ESPN scoreboard..."
         sb=$(curl -s "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard")
 
-        echo "➡️ Parsing LIVE..."
-        live=$(echo "$sb" | jq -r '
-          .events[]
-          | select(.competitions[0].competitors[].team.abbreviation=="TOR")
-          | select(.status.type.state=="in")
-          | [
-              .competitions[0].competitors[]
-              | "\(.team.abbreviation) \(.score)"
-            ] | join(" @ ")
-        ')
-        echo "   LIVE: $live"
+        # SAFE CHECK: events must be array
+        if echo "$sb" | jq -e '.events | type=="array"' >/dev/null; then
+          echo "➡️ Parsing LIVE..."
+          live=$(echo "$sb" | jq -r '
+            .events[]
+            | select(.competitions[0].competitors[].team.abbreviation=="TOR")
+            | select(.status.type.state=="in")
+            | [
+                .competitions[0].competitors[]
+                | "\(.team.abbreviation) \(.score)"
+              ] | join(" @ ")
+          ')
+          echo "   LIVE: $live"
 
-        echo "➡️ Parsing FINAL..."
-        final=$(echo "$sb" | jq -r '
-          .events[]
-          | select(.competitions[0].competitors[].team.abbreviation=="TOR")
-          | select(.status.type.completed==true)
-          | [
-              .competitions[0].competitors[]
-              | "\(.team.abbreviation) \(.score)"
-            ] | join(" @ ")
-        ')
-        echo "   FINAL: $final"
+          echo "➡️ Parsing FINAL..."
+          final=$(echo "$sb" | jq -r '
+            .events[]
+            | select(.competitions[0].competitors[].team.abbreviation=="TOR")
+            | select(.status.type.completed==true)
+            | [
+                .competitions[0].competitors[]
+                | "\(.team.abbreviation) \(.score)"
+              ] | join(" @ ")
+          ')
+          echo "   FINAL: $final"
+        else
+          echo "   ⚠️ ESPN scoreboard returned no events (events=null)"
+          live=""
+          final=""
+        fi
 
         echo "➡️ Fetching NEXT game..."
         sched=$(curl -s "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/teams/tor")
@@ -192,7 +206,7 @@ jobs:
         echo "   LAST: $last"
 
     # ---------------------------------------------------
-    # MLB Jays — LIVE, FINAL, LAST (fallback)
+    # MLB Jays — SAFE JQ
     # ---------------------------------------------------
     - name: Debug Jays
       run: |
@@ -201,21 +215,28 @@ jobs:
         echo "➡️ Fetching MLB live feed..."
         feed=$(curl -s "https://statsapi.mlb.com/api/v1.1/game/141/feed/live")
 
-        echo "➡️ Parsing LIVE..."
-        live=$(echo "$feed" | jq -r '
-          if .gameData.status.abstractGameState=="Live" then
-            "\(.liveData.linescore.away.team.abbreviation) \(.liveData.linescore.away.runs) @ \(.liveData.linescore.home.team.abbreviation) \(.liveData.linescore.home.runs)"
-          else empty end
-        ')
-        echo "   LIVE: $live"
+        # SAFE CHECK: linescore must exist
+        if echo "$feed" | jq -e '.liveData.linescore.away.runs' >/dev/null 2>&1; then
+          echo "➡️ Parsing LIVE..."
+          live=$(echo "$feed" | jq -r '
+            if .gameData.status.abstractGameState=="Live" then
+              "\(.liveData.linescore.away.team.abbreviation) \(.liveData.linescore.away.runs) @ \(.liveData.linescore.home.team.abbreviation) \(.liveData.linescore.home.runs)"
+            else empty end
+          ')
+          echo "   LIVE: $live"
 
-        echo "➡️ Parsing FINAL..."
-        final=$(echo "$feed" | jq -r '
-          if .gameData.status.abstractGameState=="Final" then
-            "\(.liveData.linescore.away.team.abbreviation) \(.liveData.linescore.away.runs) @ \(.liveData.linescore.home.team.abbreviation) \(.liveData.linescore.home.runs)"
-          else empty end
-        ')
-        echo "   FINAL: $final"
+          echo "➡️ Parsing FINAL..."
+          final=$(echo "$feed" | jq -r '
+            if .gameData.status.abstractGameState=="Final" then
+              "\(.liveData.linescore.away.team.abbreviation) \(.liveData.linescore.away.runs) @ \(.liveData.linescore.home.team.abbreviation) \(.liveData.linescore.home.runs)"
+            else empty end
+          ')
+          echo "   FINAL: $final"
+        else
+          echo "   ⚠️ MLB feed missing linescore (null)"
+          live=""
+          final=""
+        fi
 
         echo "➡️ Fetching NEXT game..."
         sched=$(curl -s "https://statsapi.mlb.com/api/v1/schedule?sportId=1&teamId=141")
