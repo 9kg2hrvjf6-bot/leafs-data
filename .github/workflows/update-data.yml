@@ -1,4 +1,4 @@
-name: Update Sports + News + Weather + Traffic (Safe Merge)
+name: Update Sports + News + Weather + Traffic (Safe Merge + Last Game Fallback)
 
 permissions:
   contents: write
@@ -20,7 +20,37 @@ jobs:
       run: cp leafs.json old.json
 
     # ---------------------------------------------------
-    # Fetch Reddit Headlines (may fail → safe merge)
+    # Helper: Fetch last completed game with fallback
+    # ---------------------------------------------------
+    - name: Create fallback script
+      run: |
+        cat << 'EOF' > fallback.sh
+        #!/bin/bash
+        # fallback.sh TEAM SPORT DAYS API_URL PARSE_COMMAND
+        TEAM="$1"
+        SPORT="$2"
+        DAYS="$3"
+        API="$4"
+        PARSE="$5"
+
+        for i in $(seq 0 "$DAYS"); do
+          DATE=$(date -u -d "$i days ago" +%Y-%m-%d)
+          RAW=$(curl -s "$API$DATE")
+          echo "$RAW" | jq empty 2>/dev/null || continue
+
+          OUT=$(echo "$RAW" | jq -r "$PARSE")
+          if [[ -n "$OUT" ]]; then
+            echo "$OUT"
+            exit 0
+          fi
+        done
+
+        echo ""
+        EOF
+        chmod +x fallback.sh
+
+    # ---------------------------------------------------
+    # HEADLINES (Reddit)
     # ---------------------------------------------------
     - name: Fetch Headlines
       id: news
@@ -44,133 +74,146 @@ jobs:
         fetch canada  "https://www.reddit.com/r/canada.json"
 
     # ---------------------------------------------------
-    # NHL Leafs
+    # NHL Leafs — LIVE, FINAL, LAST (fallback)
     # ---------------------------------------------------
     - name: Leafs Data
       id: nhl
       run: |
-        sched=$(curl -s "https://api-web.nhle.com/v1/club-schedule/TOR/now")
-        echo "$sched" | jq empty 2>/dev/null || {
-          echo "leafs_next_utc=" >> $GITHUB_OUTPUT
-          echo "leafs_next_opponent=" >> $GITHUB_OUTPUT
-          echo "nhl_live=" >> $GITHUB_OUTPUT
-          echo "nhl_final=" >> $GITHUB_OUTPUT
-          exit 0
-        }
+        # LIVE / FINAL from scoreboard
+        sb=$(curl -s "https://api-web.nhle.com/v1/scoreboard/now")
 
-        leafs_next_utc=$(echo "$sched" | jq -r '.games[0].startTimeUTC')
-        leafs_next_opponent=$(echo "$sched" | jq -r '
+        live=$(echo "$sb" | jq -r '
+          .games[]
+          | select(.homeTeam.abbrev=="TOR" or .awayTeam.abbrev=="TOR")
+          | select(.gameState=="LIVE")
+          | "\(.awayTeam.abbrev) \(.awayTeam.score) @ \(.homeTeam.abbrev) \(.homeTeam.score)"
+        ')
+
+        final=$(echo "$sb" | jq -r '
+          .games[]
+          | select(.homeTeam.abbrev=="TOR" or .awayTeam.abbrev=="TOR")
+          | select(.gameState=="FINAL")
+          | "\(.awayTeam.abbrev) \(.awayTeam.score) @ \(.homeTeam.abbrev) \(.homeTeam.score)"
+        ')
+
+        # NEXT GAME
+        sched=$(curl -s "https://api-web.nhle.com/v1/club-schedule/TOR/now")
+        next_utc=$(echo "$sched" | jq -r '.games[0].startTimeUTC')
+        next_opp=$(echo "$sched" | jq -r '
           .games[0] |
           if .homeTeam.abbrev=="TOR" then .awayTeam.abbrev else .homeTeam.abbrev end
         ')
 
-        live=$(curl -s "https://api-web.nhle.com/v1/scoreboard/now" | jq -r '
-          .games[]
-          | select(.homeTeam.abbrev=="TOR" or .awayTeam.abbrev=="TOR")
-          | if .gameState=="LIVE" then
-              "\(.awayTeam.abbrev) \(.awayTeam.score) @ \(.homeTeam.abbrev) \(.homeTeam.score) \(.periodDescriptor.number)P \(.timeRemaining)"
-            else empty end
-        ')
+        # LAST GAME fallback (3 days)
+        last=$(./fallback.sh "TOR" "NHL" 3 \
+          "https://api-web.nhle.com/v1/club-schedule/TOR/" \
+          '.games[]
+           | select(.gameState=="FINAL")
+           | "\(.awayTeam.abbrev) \(.awayTeam.score) @ \(.homeTeam.abbrev) \(.homeTeam.score)"'
+        )
 
-        final=$(curl -s "https://api-web.nhle.com/v1/scoreboard/now" | jq -r '
-          .games[]
-          | select(.homeTeam.abbrev=="TOR" or .awayTeam.abbrev=="TOR")
-          | if .gameState=="FINAL" then
-              "\(.awayTeam.abbrev) \(.awayTeam.score) @ \(.homeTeam.abbrev) \(.homeTeam.score)"
-            else empty end
-        ')
-
-        echo "leafs_next_utc=$leafs_next_utc" >> $GITHUB_OUTPUT
-        echo "leafs_next_opponent=$leafs_next_opponent" >> $GITHUB_OUTPUT
         echo "nhl_live=$live" >> $GITHUB_OUTPUT
         echo "nhl_final=$final" >> $GITHUB_OUTPUT
+        echo "nhl_last=$last" >> $GITHUB_OUTPUT
+        echo "leafs_next_utc=$next_utc" >> $GITHUB_OUTPUT
+        echo "leafs_next_opponent=$next_opp" >> $GITHUB_OUTPUT
 
     # ---------------------------------------------------
-    # NBA Raptors (ESPN)
+    # NBA Raptors — LIVE, FINAL, LAST (fallback)
     # ---------------------------------------------------
     - name: Raptors Data
       id: nba
       run: |
-        sched=$(curl -s "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/teams/tor/schedule")
-        echo "$sched" | jq empty 2>/dev/null || {
-          echo "raptors_next_utc=" >> $GITHUB_OUTPUT
-          echo "raptors_next_opponent=" >> $GITHUB_OUTPUT
-          echo "nba_live=" >> $GITHUB_OUTPUT
-          echo "nba_final=" >> $GITHUB_OUTPUT
-          exit 0
-        }
+        sb=$(curl -s "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard")
 
-        raptors_next_utc=$(echo "$sched" | jq -r '.events[0].date')
-        raptors_next_opponent=$(echo "$sched" | jq -r '
-          .events[0].competitions[0].competitors[]
+        live=$(echo "$sb" | jq -r '
+          .events[]
+          | select(.competitions[0].competitors[].team.abbreviation=="TOR")
+          | select(.status.type.state=="in")
+          | [
+              .competitions[0].competitors[]
+              | "\(.team.abbreviation) \(.score)"
+            ] | join(" @ ")
+        ')
+
+        final=$(echo "$sb" | jq -r '
+          .events[]
+          | select(.competitions[0].competitors[].team.abbreviation=="TOR")
+          | select(.status.type.completed==true)
+          | [
+              .competitions[0].competitors[]
+              | "\(.team.abbreviation) \(.score)"
+            ] | join(" @ ")
+        ')
+
+        # NEXT GAME
+        sched=$(curl -s "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/teams/tor")
+        next_utc=$(echo "$sched" | jq -r '.team.nextEvent.date')
+        next_opp=$(echo "$sched" | jq -r '
+          .team.nextEvent.competitions[0].competitors[]
           | select(.team.abbreviation!="TOR")
           | .team.abbreviation
         ')
 
-        live=$(curl -s "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard" | jq -r '
-          .events[]
-          | select(.competitions[0].competitors[].team.abbreviation=="TOR")
-          | if .status.type.state=="in" then
-              [
-                .competitions[0].competitors[]
-                | "\(.team.abbreviation) \(.score)"
-              ] | join(" @ ")
-            else empty end
-        ')
+        # LAST GAME fallback (3 days)
+        last=$(./fallback.sh "TOR" "NBA" 3 \
+          "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/teams/tor/schedule?date=" \
+          '.events[]
+           | select(.status.type.completed==true)
+           | [
+               .competitions[0].competitors[]
+               | "\(.team.abbreviation) \(.score)"
+             ] | join(" @ ")'
+        )
 
-        final=$(curl -s "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard" | jq -r '
-          .events[]
-          | select(.competitions[0].competitors[].team.abbreviation=="TOR")
-          | if .status.type.completed==true then
-              [
-                .competitions[0].competitors[]
-                | "\(.team.abbreviation) \(.score)"
-              ] | join(" @ ")
-            else empty end
-        ')
-
-        echo "raptors_next_utc=$raptors_next_utc" >> $GITHUB_OUTPUT
-        echo "raptors_next_opponent=$raptors_next_opponent" >> $GITHUB_OUTPUT
         echo "nba_live=$live" >> $GITHUB_OUTPUT
         echo "nba_final=$final" >> $GITHUB_OUTPUT
+        echo "nba_last=$last" >> $GITHUB_OUTPUT
+        echo "raptors_next_utc=$next_utc" >> $GITHUB_OUTPUT
+        echo "raptors_next_opponent=$next_opp" >> $GITHUB_OUTPUT
 
     # ---------------------------------------------------
-    # MLB Jays
+    # MLB Jays — LIVE, FINAL, LAST (fallback)
     # ---------------------------------------------------
     - name: Jays Data
       id: mlb
       run: |
+        # NEXT GAME
         sched=$(curl -s "https://statsapi.mlb.com/api/v1/schedule?sportId=1&teamId=141")
-        echo "$sched" | jq empty 2>/dev/null || {
-          echo "jays_next_utc=" >> $GITHUB_OUTPUT
-          echo "jays_next_opponent=" >> $GITHUB_OUTPUT
-          echo "mlb_live=" >> $GITHUB_OUTPUT
-          echo "mlb_final=" >> $GITHUB_OUTPUT
-          exit 0
-        }
-
-        jays_next_utc=$(echo "$sched" | jq -r '.dates[0].games[0].gameDate')
-        jays_next_opponent=$(echo "$sched" | jq -r '
+        next_utc=$(echo "$sched" | jq -r '.dates[0].games[0].gameDate')
+        next_opp=$(echo "$sched" | jq -r '
           .dates[0].games[0].teams |
           if .home.team.id==141 then .away.team.abbreviation else .home.team.abbreviation end
         ')
 
-        live=$(curl -s "https://statsapi.mlb.com/api/v1.1/game/141/feed/live" | jq -r '
+        # LIVE / FINAL
+        feed=$(curl -s "https://statsapi.mlb.com/api/v1.1/game/141/feed/live")
+
+        live=$(echo "$feed" | jq -r '
           if .gameData.status.abstractGameState=="Live" then
-            "\(.liveData.linescore.teams.away.team.abbreviation) \(.liveData.linescore.teams.away.runs) @ \(.liveData.linescore.teams.home.team.abbreviation) \(.liveData.linescore.teams.home.runs)"
+            "\(.liveData.linescore.away.team.abbreviation) \(.liveData.linescore.away.runs) @ \(.liveData.linescore.home.team.abbreviation) \(.liveData.linescore.home.runs)"
           else empty end
         ')
 
-        final=$(curl -s "https://statsapi.mlb.com/api/v1.1/game/141/feed/live" | jq -r '
+        final=$(echo "$feed" | jq -r '
           if .gameData.status.abstractGameState=="Final" then
-            "\(.liveData.linescore.teams.away.team.abbreviation) \(.liveData.linescore.teams.away.runs) @ \(.liveData.linescore.teams.home.team.abbreviation) \(.liveData.linescore.teams.home.runs)"
+            "\(.liveData.linescore.away.team.abbreviation) \(.liveData.linescore.away.runs) @ \(.liveData.linescore.home.team.abbreviation) \(.liveData.linescore.home.runs)"
           else empty end
         ')
 
-        echo "jays_next_utc=$jays_next_utc" >> $GITHUB_OUTPUT
-        echo "jays_next_opponent=$jays_next_opponent" >> $GITHUB_OUTPUT
+        # LAST GAME fallback (3 days)
+        last=$(./fallback.sh "TOR" "MLB" 3 \
+          "https://statsapi.mlb.com/api/v1/schedule?sportId=1&teamId=141&date=" \
+          '.dates[].games[]
+           | select(.status.abstractGameState=="Final")
+           | "\(.teams.away.team.abbreviation) \(.teams.away.score) @ \(.teams.home.team.abbreviation) \(.teams.home.score)"'
+        )
+
         echo "mlb_live=$live" >> $GITHUB_OUTPUT
         echo "mlb_final=$final" >> $GITHUB_OUTPUT
+        echo "mlb_last=$last" >> $GITHUB_OUTPUT
+        echo "jays_next_utc=$next_utc" >> $GITHUB_OUTPUT
+        echo "jays_next_opponent=$next_opp" >> $GITHUB_OUTPUT
 
     # ---------------------------------------------------
     # Traffic + Weather Alerts
@@ -215,18 +258,21 @@ jobs:
       run: |
         jq \
           --argjson old "$(cat old.json)" \
-          --arg leafs_next_utc "${{ steps.nhl.outputs.leafs_next_utc }}" \
-          --arg leafs_next_opponent "${{ steps.nhl.outputs.leafs_next_opponent }}" \
+          --arg nhl_last "${{ steps.nhl.outputs.nhl_last }}" \
           --arg nhl_live "${{ steps.nhl.outputs.nhl_live }}" \
           --arg nhl_final "${{ steps.nhl.outputs.nhl_final }}" \
-          --arg raptors_next_utc "${{ steps.nba.outputs.raptors_next_utc }}" \
-          --arg raptors_next_opponent "${{ steps.nba.outputs.raptors_next_opponent }}" \
+          --arg leafs_next_utc "${{ steps.nhl.outputs.leafs_next_utc }}" \
+          --arg leafs_next_opponent "${{ steps.nhl.outputs.leafs_next_opponent }}" \
+          --arg nba_last "${{ steps.nba.outputs.nba_last }}" \
           --arg nba_live "${{ steps.nba.outputs.nba_live }}" \
           --arg nba_final "${{ steps.nba.outputs.nba_final }}" \
-          --arg jays_next_utc "${{ steps.mlb.outputs.jays_next_utc }}" \
-          --arg jays_next_opponent "${{ steps.mlb.outputs.jays_next_opponent }}" \
+          --arg raptors_next_utc "${{ steps.nba.outputs.raptors_next_utc }}" \
+          --arg raptors_next_opponent "${{ steps.nba.outputs.raptors_next_opponent }}" \
+          --arg mlb_last "${{ steps.mlb.outputs.mlb_last }}" \
           --arg mlb_live "${{ steps.mlb.outputs.mlb_live }}" \
           --arg mlb_final "${{ steps.mlb.outputs.mlb_final }}" \
+          --arg jays_next_utc "${{ steps.mlb.outputs.jays_next_utc }}" \
+          --arg jays_next_opponent "${{ steps.mlb.outputs.jays_next_opponent }}" \
           --arg leafs_standings "${{ steps.leafs_stand.outputs.leafs_standings }}" \
           --arg jays_standings "${{ steps.jays_stand.outputs.jays_standings }}" \
           --arg leafs_headlines "${{ steps.news.outputs.leafs }}" \
@@ -237,20 +283,23 @@ jobs:
           --arg toronto_traffic "${{ steps.traffic.outputs.toronto_traffic }}" \
           --arg weather_alerts "${{ steps.wx.outputs.weather_alerts }}" \
         '
+        .nhl_last      = ($nhl_last      | select(length>0) // $old.nhl_last) |
+        .nhl_live      = ($nhl_live      | select(length>0) // $old.nhl_live) |
+        .nhl_final     = ($nhl_final     | select(length>0) // $old.nhl_final) |
         .leafs_next_utc      = ($leafs_next_utc      | select(length>0) // $old.leafs_next_utc) |
         .leafs_next_opponent = ($leafs_next_opponent | select(length>0) // $old.leafs_next_opponent) |
-        .nhl_live            = ($nhl_live            | select(length>0) // $old.nhl_live) |
-        .nhl_final           = ($nhl_final           | select(length>0) // $old.nhl_final) |
 
+        .nba_last      = ($nba_last      | select(length>0) // $old.nba_last) |
+        .nba_live      = ($nba_live      | select(length>0) // $old.nba_live) |
+        .nba_final     = ($nba_final     | select(length>0) // $old.nba_final) |
         .raptors_next_utc      = ($raptors_next_utc      | select(length>0) // $old.raptors_next_utc) |
         .raptors_next_opponent = ($raptors_next_opponent | select(length>0) // $old.raptors_next_opponent) |
-        .nba_live              = ($nba_live              | select(length>0) // $old.nba_live) |
-        .nba_final             = ($nba_final             | select(length>0) // $old.nba_final) |
 
+        .mlb_last      = ($mlb_last      | select(length>0) // $old.mlb_last) |
+        .mlb_live      = ($mlb_live      | select(length>0) // $old.mlb_live) |
+        .mlb_final     = ($mlb_final     | select(length>0) // $old.mlb_final) |
         .jays_next_utc      = ($jays_next_utc      | select(length>0) // $old.jays_next_utc) |
         .jays_next_opponent = ($jays_next_opponent | select(length>0) // $old.jays_next_opponent) |
-        .mlb_live           = ($mlb_live           | select(length>0) // $old.mlb_live) |
-        .mlb_final          = ($mlb_final          | select(length>0) // $old.mlb_final) |
 
         .leafs_standings = ($leafs_standings | select(length>0) // $old.leafs_standings) |
         .jays_standings  = ($jays_standings  | select(length>0) // $old.jays_standings) |
