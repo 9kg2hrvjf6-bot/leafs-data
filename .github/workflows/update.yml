@@ -1,150 +1,560 @@
-name: Update Leafs/Raptors/Jays Data
+name: Update Leafs, Jays & Raptors Live Data
 
 on:
   schedule:
     - cron: "*/10 * * * *"
   workflow_dispatch:
 
+# Lets the workflow push leafs.json back to the repo
+permissions:
+  contents: write
+
+concurrency:
+  group: update-ticker
+  cancel-in-progress: true
+
 jobs:
   update:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout
-      uses: actions/checkout@v4
+      - name: Checkout repo
+        uses: actions/checkout@v4
 
-    - name: Install jq
-      run: sudo apt-get install -y jq
+      - name: Build leafs.json
+        env:
+          # Optional: only needed if you still want a GitHub-side Raptors fallback.
+          # Settings > Secrets and variables > Actions > New repository secret
+          BDL_KEY: ${{ secrets.BDL_KEY }}
+        run: |
+          python3 - <<'PY'
+          import html
+          import json
+          import os
+          import re
+          import sys
+          import urllib.request
+          import xml.etree.ElementTree as ET
+          from datetime import datetime, timedelta
+          from zoneinfo import ZoneInfo
 
-    - name: Fetch NHL Leafs Data
-      run: |
-        nhl_json=$(curl -s "https://api-web.nhle.com/v1/club-schedule-season/TOR/2024")
-        leafs_next_utc=$(echo "$nhl_json" | jq -r '.games[0].startTimeUTC')
-        leafs_next_opponent=$(echo "$nhl_json" | jq -r '.games[0] |
-          if .homeTeam.abbrev=="TOR" then .awayTeam.abbrev else .homeTeam.abbrev end')
+          TZ = ZoneInfo("America/Toronto")
+          HEADERS = {"User-Agent": "Mozilla/5.0 (compatible; leafs-ticker/1.0)"}
+          OUT_FILE = "leafs.json"
+          RAPTORS_ID = 1610612761
+          ESPN_HEADERS = {
+              "User-Agent": ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+                             "(KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"),
+              "Referer": "https://www.espn.com/",
+              "Accept": "application/json, text/plain, */*",
+          }
+          # NBA.com is picky about bots, so look like a normal browser when talking to it
+          NBA_HEADERS = {
+              "User-Agent": ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+                             "(KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"),
+              "Referer": "https://www.nba.com/",
+              "Origin": "https://www.nba.com",
+              "Accept": "application/json, text/plain, */*",
+          }
+          BROWSER_HEADERS = {
+              "User-Agent": ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+                             "(KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"),
+              "Accept": "application/rss+xml, application/xml, text/xml, */*",
+          }
+          NEWS_FEED = "https://www.cbc.ca/webfeed/rss/rss-canada-toronto"
+          NEWS_TOP_HEADLINE_COUNT = 2      # "top headlines only" for the general Toronto segment
+          TEAM_HEADLINE_COUNT = 2
+          NEWS_HEADLINE_MAX_LEN = 70
 
-        nhl_live=$(curl -s "https://api-web.nhle.com/v1/scoreboard/now" \
-          | jq -r '.games[] | select(.homeTeam.abbrev=="TOR" or .awayTeam.abbrev=="TOR")
-            | if .gameState=="LIVE" then "\(.awayTeam.abbrev) \(.awayTeam.score) @ \(.homeTeam.abbrev) \(.homeTeam.score) \(.periodDescriptor.number)P \(.timeRemaining)" else empty end')
+          LEAFS_NEWS_FEED    = "https://www.cbc.ca/webfeed/rss/rss-sports-nhl"
+          RAPTORS_NEWS_FEED  = "https://www.cbc.ca/webfeed/rss/rss-sports-nba"
+          JAYS_NEWS_FEED     = "https://www.cbc.ca/webfeed/rss/rss-sports-mlb"
+          LEAFS_KEYWORDS     = ["leafs", "maple leafs"]
+          RAPTORS_KEYWORDS   = ["raptors"]
+          JAYS_KEYWORDS      = ["blue jays", "jays"]
 
-        nhl_final=$(curl -s "https://api-web.nhle.com/v1/scoreboard/now" \
-          | jq -r '.games[] | select(.homeTeam.abbrev=="TOR" or .awayTeam.abbrev=="TOR")
-            | if .gameState=="FINAL" then "\(.awayTeam.abbrev) \(.awayTeam.score) @ \(.homeTeam.abbrev) \(.homeTeam.score)" else empty end')
 
-        leafs_headlines=$(curl -s "https://newsapi.org/v2/everything?q=Toronto%20Maple%20Leafs&apiKey=$NEWSAPI" \
-          | jq -r '.articles[].title' | cut -c1-60 | paste -sd " | " -)
+          ERRORS = []   # written to debug.json so failures are visible without opening the Actions log
 
-        echo "leafs_next_utc=$leafs_next_utc" >> $GITHUB_ENV
-        echo "leafs_next_opponent=$leafs_next_opponent" >> $GITHUB_ENV
-        echo "nhl_live=$nhl_live" >> $GITHUB_ENV
-        echo "nhl_final=$nhl_final" >> $GITHUB_ENV
-        echo "leafs_headlines=$leafs_headlines" >> $GITHUB_ENV
 
-    - name: Fetch NBA Raptors Data
-      run: |
-        nba_json=$(curl -s "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/teams/tor/schedule")
-        raptors_next_utc=$(echo "$nba_json" | jq -r '.events[0].date')
-        raptors_next_opponent=$(echo "$nba_json" | jq -r '.events[0].competitions[0].competitors[]
-          | select(.team.abbreviation!="TOR") | .team.abbreviation')
+          def get(url, headers=None):
+              try:
+                  req = urllib.request.Request(url, headers=headers or HEADERS)
+                  with urllib.request.urlopen(req, timeout=30) as r:
+                      return json.loads(r.read().decode("utf-8"))
+              except Exception as e:
+                  print(f"FETCH FAILED: {url}\n  {e}", file=sys.stderr)
+                  ERRORS.append(f"{url.split('?')[0][8:90]} -> {str(e)[:80]}")
+                  return None
 
-        nba_live=$(curl -s "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard" \
-          | jq -r '.events[] | select(.competitions[0].competitors[].team.abbreviation=="TOR")
-            | if .status.type.state=="in" then .competitions[0].competitors[] |
-              "\(.team.abbreviation) \(.score)" | paste -sd " @ " - else empty end')
 
-        nba_final=$(curl -s "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard" \
-          | jq -r '.events[] | select(.competitions[0].competitors[].team.abbreviation=="TOR")
-            | if .status.type.completed==true then .competitions[0].competitors[] |
-              "\(.team.abbreviation) \(.score)" | paste -sd " @ " - else empty end')
+          def get_xml(url, headers=None):
+              try:
+                  req = urllib.request.Request(url, headers=headers or BROWSER_HEADERS)
+                  with urllib.request.urlopen(req, timeout=30) as r:
+                      return ET.fromstring(r.read())
+              except Exception as e:
+                  print(f"FETCH FAILED: {url}\n  {e}", file=sys.stderr)
+                  ERRORS.append(f"{url.split('?')[0][8:90]} -> {str(e)[:80]}")
+                  return None
 
-        raptors_headlines=$(curl -s "https://newsapi.org/v2/everything?q=Toronto%20Raptors&apiKey=$NEWSAPI" \
-          | jq -r '.articles[].title' | cut -c1-60 | paste -sd " | " -)
 
-        echo "raptors_next_utc=$raptors_next_utc" >> $GITHUB_ENV
-        echo "raptors_next_opponent=$raptors_next_opponent" >> $GITHUB_ENV
-        echo "nba_live=$nba_live" >> $GITHUB_ENV
-        echo "nba_final=$nba_final" >> $GITHUB_ENV
-        echo "raptors_headlines=$raptors_headlines" >> $GITHUB_ENV
+          def local_dt(iso_utc):
+              return datetime.fromisoformat(iso_utc.replace("Z", "+00:00")).astimezone(TZ)
 
-    - name: Fetch MLB Jays Data
-      run: |
-        mlb_json=$(curl -s "https://statsapi.mlb.com/api/v1/schedule?sportId=1&teamId=141")
-        jays_next_utc=$(echo "$mlb_json" | jq -r '.dates[0].games[0].gameDate')
-        jays_next_opponent=$(echo "$mlb_json" | jq -r '.dates[0].games[0].teams |
-          if .home.team.id==141 then .away.team.abbreviation else .home.team.abbreviation end')
 
-        mlb_live=$(curl -s "https://statsapi.mlb.com/api/v1.1/game/141/feed/live" \
-          | jq -r 'if .gameData.status.abstractGameState=="Live" then
-              "\(.liveData.linescore.teams.away.team.abbreviation) \(.liveData.linescore.teams.away.runs) @ \(.liveData.linescore.teams.home.team.abbreviation) \(.liveData.linescore.teams.home.runs)"
-            else empty end')
+          def when(iso_utc):
+              d = local_dt(iso_utc)
+              t = d.strftime("%I:%M%p").lstrip("0")
+              if d.date() == datetime.now(TZ).date():
+                  return f"TODAY {t}"
+              return f"{d.strftime('%m/%d')} {t}"
 
-        mlb_final=$(curl -s "https://statsapi.mlb.com/api/v1.1/game/141/feed/live" \
-          | jq -r 'if .gameData.status.abstractGameState=="Final" then
-              "\(.liveData.linescore.teams.away.team.abbreviation) \(.liveData.linescore.teams.away.runs) @ \(.liveData.linescore.teams.home.team.abbreviation) \(.liveData.linescore.teams.home.runs)"
-            else empty end')
 
-        jays_headlines=$(curl -s "https://newsapi.org/v2/everything?q=Toronto%20Blue%20Jays&apiKey=$NEWSAPI" \
-          | jq -r '.articles[].title' | cut -c1-60 | paste -sd " | " -)
+          # ---------------------------------------------------------------- NHL
+          def nhl_score(g, side):
+              return g.get(side, {}).get("score", "-")
 
-        echo "jays_next_utc=$jays_next_utc" >> $GITHUB_ENV
-        echo "jays_next_opponent=$jays_next_opponent" >> $GITHUB_ENV
-        echo "mlb_live=$mlb_live" >> $GITHUB_ENV
-        echo "mlb_final=$mlb_final" >> $GITHUB_ENV
-        echo "jays_headlines=$jays_headlines" >> $GITHUB_ENV
 
-    - name: Toronto News + Canada News + Traffic + Weather Alerts
-      run: |
-        toronto_headlines=$(curl -s "https://newsapi.org/v2/everything?q=Toronto&apiKey=$NEWSAPI" \
-          | jq -r '.articles[].title' | cut -c1-60 | paste -sd " | " -)
+          def leafs():
+              base = "https://api-web.nhle.com/v1/club-schedule-season/TOR/"
+              sched = get(base + "now")
+              if not sched:
+                  return "LEAFS: NO DATA | "
+              games = sched.get("games", [])
 
-        canada_headlines=$(curl -s "https://newsapi.org/v2/top-headlines?country=ca&apiKey=$NEWSAPI" \
-          | jq -r '.articles[].title' | cut -c1-60 | paste -sd " | " -)
+              live = next((g for g in games if g.get("gameState") in ("LIVE", "CRIT")), None)
+              if live:
+                  box = get(f"https://api-web.nhle.com/v1/gamecenter/{live['id']}/boxscore") or {}
+                  a = box.get("awayTeam", live["awayTeam"])
+                  h = box.get("homeTeam", live["homeTeam"])
+                  per = box.get("periodDescriptor", {}).get("number")
+                  clk = box.get("clock", {}).get("timeRemaining")
+                  detail = " ".join(x for x in (f"P{per}" if per else "", clk or "") if x) or "LIVE"
+                  return (f"LEAFS LIVE: {a.get('abbrev','AWAY')} {a.get('score', 0)} @ "
+                          f"{h.get('abbrev','HOME')} {h.get('score', 0)} ({detail}) | ")
 
-        weather_alerts=$(curl -s "https://api.weather.gc.ca/alerts?region=on" \
-          | jq -r '.alerts[].headline' | cut -c1-60 | paste -sd " | " -)
+              def done(g):
+                  return g.get("gameState") in ("OFF", "FINAL")
 
-        toronto_traffic=$(curl -s "https://511on.ca/api/v2/alerts?format=json" \
-          | jq -r '.alerts[].headline' | cut -c1-60 | paste -sd " | " -)
+              last = None
+              nxt = None
+              for g in games:
+                  if done(g):
+                      last = g
+                  else:
+                      nxt = g
+                      break
 
-        echo "toronto_headlines=$toronto_headlines" >> $GITHUB_ENV
-        echo "canada_headlines=$canada_headlines" >> $GITHUB_ENV
-        echo "weather_alerts=$weather_alerts" >> $GITHUB_ENV
-        echo "toronto_traffic=$toronto_traffic" >> $GITHUB_ENV
+              # Offseason / season rollover: look at the neighbouring seasons
+              if nxt is None and sched.get("currentSeason"):
+                  start = int(str(sched["currentSeason"])[:4]) + 1
+                  nxt_sched = get(f"{base}{start}{start + 1}")
+                  if nxt_sched and nxt_sched.get("games"):
+                      nxt = nxt_sched["games"][0]
+              if last is None and sched.get("previousSeason"):
+                  prev = get(f"{base}{sched['previousSeason']}")
+                  if prev:
+                      for g in prev.get("games", []):
+                          if done(g):
+                              last = g
 
-    - name: Build JSON
-      run: |
-        cat <<EOF > leafs.json
-{
-  "leafs_next_utc": "$leafs_next_utc",
-  "leafs_next_opponent": "$leafs_next_opponent",
-  "nhl_live": "$nhl_live",
-  "nhl_final": "$nhl_final",
-  "leafs_headlines": "$leafs_headlines",
+              out = "LEAFS "
+              next_utc = ""
+              if nxt:
+                  tag = " (PRE)" if nxt.get("gameType") == 1 else ""
+                  out += (f"NEXT{tag}: {nxt['awayTeam'].get('abbrev','')} @ "
+                          f"{nxt['homeTeam'].get('abbrev','')} {when(nxt['startTimeUTC'])} | ")
+                  next_utc = nxt.get("startTimeUTC", "")
+              else:
+                  out += "NEXT: NONE | "
+              if last:
+                  tag = " (PRE)" if last.get("gameType") == 1 else ""
+                  out += (f"LAST{tag}: {last['awayTeam'].get('abbrev','')} {nhl_score(last,'awayTeam')} @ "
+                          f"{last['homeTeam'].get('abbrev','')} {nhl_score(last,'homeTeam')} | ")
+              else:
+                  out += "LAST: NONE | "
+              return out, next_utc
 
-  "raptors_next_utc": "$raptors_next_utc",
-  "raptors_next_opponent": "$raptors_next_opponent",
-  "nba_live": "$nba_live",
-  "nba_final": "$nba_final",
-  "raptors_headlines": "$raptors_headlines",
 
-  "jays_next_utc": "$jays_next_utc",
-  "jays_next_opponent": "$jays_next_opponent",
-  "mlb_live": "$mlb_live",
-  "mlb_final": "$mlb_final",
-  "jays_headlines": "$jays_headlines",
+          def leafs_standings():
+              """One line: division rank + record + points, e.g. 'LEAFS 3RD ATLANTIC 10-5-2 21PTS | '"""
+              data = get("https://api-web.nhle.com/v1/standings/now")
+              if not data:
+                  return ""
+              rows = data.get("standings", [])
+              tor = next((r for r in rows if r.get("teamAbbrev", {}).get("default") == "TOR"), None)
+              if not tor:
+                  return ""
+              div = tor.get("divisionAbbrev", "")
+              div_name = {"A": "ATLANTIC", "M": "METRO", "C": "CENTRAL", "P": "PACIFIC"}.get(div, div)
+              same_div = [r for r in rows if r.get("divisionAbbrev") == div]
+              same_div.sort(key=lambda r: (-(r.get("points", 0)), -(r.get("wins", 0))))
+              rank = next((i + 1 for i, r in enumerate(same_div)
+                           if r.get("teamAbbrev", {}).get("default") == "TOR"), 0)
+              ord_suffix = "TH" if 11 <= rank % 100 <= 13 else {1: "ST", 2: "ND", 3: "RD"}.get(rank % 10, "TH")
+              w, l, otl = tor.get("wins", 0), tor.get("losses", 0), tor.get("otLosses", 0)
+              pts = tor.get("points", 0)
+              return f"LEAFS {rank}{ord_suffix} {div_name} {w}-{l}-{otl} {pts}PTS | "
 
-  "toronto_headlines": "$toronto_headlines",
-  "canada_headlines": "$canada_headlines",
-  "weather_alerts": "$weather_alerts",
-  "toronto_traffic": "$toronto_traffic"
-}
-EOF
 
-    - name: Commit JSON
-      run: |
-        git config --global user.name "GitHub Actions"
-        git config --global user.email "actions@github.com"
-        git add leafs.json
-        git commit -m "Update data"
-        git push
+          # ---------------------------------------------------------------- NBA
+          # Both sources are converted to the same shape:
+          #   {"status": 1|2|3, "text": str, "away": tri, "home": tri,
+          #    "ascore": int, "hscore": int, "utc": iso, "pre": bool}
+          def nba_games_from_cdn():
+              sched = None
+              for name in ("scheduleLeagueV2.json", "scheduleLeagueV2_1.json"):
+                  sched = get(f"https://cdn.nba.com/static/json/staticData/{name}", NBA_HEADERS)
+                  if sched:
+                      break
+              if not sched:
+                  return None
+              sb = get("https://cdn.nba.com/static/json/liveData/scoreboard/todaysScoreboard_00.json",
+                       NBA_HEADERS) or {}
+              by_id = {g.get("gameId"): g for g in sb.get("scoreboard", {}).get("games", [])}
+
+              out = []
+              for d in sched.get("leagueSchedule", {}).get("gameDates", []):
+                  for g in d.get("games", []):
+                      h, a = g.get("homeTeam", {}), g.get("awayTeam", {})
+                      if RAPTORS_ID not in (h.get("teamId"), a.get("teamId")):
+                          continue
+                      live = by_id.get(g.get("gameId"), {})   # overlay live data when available
+                      out.append({
+                          "status": live.get("gameStatus", g.get("gameStatus")),
+                          "text": live.get("gameStatusText", g.get("gameStatusText", "")),
+                          "away": a.get("teamTricode", ""),
+                          "home": h.get("teamTricode", ""),
+                          "ascore": live.get("awayTeam", {}).get("score", a.get("score", 0)),
+                          "hscore": live.get("homeTeam", {}).get("score", h.get("score", 0)),
+                          "utc": g.get("gameDateTimeUTC", ""),
+                          "pre": g.get("gameLabel") == "Preseason",
+                      })
+              return out or None
+
+
+          def nba_games_from_espn():
+              def num(c):
+                  s = c.get("score")
+                  if isinstance(s, dict):
+                      s = s.get("displayValue", s.get("value"))
+                  try:
+                      return int(float(s))
+                  except (TypeError, ValueError):
+                      return 0
+
+              out = {}
+              for seasontype, pre in (("1", True), ("2", False)):    # 1 = preseason, 2 = regular season
+                  data = None
+                  for team in ("tor", "28"):                          # abbreviation, then ESPN team id
+                      data = get("https://site.api.espn.com/apis/site/v2/sports/basketball/nba/teams/"
+                                 f"{team}/schedule?seasontype={seasontype}", ESPN_HEADERS)
+                      if data:
+                          break
+                  if not data:
+                      continue
+                  for ev in data.get("events", []):
+                      comp = (ev.get("competitions") or [{}])[0]
+                      sides = {c.get("homeAway"): c for c in comp.get("competitors", [])}
+                      if "home" not in sides or "away" not in sides:
+                          continue
+                      stype = (comp.get("status") or ev.get("status") or {}).get("type", {})
+                      out[ev.get("id")] = {
+                          "status": {"pre": 1, "in": 2, "post": 3}.get(stype.get("state"), 1),
+                          "text": stype.get("shortDetail", ""),
+                          "away": sides["away"].get("team", {}).get("abbreviation", ""),
+                          "home": sides["home"].get("team", {}).get("abbreviation", ""),
+                          "ascore": num(sides["away"]),
+                          "hscore": num(sides["home"]),
+                          "utc": ev.get("date") or comp.get("date") or "",
+                          "pre": pre,
+                      }
+              return list(out.values()) or None
+
+
+          def nba_games_from_bdl():
+              key = os.environ.get("BDL_KEY", "").strip()
+              if not key:
+                  ERRORS.append("BDL_KEY secret not set - skipped BallDontLie")
+                  return None
+
+              today = datetime.now(TZ).date()
+              start = (today - timedelta(days=150)).isoformat()
+              end = (today + timedelta(days=60)).isoformat()
+              headers = {"Authorization": key, "User-Agent": HEADERS["User-Agent"]}   # raw key, no "Bearer"
+              url = ("https://api.balldontlie.io/v1/games?team_ids%5B%5D=28"
+                     f"&start_date={start}&end_date={end}&per_page=100")
+
+              out = []
+              cursor = None
+              for _ in range(3):                                   # follow pagination, max 3 requests
+                  data = get(url + (f"&cursor={cursor}" if cursor else ""), headers)
+                  if not data:
+                      return out or None
+                  for g in data.get("data", []):
+                      st = g.get("status_state") or ""
+                      if st in ("postponed", "canceled"):
+                          continue
+                      if st == "final" or g.get("status") == "Final":
+                          status = 3
+                      elif st == "in_progress":
+                          status = 2
+                      else:
+                          status = 1
+                      out.append({
+                          "status": status,
+                          "text": f"{g.get('status', '')} {g.get('time', '')}".strip(),
+                          "away": g.get("visitor_team", {}).get("abbreviation", ""),
+                          "home": g.get("home_team", {}).get("abbreviation", ""),
+                          "ascore": g.get("visitor_team_score") or 0,
+                          "hscore": g.get("home_team_score") or 0,
+                          "utc": g.get("datetime") or g.get("date") or "",
+                          "pre": False,
+                      })
+                  cursor = (data.get("meta") or {}).get("next_cursor")
+                  if not cursor:
+                      break
+              return out or None
+
+
+          def raptors():
+              games = nba_games_from_cdn()
+              if not games:
+                  print("NBA.com feed unavailable, trying ESPN", file=sys.stderr)
+                  games = nba_games_from_espn()
+              if not games:
+                  print("ESPN unavailable, trying BallDontLie", file=sys.stderr)
+                  games = nba_games_from_bdl()
+              if not games:
+                  return "RAPTORS: NO DATA | "
+
+              games = [g for g in games if g["utc"]]
+              games.sort(key=lambda g: g["utc"])
+
+              live = next((g for g in games if g["status"] == 2), None)
+              if live:
+                  txt = (live["text"] or "LIVE").strip().upper()
+                  return (f"RAPTORS LIVE: {live['away']} {live['ascore']} @ "
+                          f"{live['home']} {live['hscore']} ({txt}) | ")
+
+              finals = [g for g in games if g["status"] == 3]
+              upcoming = [g for g in games if g["status"] == 1]
+
+              out = "RAPTORS "
+              if upcoming:
+                  g = upcoming[0]
+                  tag = " (PRE)" if g["pre"] else ""
+                  out += f"NEXT{tag}: {g['away']} @ {g['home']} {when(g['utc'])} | "
+              else:
+                  out += "NEXT: NONE | "
+              if finals:
+                  g = finals[-1]
+                  tag = " (PRE)" if g["pre"] else ""
+                  out += f"LAST{tag}: {g['away']} {g['ascore']} @ {g['home']} {g['hscore']} | "
+              else:
+                  out += "LAST: NONE | "
+              return out
+
+
+          # ---------------------------------------------------------------- MLB
+          def jays():
+              today = datetime.now(TZ).date()
+              start = (today - timedelta(days=3)).isoformat()
+              end = (today + timedelta(days=10)).isoformat()
+              data = get("https://statsapi.mlb.com/api/v1/schedule?sportId=1&teamId=141"
+                         f"&startDate={start}&endDate={end}&hydrate=team,linescore")
+              if not data:
+                  return "BLUE JAYS: NO DATA | "
+
+              games = [g for d in data.get("dates", []) for g in d.get("games", [])]
+              games.sort(key=lambda g: g.get("gameDate", ""))
+              if not games:
+                  return "BLUE JAYS: NO GAMES | "
+
+              def state(g):
+                  return g.get("status", {}).get("abstractGameState", "")
+
+              def postponed(g):
+                  return g.get("status", {}).get("detailedState", "") in ("Postponed", "Cancelled")
+
+              def abbr(g, side):
+                  return g["teams"][side].get("team", {}).get("abbreviation", side.upper())
+
+              def runs(g, side):
+                  return g["teams"][side].get("score", 0)
+
+              live = next((g for g in games if state(g) == "Live"), None)
+              if live:
+                  ls = live.get("linescore", {})
+                  half = str(ls.get("inningState", "")).upper()
+                  inn = ls.get("currentInning", "")
+                  detail = f"{half} {inn}".strip() or "LIVE"
+                  return (f"BLUE JAYS LIVE: {abbr(live,'away')} {runs(live,'away')} @ "
+                          f"{abbr(live,'home')} {runs(live,'home')} ({detail}) | ")
+
+              upcoming = [g for g in games if state(g) == "Preview" and not postponed(g)]
+              finals = [g for g in games if state(g) == "Final"]
+
+              out = "BLUE JAYS "
+              next_utc = ""
+              if upcoming:
+                  g = upcoming[0]
+                  out += f"NEXT: {abbr(g,'away')} @ {abbr(g,'home')} {when(g['gameDate'])} | "
+                  next_utc = g.get("gameDate", "")
+              else:
+                  out += "NEXT: NONE | "
+              if finals:
+                  g = finals[-1]
+                  out += (f"LAST: {abbr(g,'away')} {runs(g,'away')} @ "
+                          f"{abbr(g,'home')} {runs(g,'home')} | ")
+              else:
+                  out += "LAST: NONE | "
+              return out, next_utc
+
+
+          def jays_standings():
+              """One line: division rank + record + games back, e.g. 'JAYS 2ND AL EAST 15-10 GB 2.5 | '"""
+              data = get("https://statsapi.mlb.com/api/v1/standings?leagueId=103,104"
+                         f"&season={datetime.now(TZ).year}&standingsTypes=regularSeason")
+              if not data:
+                  return ""
+              for rec in data.get("records", []):
+                  for tr in rec.get("teamRecords", []):
+                      if tr.get("team", {}).get("id") == 141:
+                          rank = int(tr.get("divisionRank", 0) or 0)
+                          ord_suffix = ("TH" if 11 <= rank % 100 <= 13
+                                        else {1: "ST", 2: "ND", 3: "RD"}.get(rank % 10, "TH"))
+                          w, l = tr.get("wins", 0), tr.get("losses", 0)
+                          gb = tr.get("gamesBack", "-")
+                          gb_txt = "" if gb in ("-", "0.0", None) else f" GB {gb}"
+                          return f"JAYS {rank}{ord_suffix} AL EAST {w}-{l}{gb_txt} | "
+              return ""
+
+
+          # ---------------------------------------------------------------- News (CBC RSS)
+          def headlines_from_feed(feed_url, keywords=None, count=2, prefix=""):
+              """Pulls up to `count` headline titles from an RSS feed, optionally keeping
+              only items whose title contains one of `keywords` (case-insensitive)."""
+              root = get_xml(feed_url)
+              if root is None:
+                  return ""
+
+              titles = []
+              for item in root.findall("./channel/item"):
+                  t = item.findtext("title")
+                  if not t:
+                      continue
+                  t = html.unescape(t).strip()
+                  t = re.sub(r"\s+", " ", t)             # collapse any embedded newlines/tabs
+
+                  if keywords and not any(k.lower() in t.lower() for k in keywords):
+                      continue
+
+                  if len(t) > NEWS_HEADLINE_MAX_LEN:
+                      t = t[:NEWS_HEADLINE_MAX_LEN - 1].rstrip() + "\u2026"
+                  titles.append(t)
+                  if len(titles) >= count:
+                      break
+
+              if not titles:
+                  return ""
+              return prefix + " | ".join(titles) + " | "
+
+
+          def news():
+              """Top Toronto headlines - unfiltered, just the newest couple of stories."""
+              return headlines_from_feed(NEWS_FEED, count=NEWS_TOP_HEADLINE_COUNT, prefix="NEWS: ")
+
+
+          def leafs_news():
+              return headlines_from_feed(LEAFS_NEWS_FEED, LEAFS_KEYWORDS,
+                                          count=TEAM_HEADLINE_COUNT, prefix="LEAFS NEWS: ")
+
+
+          def raptors_news():
+              return headlines_from_feed(RAPTORS_NEWS_FEED, RAPTORS_KEYWORDS,
+                                          count=TEAM_HEADLINE_COUNT, prefix="RAPTORS NEWS: ")
+
+
+          def jays_news():
+              return headlines_from_feed(JAYS_NEWS_FEED, JAYS_KEYWORDS,
+                                          count=TEAM_HEADLINE_COUNT, prefix="JAYS NEWS: ")
+
+
+          # ---------------------------------------------------------------- main
+          def clean(s):
+              return s.encode("ascii", "ignore").decode("ascii")
+
+
+          def main():
+              old = {}
+              if os.path.exists(OUT_FILE):
+                  try:
+                      with open(OUT_FILE) as f:
+                          old = json.load(f)
+                  except Exception:
+                      old = {}
+
+              result = {}
+
+              # Sources that return (ticker_text, next_game_utc)
+              for key, fn in (("leafs", leafs), ("jays", jays)):
+                  try:
+                      text, next_utc = fn()
+                      text = clean(text)
+                  except Exception as e:  # never let one source break the others
+                      print(f"{key} failed: {e!r}", file=sys.stderr)
+                      text, next_utc = f"{key.upper()}: ERROR | ", ""
+                  if ("NO DATA" in text or "ERROR" in text) and isinstance(old.get(key), str):
+                      text = old[key]
+                      next_utc = old.get(f"{key}_next_utc", next_utc)
+                  result[key] = text
+                  result[f"{key}_next_utc"] = next_utc
+                  print(f"{key}: {text}  (next: {next_utc or 'none'})")
+
+              # Plain ticker-text sources
+              for key, fn in (("raptors", raptors),
+                               ("leafs_standings", leafs_standings),
+                               ("jays_standings", jays_standings),
+                               ("news", news),
+                               ("leafs_news", leafs_news),
+                               ("raptors_news", raptors_news),
+                               ("jays_news", jays_news)):
+                  try:
+                      text = clean(fn())
+                  except Exception as e:
+                      print(f"{key} failed: {e!r}", file=sys.stderr)
+                      text = f"{key.upper()}: ERROR | " if key == "raptors" else ""
+                  if key == "raptors" and ("NO DATA" in text or "ERROR" in text) and isinstance(old.get(key), str):
+                      text = old[key]
+                  elif key != "raptors" and not text and isinstance(old.get(key), str):
+                      text = old[key]   # standings/news lines: keep yesterday's rather than show nothing
+                  result[key] = text
+                  print(f"{key}: {text}")
+
+              with open(OUT_FILE, "w") as f:
+                  json.dump(result, f, indent=2)
+                  f.write("\n")
+
+              with open("debug.json", "w") as f:
+                  json.dump({"errors": [clean(e) for e in ERRORS[-8:]]}, f, indent=2)
+                  f.write("\n")
+
+
+          if __name__ == "__main__":
+              main()
+          PY
+
+      - name: Commit updated JSON
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@users.noreply.github.com"
+          git add leafs.json debug.json
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Auto-update Toronto live sports data"
+            git push
+          fi
+
 
