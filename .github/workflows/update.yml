@@ -65,9 +65,17 @@ jobs:
           TEAM_HEADLINE_COUNT = 2
           NEWS_HEADLINE_MAX_LEN = 70
 
-          LEAFS_NEWS_FEED    = "https://www.cbc.ca/webfeed/rss/rss-sports-nhl"
-          RAPTORS_NEWS_FEED  = "https://www.cbc.ca/webfeed/rss/rss-sports-nba"
-          JAYS_NEWS_FEED     = "https://www.cbc.ca/webfeed/rss/rss-sports-mlb"
+          # Each team searches its own league feed first, then falls back to CBC's
+          # general sports feed and the Toronto regional feed - the NBA/MLB league
+          # feeds specifically turned out to be too thin on their own to reliably
+          # turn up a Raptors or Jays headline.
+          GENERAL_SPORTS_FEED = "https://www.cbc.ca/webfeed/rss/rss-sports"
+          LEAFS_NEWS_FEEDS    = ["https://www.cbc.ca/webfeed/rss/rss-sports-nhl",
+                                 GENERAL_SPORTS_FEED, NEWS_FEED]
+          RAPTORS_NEWS_FEEDS  = ["https://www.cbc.ca/webfeed/rss/rss-sports-nba",
+                                 GENERAL_SPORTS_FEED, NEWS_FEED]
+          JAYS_NEWS_FEEDS     = ["https://www.cbc.ca/webfeed/rss/rss-sports-mlb",
+                                 GENERAL_SPORTS_FEED, NEWS_FEED]
           LEAFS_KEYWORDS     = ["leafs", "maple leafs"]
           RAPTORS_KEYWORDS   = ["raptors"]
           JAYS_KEYWORDS      = ["blue jays", "jays"]
@@ -428,40 +436,65 @@ jobs:
                           w, l = tr.get("wins", 0), tr.get("losses", 0)
                           gb = tr.get("gamesBack", "-")
                           gb_txt = "" if gb in ("-", "0.0", None) else f" GB {gb}"
-                          return f"JAYS {rank}{ord_suffix} AL EAST {w}-{l}{gb_txt} | "
+
+                          # Bonus, best-effort: wild card standing, if the field is present
+                          # and the team isn't leading its division (where it's moot).
+                          wc_txt = ""
+                          wc_rank = tr.get("wildCardRank")
+                          wc_gb = tr.get("wildCardGamesBack")
+                          if rank != 1 and wc_rank and wc_gb not in (None, "-"):
+                              wcr = int(wc_rank)
+                              wcr_suffix = ("TH" if 11 <= wcr % 100 <= 13
+                                            else {1: "ST", 2: "ND", 3: "RD"}.get(wcr % 10, "TH"))
+                              wc_txt = f" WC {wcr}{wcr_suffix} {wc_gb}GB"
+
+                          return f"JAYS {rank}{ord_suffix} AL EAST {w}-{l}{gb_txt}{wc_txt} | "
               return ""
 
 
           # ---------------------------------------------------------------- News (CBC RSS)
-          def headlines_from_feed(feed_url, keywords=None, count=2, prefix=""):
-              """Pulls up to `count` headline titles from an RSS feed, optionally keeping
-              only items whose title contains one of `keywords` (case-insensitive)."""
-              root = get_xml(feed_url)
-              if root is None:
-                  return ""
+          def headlines_from_feed(feed_urls, keywords=None, count=2, prefix=""):
+              """Pulls up to `count` headline titles across one or more RSS feeds (tried
+              in order, stopping once `count` is reached), optionally keeping only items
+              whose title contains one of `keywords` (case-insensitive)."""
+              if isinstance(feed_urls, str):
+                  feed_urls = [feed_urls]
 
-              all_items = root.findall("./channel/item")
               titles = []
-              for item in all_items:
-                  t = item.findtext("title")
-                  if not t:
-                      continue
-                  t = html.unescape(t).strip()
-                  t = re.sub(r"\s+", " ", t)             # collapse any embedded newlines/tabs
-
-                  if keywords and not any(k.lower() in t.lower() for k in keywords):
-                      continue
-
-                  if len(t) > NEWS_HEADLINE_MAX_LEN:
-                      t = t[:NEWS_HEADLINE_MAX_LEN - 1].rstrip() + "\u2026"
-                  titles.append(t)
+              seen = set()
+              total_items = 0
+              for feed_url in feed_urls:
                   if len(titles) >= count:
                       break
+                  root = get_xml(feed_url)
+                  if root is None:
+                      continue
 
-              # Visible in debug.json so a keyword miss (feed OK, 0 matches) can be told
-              # apart from a fetch failure without digging through the Actions log.
+                  for item in root.findall("./channel/item"):
+                      total_items += 1
+                      t = item.findtext("title")
+                      if not t:
+                          continue
+                      t = html.unescape(t).strip()
+                      t = re.sub(r"\s+", " ", t)             # collapse any embedded newlines/tabs
+
+                      if keywords and not any(k.lower() in t.lower() for k in keywords):
+                          continue
+                      if t in seen:                           # same story can appear in more than one feed
+                          continue
+                      seen.add(t)
+
+                      if len(t) > NEWS_HEADLINE_MAX_LEN:
+                          t = t[:NEWS_HEADLINE_MAX_LEN - 1].rstrip() + "\u2026"
+                      titles.append(t)
+                      if len(titles) >= count:
+                          break
+
+              # Visible in debug.json so a keyword miss (feeds OK, 0 matches) can be told
+              # apart from every feed failing to fetch, without digging through the Actions log.
               tag = f"[{prefix.strip(': ')}]" if prefix else "[news]"
-              NEWS_STATS.append(f"{tag} {len(all_items)} items in feed, {len(titles)} matched")
+              NEWS_STATS.append(f"{tag} {total_items} items checked across {len(feed_urls)} feed(s), "
+                                 f"{len(titles)} matched")
 
               if not titles:
                   return ""
@@ -474,17 +507,17 @@ jobs:
 
 
           def leafs_news():
-              return headlines_from_feed(LEAFS_NEWS_FEED, LEAFS_KEYWORDS,
+              return headlines_from_feed(LEAFS_NEWS_FEEDS, LEAFS_KEYWORDS,
                                           count=TEAM_HEADLINE_COUNT, prefix="LEAFS NEWS: ")
 
 
           def raptors_news():
-              return headlines_from_feed(RAPTORS_NEWS_FEED, RAPTORS_KEYWORDS,
+              return headlines_from_feed(RAPTORS_NEWS_FEEDS, RAPTORS_KEYWORDS,
                                           count=TEAM_HEADLINE_COUNT, prefix="RAPTORS NEWS: ")
 
 
           def jays_news():
-              return headlines_from_feed(JAYS_NEWS_FEED, JAYS_KEYWORDS,
+              return headlines_from_feed(JAYS_NEWS_FEEDS, JAYS_KEYWORDS,
                                           count=TEAM_HEADLINE_COUNT, prefix="JAYS NEWS: ")
 
 
