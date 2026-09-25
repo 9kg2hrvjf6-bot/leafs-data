@@ -1,6 +1,11 @@
 {
-  "generated_at": "2026-09-25T00:35:36.865490-04:00",
+  "generated_at": "2026-09-25T00:50:18.366264-04:00",
   "headlines": [
+    {
+      "title": "Tempo close out season tied for top draft odds",
+      "source": "TSN",
+      "url": "https://www.tsn.ca/wnba/article/tempo-close-out-season-tied-for-top-draft-odds/"
+    },
     {
       "title": "Rangers down Mets to ensure tie for AL West lead heading into final s\u2026",
       "source": "TSN",
@@ -20,12 +25,7 @@
       "title": "Citron, Iriafen power playoff-bound Mystics over Sky",
       "source": "TSN",
       "url": "https://www.tsn.ca/wnba/article/citron-iriafen-power-playoff-bound-mystics-over-sky/"
-    },
-    {
-      "title": "Packers booed at Lambeau Field after being routed by Falcons",
-      "source": "TSN",
-      "url": "https://www.tsn.ca/nfl/article/packers-booed-in-lambeau-flop-as-they-get-blown-out-by-falcons-in-home-opener/"
     }
   ],
-  "ticker": "SPORTS: Rangers down Mets to ensure tie for AL West lead heading into final s\u2026 | Duke\u2019s Scheyer \u2018where I\u2019m supposed to be\u2019 after NBA interest | Robinson runs wild as Falcons get first win of year with blowout of P\u2026 | Citron, Iriafen power playoff-bound Mystics over Sky | Packers booed at Lambeau Field after being routed by Falcons | "
+  "ticker": "SPORTS: Tempo close out season tied for top draft odds | Rangers down Mets to ensure tie for AL West lead heading into final s\u2026 | Duke\u2019s Scheyer \u2018where I\u2019m supposed to be\u2019 after NBA interest | Robinson runs wild as Falcons get first win of year with blowout of P\u2026 | Citron, Iriafen power playoff-bound Mystics over Sky | "
 }
