@@ -83,6 +83,16 @@ jobs:
           # or has nothing for a team that day.
           TSN_NS = {"sm": "http://www.sitemaps.org/schemas/sitemap/0.9",
                     "news": "http://www.google.com/schemas/sitemap-news/0.9"}
+ 
+          # CP24 runs the same Bell Media / Arc Publishing platform as TSN, so it has
+          # the identical dated sitemap format - but CP24 is a general Toronto news
+          # channel, so only the small slice of its sitemap under a /sport path counts.
+          # Sportsnet has no current headline feed I could find (their old scores.json
+          # has reportedly broken and changed URL repeatedly since 2017, and it's
+          # scores, not headlines, anyway) - left out rather than built on that.
+          SPORTS_HEADLINES_COUNT = 5
+          TSN_SITEMAP_BASE  = "https://www.tsn.ca/arc/outboundfeeds/sitemap-news"
+          CP24_SITEMAP_BASE = "https://www.cp24.com/arc/outboundfeeds/sitemap-news"
           LEAFS_KEYWORDS     = ["leafs", "maple leafs"]
           RAPTORS_KEYWORDS   = ["raptors"]
           JAYS_KEYWORDS      = ["blue jays", "jays"]
@@ -135,7 +145,7 @@ jobs:
               base = "https://api-web.nhle.com/v1/club-schedule-season/TOR/"
               sched = get(base + "now")
               if not sched:
-                  return "LEAFS: NO DATA | "
+                  return "LEAFS: NO DATA | ", ""
               games = sched.get("games", [])
  
               live = next((g for g in games if g.get("gameState") in ("LIVE", "CRIT")), None)
@@ -147,7 +157,7 @@ jobs:
                   clk = box.get("clock", {}).get("timeRemaining")
                   detail = " ".join(x for x in (f"P{per}" if per else "", clk or "") if x) or "LIVE"
                   return (f"LEAFS LIVE: {a.get('abbrev','AWAY')} {a.get('score', 0)} @ "
-                          f"{h.get('abbrev','HOME')} {h.get('score', 0)} ({detail}) | ")
+                          f"{h.get('abbrev','HOME')} {h.get('score', 0)} ({detail}) | "), ""
  
               def done(g):
                   return g.get("gameState") in ("OFF", "FINAL")
@@ -380,12 +390,12 @@ jobs:
               data = get("https://statsapi.mlb.com/api/v1/schedule?sportId=1&teamId=141"
                          f"&startDate={start}&endDate={end}&hydrate=team,linescore")
               if not data:
-                  return "BLUE JAYS: NO DATA | "
+                  return "BLUE JAYS: NO DATA | ", ""
  
               games = [g for d in data.get("dates", []) for g in d.get("games", [])]
               games.sort(key=lambda g: g.get("gameDate", ""))
               if not games:
-                  return "BLUE JAYS: NO GAMES | "
+                  return "BLUE JAYS: NO GAMES | ", ""
  
               def state(g):
                   return g.get("status", {}).get("abstractGameState", "")
@@ -406,7 +416,7 @@ jobs:
                   inn = ls.get("currentInning", "")
                   detail = f"{half} {inn}".strip() or "LIVE"
                   return (f"BLUE JAYS LIVE: {abbr(live,'away')} {runs(live,'away')} @ "
-                          f"{abbr(live,'home')} {runs(live,'home')} ({detail}) | ")
+                          f"{abbr(live,'home')} {runs(live,'home')} ({detail}) | "), ""
  
               upcoming = [g for g in games if state(g) == "Preview" and not postponed(g)]
               finals = [g for g in games if state(g) == "Final"]
@@ -460,6 +470,69 @@ jobs:
  
  
           # ---------------------------------------------------------------- News (TSN sitemap + CBC RSS)
+          def fetch_sitemap_articles(base_url):
+              """Generic reader for the Bell Media / Arc Publishing dated sitemap format
+              (TSN and CP24 both use it): returns a list of
+              {title, date (ISO string), loc (article URL)} dicts, newest first."""
+              url = f"{base_url}/{datetime.now(TZ).date().isoformat()}/"
+              root = get_xml(url)
+              if root is None:
+                  return []
+ 
+              articles = []
+              for url_el in root.findall("sm:url", TSN_NS):
+                  title_el = url_el.find("news:news/news:title", TSN_NS)
+                  date_el = url_el.find("news:news/news:publication_date", TSN_NS)
+                  loc_el = url_el.find("sm:loc", TSN_NS)
+                  if title_el is None or not title_el.text:
+                      continue
+                  t = html.unescape(title_el.text).strip()
+                  t = re.sub(r"\s+", " ", t)
+                  articles.append({
+                      "title": t,
+                      "date": date_el.text if date_el is not None else "",
+                      "loc": loc_el.text if loc_el is not None else "",
+                  })
+ 
+              articles.sort(key=lambda a: a["date"], reverse=True)   # newest first
+              return articles
+ 
+ 
+          def top_sports_headlines(count=SPORTS_HEADLINES_COUNT):
+              """Combines TSN (a pure sports site - every article counts) with CP24's
+              small sports slice (only articles whose URL path includes /sport), sorts
+              by publish time, dedupes by title, and keeps the newest `count`."""
+              tsn_articles = fetch_sitemap_articles(TSN_SITEMAP_BASE)
+              for a in tsn_articles:
+                  a["source"] = "TSN"
+ 
+              cp24_all = fetch_sitemap_articles(CP24_SITEMAP_BASE)
+              cp24_articles = [a for a in cp24_all if "/sport" in a["loc"].lower()]
+              for a in cp24_articles:
+                  a["source"] = "CP24"
+ 
+              NEWS_STATS.append(f"[SPORTS HEADLINES] TSN: {len(tsn_articles)} items; "
+                                 f"CP24: {len(cp24_articles)} sports items of {len(cp24_all)} total")
+ 
+              combined = tsn_articles + cp24_articles
+              combined.sort(key=lambda a: a["date"], reverse=True)
+ 
+              seen = set()
+              result = []
+              for a in combined:
+                  if a["title"] in seen:
+                      continue
+                  seen.add(a["title"])
+                  title = a["title"]
+                  if len(title) > NEWS_HEADLINE_MAX_LEN:
+                      title = title[:NEWS_HEADLINE_MAX_LEN - 1].rstrip() + "\u2026"
+                  result.append({"title": title, "source": a["source"], "url": a["loc"]})
+                  if len(result) >= count:
+                      break
+ 
+              return result
+ 
+ 
           def tsn_headline_titles(keywords, count):
               """TSN's daily Google-News sitemap - much higher volume than CBC's team
               feeds, but a different, more fragile format (namespaced XML, dated URL)."""
@@ -626,6 +699,37 @@ jobs:
                   json.dump(result, f, indent=2)
                   f.write("\n")
  
+              # Separate file: top 5 sports headlines combined from TSN + CP24, sorted
+              # by recency. Kept apart from leafs.json since it's a different kind of
+              # thing (a general sports feed, not per-team ticker text) and other
+              # consumers might want it without also fetching the sports data.
+              try:
+                  headlines = top_sports_headlines()
+              except Exception as e:
+                  print(f"sports_headlines failed: {e!r}", file=sys.stderr)
+                  headlines = []
+ 
+              old_headlines = {}
+              if os.path.exists("sports_headlines.json"):
+                  try:
+                      with open("sports_headlines.json") as f:
+                          old_headlines = json.load(f)
+                  except Exception:
+                      old_headlines = {}
+ 
+              if not headlines and isinstance(old_headlines.get("headlines"), list):
+                  headlines = old_headlines["headlines"]   # keep yesterday's rather than write an empty file
+ 
+              ticker_text = "SPORTS: " + " | ".join(h["title"] for h in headlines) + " | " if headlines else ""
+ 
+              with open("sports_headlines.json", "w") as f:
+                  json.dump({
+                      "generated_at": datetime.now(TZ).isoformat(),
+                      "headlines": headlines,
+                      "ticker": ticker_text,
+                  }, f, indent=2)
+                  f.write("\n")
+ 
               with open("debug.json", "w") as f:
                   json.dump({
                       "errors": [clean(e) for e in ERRORS[-8:]],
@@ -642,7 +746,7 @@ jobs:
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@users.noreply.github.com"
-          git add leafs.json debug.json
+          git add leafs.json debug.json sports_headlines.json
           if git diff --staged --quiet; then
             echo "No changes to commit"
           else
