@@ -1,10 +1,15 @@
 {
-  "generated_at": "2026-09-25T09:41:29.358916-04:00",
+  "generated_at": "2026-09-25T09:57:32.411111-04:00",
   "headlines": [
     {
-      "title": "Maple Leafs on TSN Regional Schedule",
+      "title": "F1 leader Antonelli hits the wall in Azerbaijan Grand Prix qualifying",
       "source": "TSN",
-      "url": "https://www.tsn.ca/nhl/article/2025-26-maple-leafs-on-tsn-regional-schedule/"
+      "url": "https://www.tsn.ca/motorsports/formula-1/article/f1-leader-antonelli-hits-the-wall-in-azerbaijan-grand-prix-qualifying/"
+    },
+    {
+      "title": "Commanders GM: Elbow surgery 'not on table' for QB Daniels",
+      "source": "TSN",
+      "url": "https://www.tsn.ca/nfl/article/commanders-gm-elbow-surgery-not-on-table-for-qb-daniels-n1-50027179/"
     },
     {
       "title": "Mercedes\u2019 Russell takes thrilling pole for Azerbaijan Grand Prix",
@@ -12,20 +17,15 @@
       "url": "https://www.tsn.ca/motorsports/article/mercedes-russell-takes-thrilling-pole-for-azerbaijan-grand-prix-n1-50011913/"
     },
     {
-      "title": "Canadiens on TSN Regional Schedule",
+      "title": "NCAA storylines: Can Manning win a meaningful road game?",
       "source": "TSN",
-      "url": "https://www.tsn.ca/nhl/article/2025-26-canadiens-on-tsn-schedule/"
+      "url": "https://www.tsn.ca/ncaa/football/article/ncaa-storylines-can-manning-win-a-meaningful-road-game/"
     },
     {
-      "title": "Senators on TSN Regional Schedule",
+      "title": "Maple Leafs on TSN Regional Schedule",
       "source": "TSN",
-      "url": "https://www.tsn.ca/nhl/article/2025-26-senators-on-tsn-regional-schedule/"
-    },
-    {
-      "title": "Commanders GM: Elbow surgery 'not on table' for QB Daniels",
-      "source": "TSN",
-      "url": "https://www.tsn.ca/nfl/article/commanders-gm-elbow-surgery-not-on-table-for-qb-daniels-n1-50027179/"
+      "url": "https://www.tsn.ca/nhl/article/2025-26-maple-leafs-on-tsn-regional-schedule/"
     }
   ],
-  "ticker": "SPORTS: Maple Leafs on TSN Regional Schedule | Mercedes\u2019 Russell takes thrilling pole for Azerbaijan Grand Prix | Canadiens on TSN Regional Schedule | Senators on TSN Regional Schedule | Commanders GM: Elbow surgery 'not on table' for QB Daniels | "
+  "ticker": "SPORTS: F1 leader Antonelli hits the wall in Azerbaijan Grand Prix qualifying | Commanders GM: Elbow surgery 'not on table' for QB Daniels | Mercedes\u2019 Russell takes thrilling pole for Azerbaijan Grand Prix | NCAA storylines: Can Manning win a meaningful road game? | Maple Leafs on TSN Regional Schedule | "
 }
