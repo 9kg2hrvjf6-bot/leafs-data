@@ -1,6 +1,11 @@
 {
-  "generated_at": "2026-09-25T05:57:16.268103-04:00",
+  "generated_at": "2026-09-25T06:15:32.975185-04:00",
   "headlines": [
+    {
+      "title": "Robinson runs wild as Falcons get first win of year with blowout of P\u2026",
+      "source": "TSN",
+      "url": "https://www.tsn.ca/nfl/article/robinson-runs-wild-as-falcons-get-first-win-of-year-with-blowout-of-packers/"
+    },
     {
       "title": "Padres beat Dodgers to clinch franchise-record third straight postsea\u2026",
       "source": "TSN",
@@ -10,11 +15,6 @@
       "title": "Wilson, Aces to face Clark, Fever in opening round of WNBA playoffs",
       "source": "TSN",
       "url": "https://www.tsn.ca/wnba/article/wilson-aces-to-face-clark-fever-in-opening-round-of-wnba-playoffs/"
-    },
-    {
-      "title": "Robinson runs wild as Falcons get first win of year with blowout of P\u2026",
-      "source": "TSN",
-      "url": "https://www.tsn.ca/nfl/article/robinson-runs-wild-as-falcons-get-first-win-of-year-with-blowout-of-packers/"
     },
     {
       "title": "Packers booed at Lambeau Field after being routed by Falcons",
@@ -27,5 +27,5 @@
       "url": "https://www.tsn.ca/wnba/article/valkyries-rally-past-sparks-to-secure-no-2-seed/"
     }
   ],
-  "ticker": "SPORTS: Padres beat Dodgers to clinch franchise-record third straight postsea\u2026 | Wilson, Aces to face Clark, Fever in opening round of WNBA playoffs | Robinson runs wild as Falcons get first win of year with blowout of P\u2026 | Packers booed at Lambeau Field after being routed by Falcons | Valkyries rally past Sparks to secure No. 2 seed | "
+  "ticker": "SPORTS: Robinson runs wild as Falcons get first win of year with blowout of P\u2026 | Padres beat Dodgers to clinch franchise-record third straight postsea\u2026 | Wilson, Aces to face Clark, Fever in opening round of WNBA playoffs | Packers booed at Lambeau Field after being routed by Falcons | Valkyries rally past Sparks to secure No. 2 seed | "
 }
