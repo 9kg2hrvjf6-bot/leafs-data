@@ -1,31 +1,31 @@
 {
-  "generated_at": "2026-09-25T09:24:20.870979-04:00",
+  "generated_at": "2026-09-25T09:41:29.358916-04:00",
   "headlines": [
+    {
+      "title": "Maple Leafs on TSN Regional Schedule",
+      "source": "TSN",
+      "url": "https://www.tsn.ca/nhl/article/2025-26-maple-leafs-on-tsn-regional-schedule/"
+    },
     {
       "title": "Mercedes\u2019 Russell takes thrilling pole for Azerbaijan Grand Prix",
       "source": "TSN",
       "url": "https://www.tsn.ca/motorsports/article/mercedes-russell-takes-thrilling-pole-for-azerbaijan-grand-prix-n1-50011913/"
     },
     {
-      "title": "New era looms for Flames with move to new arena on the horizon",
+      "title": "Canadiens on TSN Regional Schedule",
       "source": "TSN",
-      "url": "https://www.tsn.ca/nhl/article/new-era-looms-for-flames-with-move-to-new-arena-on-the-horizon/"
+      "url": "https://www.tsn.ca/nhl/article/2025-26-canadiens-on-tsn-schedule/"
     },
     {
-      "title": "Why Fever coach White has the toughest job in sports",
+      "title": "Senators on TSN Regional Schedule",
       "source": "TSN",
-      "url": "https://www.tsn.ca/wnba/article/why-fever-coach-white-has-the-toughest-job-in-sports-n1-50006559/"
+      "url": "https://www.tsn.ca/nhl/article/2025-26-senators-on-tsn-regional-schedule/"
     },
     {
-      "title": "F1 leader Antonelli hits the wall in Azerbaijan Grand Prix qualifying",
+      "title": "Commanders GM: Elbow surgery 'not on table' for QB Daniels",
       "source": "TSN",
-      "url": "https://www.tsn.ca/motorsports/formula-1/article/f1-leader-antonelli-hits-the-wall-in-azerbaijan-grand-prix-qualifying/"
-    },
-    {
-      "title": "Sinner withdraws from the China Open because of lingering knee injury",
-      "source": "TSN",
-      "url": "https://www.tsn.ca/tennis/atp/article/sinner-withdraws-from-the-china-open-because-of-lingering-knee-injury/"
+      "url": "https://www.tsn.ca/nfl/article/commanders-gm-elbow-surgery-not-on-table-for-qb-daniels-n1-50027179/"
     }
   ],
-  "ticker": "SPORTS: Mercedes\u2019 Russell takes thrilling pole for Azerbaijan Grand Prix | New era looms for Flames with move to new arena on the horizon | Why Fever coach White has the toughest job in sports | F1 leader Antonelli hits the wall in Azerbaijan Grand Prix qualifying | Sinner withdraws from the China Open because of lingering knee injury | "
+  "ticker": "SPORTS: Maple Leafs on TSN Regional Schedule | Mercedes\u2019 Russell takes thrilling pole for Azerbaijan Grand Prix | Canadiens on TSN Regional Schedule | Senators on TSN Regional Schedule | Commanders GM: Elbow surgery 'not on table' for QB Daniels | "
 }
