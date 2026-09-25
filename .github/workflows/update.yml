@@ -624,9 +624,28 @@ jobs:
  
  
           def news():
-              """Top Toronto headlines - unfiltered, just the newest couple of stories, from CBC only."""
-              titles, total_items = cbc_headline_titles(NEWS_FEED, None, NEWS_TOP_HEADLINE_COUNT, set())
-              NEWS_STATS.append(f"[NEWS] {total_items} items checked, {len(titles)} matched")
+              """Top Toronto headlines: CP24's general sitemap (proper timestamps, so
+              tried first) topped up with CBC's Toronto feed if CP24 comes up short."""
+              cp24_articles = fetch_sitemap_articles(CP24_SITEMAP_BASE)   # unfiltered - CP24 is Toronto-general already
+              titles = []
+              for a in cp24_articles:
+                  t = a["title"]
+                  if len(t) > NEWS_HEADLINE_MAX_LEN:
+                      t = t[:NEWS_HEADLINE_MAX_LEN - 1].rstrip() + "\u2026"
+                  titles.append(t)
+                  if len(titles) >= NEWS_TOP_HEADLINE_COUNT:
+                      break
+              cp24_matched = len(titles)
+ 
+              cbc_items = 0
+              if len(titles) < NEWS_TOP_HEADLINE_COUNT:
+                  cbc_titles, cbc_items = cbc_headline_titles(
+                      NEWS_FEED, None, NEWS_TOP_HEADLINE_COUNT - len(titles), set(titles))
+                  titles += cbc_titles
+ 
+              NEWS_STATS.append(f"[NEWS] CP24: {len(cp24_articles)} items checked, {cp24_matched} matched; "
+                                 f"CBC: {cbc_items} items checked, {len(titles) - cp24_matched} matched")
+ 
               if not titles:
                   return ""
               return "NEWS: " + " | ".join(titles) + " | "
