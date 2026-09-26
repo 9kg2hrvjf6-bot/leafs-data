@@ -9,10 +9,10 @@
     "BDL_KEY secret not set - skipped BallDontLie"
   ],
   "news_stats": [
-    "[NEWS] CP24: 31 items checked, 2 matched; CBC: 0 items checked, 0 matched",
-    "[LEAFS NEWS] TSN: 40 items checked, 0 matched; CBC: 60 items checked, 1 matched",
-    "[RAPTORS NEWS] TSN: 40 items checked, 0 matched; CBC: 40 items checked, 0 matched",
-    "[JAYS NEWS] TSN: 40 items checked, 1 matched; CBC: 4 items checked, 1 matched",
-    "[SPORTS HEADLINES] TSN: 40 items; CP24: 1 sports items of 31 total"
+    "[NEWS] CP24: 33 items checked, 2 matched; CBC: 0 items checked, 0 matched",
+    "[LEAFS NEWS] TSN: 45 items checked, 0 matched; CBC: 60 items checked, 1 matched",
+    "[RAPTORS NEWS] TSN: 45 items checked, 0 matched; CBC: 40 items checked, 0 matched",
+    "[JAYS NEWS] TSN: 45 items checked, 1 matched; CBC: 4 items checked, 1 matched",
+    "[SPORTS HEADLINES] TSN: 45 items; CP24: 1 sports items of 33 total"
   ]
 }
