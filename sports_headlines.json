@@ -1,10 +1,15 @@
 {
-  "generated_at": "2026-09-26T01:31:00.027240-04:00",
+  "generated_at": "2026-09-26T01:47:11.589247-04:00",
   "headlines": [
     {
       "title": "Lions climb CFL standings with win over Roughriders",
       "source": "TSN",
       "url": "https://www.tsn.ca/cfl/article/lions-climb-cfl-standings-with-win-over-roughriders/"
+    },
+    {
+      "title": "Kelly, Argonauts squeeze past Blue Bombers behind two late scoring dr\u2026",
+      "source": "TSN",
+      "url": "https://www.tsn.ca/cfl/article/kelly-argonauts-squeeze-past-blue-bombers-behind-two-late-scoring-drives/"
     },
     {
       "title": "Rangers falter in AL West chase with loss to Twins as deGrom struggles",
@@ -20,12 +25,7 @@
       "title": "Detmers throws six shutout innings as Angels beat Mariners",
       "source": "TSN",
       "url": "https://www.tsn.ca/mlb/article/detmers-throws-six-shutout-innings-as-angels-beat-mariners/"
-    },
-    {
-      "title": "WATCH LIVE: Azerbaijan Grand Prix on TSN, TSN Multiplex",
-      "source": "TSN",
-      "url": "https://www.tsn.ca/wires/article/watch-live-azerbaijan-grand-prix-practice-2/"
     }
   ],
-  "ticker": "SPORTS: Lions climb CFL standings with win over Roughriders | Rangers falter in AL West chase with loss to Twins as deGrom struggles | Bolte, Stefanic each hit 2 RBI in sixth to lift Athletics past Astros | Detmers throws six shutout innings as Angels beat Mariners | WATCH LIVE: Azerbaijan Grand Prix on TSN, TSN Multiplex | "
+  "ticker": "SPORTS: Lions climb CFL standings with win over Roughriders | Kelly, Argonauts squeeze past Blue Bombers behind two late scoring dr\u2026 | Rangers falter in AL West chase with loss to Twins as deGrom struggles | Bolte, Stefanic each hit 2 RBI in sixth to lift Athletics past Astros | Detmers throws six shutout innings as Angels beat Mariners | "
 }
