@@ -1,15 +1,20 @@
 {
-  "generated_at": "2026-09-26T02:38:14.790283-04:00",
+  "generated_at": "2026-09-26T02:53:44.447083-04:00",
   "headlines": [
-    {
-      "title": "The latest on MLB postseason clinches, Ohtani and Judge health update\u2026",
-      "source": "TSN",
-      "url": "https://www.tsn.ca/mlb/article/the-latest-on-mlb-postseason-clinches-ohtani-and-judge-health-updates-awards-races-and-more/"
-    },
     {
       "title": "Lions climb CFL standings with win over Roughriders",
       "source": "TSN",
       "url": "https://www.tsn.ca/cfl/article/lions-climb-cfl-standings-with-win-over-roughriders/"
+    },
+    {
+      "title": "Report: Warriors, Curry reach two-year extension worth $116 million",
+      "source": "TSN",
+      "url": "https://www.tsn.ca/nba/article/report-warriors-curry-reach-two-year-extension-worth-116-million-n1-50030670/"
+    },
+    {
+      "title": "The latest on MLB postseason clinches, Ohtani and Judge health update\u2026",
+      "source": "TSN",
+      "url": "https://www.tsn.ca/mlb/article/the-latest-on-mlb-postseason-clinches-ohtani-and-judge-health-updates-awards-races-and-more/"
     },
     {
       "title": "Kelly, Argonauts squeeze past Blue Bombers behind two late scoring dr\u2026",
@@ -20,12 +25,7 @@
       "title": "Rangers falter in AL West chase with loss to Twins as deGrom struggles",
       "source": "TSN",
       "url": "https://www.tsn.ca/mlb/article/rangers-falter-in-al-west-chase-with-loss-to-twins-as-degrom-struggles/"
-    },
-    {
-      "title": "Bolte, Stefanic each hit 2 RBI in sixth to lift Athletics past Astros",
-      "source": "TSN",
-      "url": "https://www.tsn.ca/mlb/article/bolte-stefanic-each-hit-2-rbi-in-sixth-to-lift-athletics-past-astros/"
     }
   ],
-  "ticker": "SPORTS: The latest on MLB postseason clinches, Ohtani and Judge health update\u2026 | Lions climb CFL standings with win over Roughriders | Kelly, Argonauts squeeze past Blue Bombers behind two late scoring dr\u2026 | Rangers falter in AL West chase with loss to Twins as deGrom struggles | Bolte, Stefanic each hit 2 RBI in sixth to lift Athletics past Astros | "
+  "ticker": "SPORTS: Lions climb CFL standings with win over Roughriders | Report: Warriors, Curry reach two-year extension worth $116 million | The latest on MLB postseason clinches, Ohtani and Judge health update\u2026 | Kelly, Argonauts squeeze past Blue Bombers behind two late scoring dr\u2026 | Rangers falter in AL West chase with loss to Twins as deGrom struggles | "
 }
