@@ -1,6 +1,16 @@
 {
-  "generated_at": "2026-09-26T10:47:39.668568-04:00",
+  "generated_at": "2026-09-26T10:58:12.286810-04:00",
   "headlines": [
+    {
+      "title": "Norris says some drivers \u2018shouldn\u2019t be in F1\u2019 after Colapinto sets of\u2026",
+      "source": "TSN",
+      "url": "https://www.tsn.ca/motorsports/formula-1/article/norris-says-some-drivers-shouldnt-be-in-f1-after-colapinto-sets-off-multi-car-crash/"
+    },
+    {
+      "title": "WATCH LIVE: Texas A&M vs. LSU",
+      "source": "TSN",
+      "url": "https://www.tsn.ca/wires/article/watch-live-texas-am-vs-lsu-2/"
+    },
     {
       "title": "Russell fights off Verstappen to take dominant win at Azerbaijan Gran\u2026",
       "source": "TSN",
@@ -15,17 +25,7 @@
       "title": "WATCH LIVE: Senators vs. Canadiens (Regional)",
       "source": "TSN",
       "url": "https://www.tsn.ca/wires/article/watch-live-senators-vs-canadiens-regional-3/"
-    },
-    {
-      "title": "WATCH LIVE: Canada, Chile clash in friendly from BMO Field",
-      "source": "TSN",
-      "url": "https://www.tsn.ca/wires/article/watch-live-canada-chile-clash-in-friendly-from-bmo-field/"
-    },
-    {
-      "title": "Manchester City could face \u2018drastic\u2019 sanctions after reported guilty\u2026",
-      "source": "CP24",
-      "url": "https://www.cp24.com/news/sports/2026/09/26/manchester-city-could-face-drastic-sanctions-after-reported-guilty-verdict-ex-chairman/"
     }
   ],
-  "ticker": "SPORTS: Russell fights off Verstappen to take dominant win at Azerbaijan Gran\u2026 | WATCH LIVE: Tiger-Cats vs. Elks | WATCH LIVE: Senators vs. Canadiens (Regional) | WATCH LIVE: Canada, Chile clash in friendly from BMO Field | Manchester City could face \u2018drastic\u2019 sanctions after reported guilty\u2026 | "
+  "ticker": "SPORTS: Norris says some drivers \u2018shouldn\u2019t be in F1\u2019 after Colapinto sets of\u2026 | WATCH LIVE: Texas A&M vs. LSU | Russell fights off Verstappen to take dominant win at Azerbaijan Gran\u2026 | WATCH LIVE: Tiger-Cats vs. Elks | WATCH LIVE: Senators vs. Canadiens (Regional) | "
 }
