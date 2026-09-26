@@ -1,6 +1,11 @@
 {
-  "generated_at": "2026-09-26T08:35:29.459731-04:00",
+  "generated_at": "2026-09-26T08:50:59.808470-04:00",
   "headlines": [
+    {
+      "title": "WATCH LIVE: Laver Cup Group Stage on TSN",
+      "source": "TSN",
+      "url": "https://www.tsn.ca/wires/article/watch-live-laver-cup-group-stage-on-tsn/"
+    },
     {
       "title": "WATCH LIVE: Conners, Taylor paired together as Presidents Cup continu\u2026",
       "source": "TSN",
@@ -20,12 +25,7 @@
       "title": "Report: Warriors, Curry reach two-year extension worth $116 million",
       "source": "TSN",
       "url": "https://www.tsn.ca/nba/article/report-warriors-curry-reach-two-year-extension-worth-116-million-n1-50030670/"
-    },
-    {
-      "title": "The latest on MLB postseason clinches, Ohtani and Judge health update\u2026",
-      "source": "TSN",
-      "url": "https://www.tsn.ca/mlb/article/the-latest-on-mlb-postseason-clinches-ohtani-and-judge-health-updates-awards-races-and-more/"
     }
   ],
-  "ticker": "SPORTS: WATCH LIVE: Conners, Taylor paired together as Presidents Cup continu\u2026 | What to watch during MLB's final weekend of the 2026 season | Lions climb CFL standings with win over Roughriders | Report: Warriors, Curry reach two-year extension worth $116 million | The latest on MLB postseason clinches, Ohtani and Judge health update\u2026 | "
+  "ticker": "SPORTS: WATCH LIVE: Laver Cup Group Stage on TSN | WATCH LIVE: Conners, Taylor paired together as Presidents Cup continu\u2026 | What to watch during MLB's final weekend of the 2026 season | Lions climb CFL standings with win over Roughriders | Report: Warriors, Curry reach two-year extension worth $116 million | "
 }
