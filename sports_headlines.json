@@ -1,6 +1,16 @@
 {
-  "generated_at": "2026-09-26T00:32:50.940901-04:00",
+  "generated_at": "2026-09-26T00:48:11.632562-04:00",
   "headlines": [
+    {
+      "title": "Pfaadt, Arenado, Perdomo lead Diamondbacks over Padres to stay alive\u2026",
+      "source": "TSN",
+      "url": "https://www.tsn.ca/mlb/article/arenado-perdomo-lead-diamondbacks-over-padres-to-stay-alive-in-wild-card-hunt/"
+    },
+    {
+      "title": "WATCH LIVE: Lions lead Roughriders late on Friday Night Football",
+      "source": "TSN",
+      "url": "https://www.tsn.ca/wires/article/watch-live-roughriders-vs-lions-2/"
+    },
     {
       "title": "Hern\u00e1ndez, Pages hit home runs, Skubal strikes out 10 as Dodgers beat\u2026",
       "source": "TSN",
@@ -12,20 +22,10 @@
       "url": "https://www.tsn.ca/mlb/article/dodgers-manager-roberts-expects-ohtani-to-get-at-bats-he-needs-for-playoffs-by-seasons-end/"
     },
     {
-      "title": "WATCH LIVE: Lions extend lead over Roughriders on Friday Night Footba\u2026",
-      "source": "TSN",
-      "url": "https://www.tsn.ca/wires/article/watch-live-roughriders-vs-lions-2/"
-    },
-    {
       "title": "Guardians maintain slim AL Central lead, beat Royals",
       "source": "TSN",
       "url": "https://www.tsn.ca/mlb/article/guardians-maintain-slim-al-central-lead-beat-royals/"
-    },
-    {
-      "title": "Beebe Jr. rushes for 203 yards as No. 4 Indiana holds off Northwestern",
-      "source": "TSN",
-      "url": "https://www.tsn.ca/ncaa/article/beebe-jr-rushes-for-203-yards-as-no-4-indiana-holds-off-northwestern/"
     }
   ],
-  "ticker": "SPORTS: Hern\u00e1ndez, Pages hit home runs, Skubal strikes out 10 as Dodgers beat\u2026 | Dodgers manager Roberts expects Ohtani to get at-bats he needs for pl\u2026 | WATCH LIVE: Lions extend lead over Roughriders on Friday Night Footba\u2026 | Guardians maintain slim AL Central lead, beat Royals | Beebe Jr. rushes for 203 yards as No. 4 Indiana holds off Northwestern | "
+  "ticker": "SPORTS: Pfaadt, Arenado, Perdomo lead Diamondbacks over Padres to stay alive\u2026 | WATCH LIVE: Lions lead Roughriders late on Friday Night Football | Hern\u00e1ndez, Pages hit home runs, Skubal strikes out 10 as Dodgers beat\u2026 | Dodgers manager Roberts expects Ohtani to get at-bats he needs for pl\u2026 | Guardians maintain slim AL Central lead, beat Royals | "
 }
