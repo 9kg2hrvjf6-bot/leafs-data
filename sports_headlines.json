@@ -1,6 +1,21 @@
 {
-  "generated_at": "2026-09-27T10:30:15.054310-04:00",
+  "generated_at": "2026-09-27T10:47:02.358094-04:00",
   "headlines": [
+    {
+      "title": "WATCH LIVE: Calgary Wild vs. Vancouver Rise on TSN Premium",
+      "source": "TSN",
+      "url": "https://www.tsn.ca/wires/article/watch-live-calgary-wild-vs-vancouver-rise-on-tsn-premium/"
+    },
+    {
+      "title": "Trump's golf tour takes him back to the Presidents Cup",
+      "source": "TSN",
+      "url": "https://www.tsn.ca/golf/article/trumps-golf-tour-takes-him-back-to-the-presidents-cup/"
+    },
+    {
+      "title": "WATCH LIVE: Game 1 - Fever vs. Aces",
+      "source": "TSN",
+      "url": "https://www.tsn.ca/wires/article/watch-live-game-1-fever-vs-aces/"
+    },
     {
       "title": "Vasseur vents frustration over talk about his future at Ferrari: \u2018It\u2019\u2026",
       "source": "TSN",
@@ -10,22 +25,7 @@
       "title": "WATCH LIVE: Liberty, Lynx square off in Game 1 of WNBA Playoffs",
       "source": "TSN",
       "url": "https://www.tsn.ca/wires/article/watch-live-liberty-lynx-square-off-in-game-1-of-wnba-playoffs/"
-    },
-    {
-      "title": "WATCH LIVE: Chiefs vs. Dolphins on TSN Premium",
-      "source": "TSN",
-      "url": "https://www.tsn.ca/wires/article/watch-live-chiefs-vs-dolphins-on-tsn-premium/"
-    },
-    {
-      "title": "Report: Cowboys, Lions make trade inquiries on Porter Jr.",
-      "source": "TSN",
-      "url": "https://www.tsn.ca/nfl/article/report-cowboys-lions-make-trade-inquiries-on-porter-jr-n1-50038725/"
-    },
-    {
-      "title": "Report: Rams\u2019 Garrett faces 6-week timeline from knee surgery",
-      "source": "TSN",
-      "url": "https://www.tsn.ca/nfl/article/report-rams-garrett-faces-6-week-timeline-from-knee-surgery-n1-50038925/"
     }
   ],
-  "ticker": "SPORTS: Vasseur vents frustration over talk about his future at Ferrari: \u2018It\u2019\u2026 | WATCH LIVE: Liberty, Lynx square off in Game 1 of WNBA Playoffs | WATCH LIVE: Chiefs vs. Dolphins on TSN Premium | Report: Cowboys, Lions make trade inquiries on Porter Jr. | Report: Rams\u2019 Garrett faces 6-week timeline from knee surgery | "
+  "ticker": "SPORTS: WATCH LIVE: Calgary Wild vs. Vancouver Rise on TSN Premium | Trump's golf tour takes him back to the Presidents Cup | WATCH LIVE: Game 1 - Fever vs. Aces | Vasseur vents frustration over talk about his future at Ferrari: \u2018It\u2019\u2026 | WATCH LIVE: Liberty, Lynx square off in Game 1 of WNBA Playoffs | "
 }
