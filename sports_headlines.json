@@ -1,8 +1,18 @@
 {
-  "generated_at": "2026-09-27T11:30:48.559414-04:00",
+  "generated_at": "2026-09-27T11:47:13.654610-04:00",
   "headlines": [
     {
-      "title": "Pastrnak named captain of Bruins",
+      "title": "What to watch during MLB's final weekend of the 2026 season",
+      "source": "TSN",
+      "url": "https://www.tsn.ca/mlb/article/what-to-watch-during-mlbs-final-weekend-of-the-2026-season-n1-50015050/"
+    },
+    {
+      "title": "Bulls acquire Hield in trade with Hornets for Dillingham",
+      "source": "TSN",
+      "url": "https://www.tsn.ca/nba/article/bulls-acquire-hield-in-trade-with-hornets-for-dillingham/"
+    },
+    {
+      "title": "Bruins name Pastrnak 28th captain in franchise history",
       "source": "TSN",
       "url": "https://www.tsn.ca/nhl/article/pastrnak-named-captain-of-bruins/"
     },
@@ -15,17 +25,7 @@
       "title": "Trump's golf tour takes him back to the Presidents Cup",
       "source": "TSN",
       "url": "https://www.tsn.ca/golf/article/trumps-golf-tour-takes-him-back-to-the-presidents-cup/"
-    },
-    {
-      "title": "Report: Williams injury considered to have 3-4 week timeline",
-      "source": "TSN",
-      "url": "https://www.tsn.ca/nfl/article/report-williams-injury-considered-to-have-3-4-week-timeline-n1-50036929/"
-    },
-    {
-      "title": "Fernandez captures Singapore Open with win over Gibson",
-      "source": "TSN",
-      "url": "https://www.tsn.ca/tennis/wta/article/fernandez-captures-singapore-open-with-win-over-gibson/"
     }
   ],
-  "ticker": "SPORTS: Pastrnak named captain of Bruins | Ice Chips: Penguins place four on IR to begin season | Trump's golf tour takes him back to the Presidents Cup | Report: Williams injury considered to have 3-4 week timeline | Fernandez captures Singapore Open with win over Gibson | "
+  "ticker": "SPORTS: What to watch during MLB's final weekend of the 2026 season | Bulls acquire Hield in trade with Hornets for Dillingham | Bruins name Pastrnak 28th captain in franchise history | Ice Chips: Penguins place four on IR to begin season | Trump's golf tour takes him back to the Presidents Cup | "
 }
