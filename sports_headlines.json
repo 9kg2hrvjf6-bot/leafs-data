@@ -1,10 +1,15 @@
 {
-  "generated_at": "2026-09-27T14:50:52.471943-04:00",
+  "generated_at": "2026-09-27T15:09:11.117725-04:00",
   "headlines": [
     {
-      "title": "WATCH LIVE: NFL RedZone on TSN Premium",
+      "title": "Commanders LB Chenal carted off with neck injury against Seahawks",
       "source": "TSN",
-      "url": "https://www.tsn.ca/wires/article/watch-live-nfl-redzone-on-tsn-premium/"
+      "url": "https://www.tsn.ca/nfl/article/commanders-lb-chenal-carted-off-with-neck-injury-against-seahawks/"
+    },
+    {
+      "title": "Florida jumps to No. 8; Texas, Georgia, Notre Dame top three again",
+      "source": "TSN",
+      "url": "https://www.tsn.ca/ncaa/article/florida-jumps-to-no-8-texas-georgia-notre-dame-top-three-again-n1-50043786/"
     },
     {
       "title": "Bears QB Bagent clears protocol; Keenum likely to start vs. Eagles",
@@ -12,20 +17,15 @@
       "url": "https://www.tsn.ca/nfl/article/bears-qb-bagent-clears-protocol-keenum-likely-to-start-vs-eagles-n1-50044058/"
     },
     {
+      "title": "WATCH LIVE: NFL RedZone on TSN Premium",
+      "source": "TSN",
+      "url": "https://www.tsn.ca/wires/article/watch-live-nfl-redzone-on-tsn-premium/"
+    },
+    {
       "title": "Meerdink gives Xavi his first win as Netherlands coach in Nations Lea\u2026",
       "source": "TSN",
       "url": "https://www.tsn.ca/soccer/article/meerdink-gives-xavi-his-first-win-as-netherlands-coach-in-nations-league/"
-    },
-    {
-      "title": "Ice Chips: Senators waive nine players",
-      "source": "TSN",
-      "url": "https://www.tsn.ca/nhl/article/ice-chips-penguins-place-four-on-ir-to-begin-season/"
-    },
-    {
-      "title": "FOLLOW LIVE: Scherzer pitches in potential last star as Blue Jays hos\u2026",
-      "source": "TSN",
-      "url": "https://www.tsn.ca/wires/article/follow-live-blue-jays-host-reds-in-season-finale/"
     }
   ],
-  "ticker": "SPORTS: WATCH LIVE: NFL RedZone on TSN Premium | Bears QB Bagent clears protocol; Keenum likely to start vs. Eagles | Meerdink gives Xavi his first win as Netherlands coach in Nations Lea\u2026 | Ice Chips: Senators waive nine players | FOLLOW LIVE: Scherzer pitches in potential last star as Blue Jays hos\u2026 | "
+  "ticker": "SPORTS: Commanders LB Chenal carted off with neck injury against Seahawks | Florida jumps to No. 8; Texas, Georgia, Notre Dame top three again | Bears QB Bagent clears protocol; Keenum likely to start vs. Eagles | WATCH LIVE: NFL RedZone on TSN Premium | Meerdink gives Xavi his first win as Netherlands coach in Nations Lea\u2026 | "
 }
