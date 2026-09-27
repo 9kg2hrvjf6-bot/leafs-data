@@ -1,6 +1,11 @@
 {
-  "generated_at": "2026-09-27T01:33:07.825469-04:00",
+  "generated_at": "2026-09-27T01:48:02.181007-04:00",
   "headlines": [
+    {
+      "title": "Machado homers as Padres beat Diamondbacks to clinch home field in wi\u2026",
+      "source": "TSN",
+      "url": "https://www.tsn.ca/mlb/article/machado-homers-as-padres-beat-diamondbacks-to-clinch-home-field-in-wild-card-round-vs-cubs/"
+    },
     {
       "title": "Guardians clinch third straight AL Central title, No. 2 seed in playo\u2026",
       "source": "TSN",
@@ -20,12 +25,7 @@
       "title": "Ward drives in go-ahead run, Crawford hits two-run homer as Mariners\u2026",
       "source": "TSN",
       "url": "https://www.tsn.ca/mlb/article/ward-drives-in-go-ahead-run-crawford-hits-two-run-homer-as-mariners-beat-angels/"
-    },
-    {
-      "title": "Leavitt\u2019s accuracy, Kiffin\u2019s fourth-down call ignite No. 10 LSU in wi\u2026",
-      "source": "TSN",
-      "url": "https://www.tsn.ca/ncaa/article/leavitts-accuracy-kiffins-fourth-down-call-ignite-no-10-lsu-in-win-over-no-23-texas-am/"
     }
   ],
-  "ticker": "SPORTS: Guardians clinch third straight AL Central title, No. 2 seed in playo\u2026 | Alvarez goes deep as Astros hit five homers in rout of Athletics to c\u2026 | Rangers push AL West race to final day of regular season with win ove\u2026 | Ward drives in go-ahead run, Crawford hits two-run homer as Mariners\u2026 | Leavitt\u2019s accuracy, Kiffin\u2019s fourth-down call ignite No. 10 LSU in wi\u2026 | "
+  "ticker": "SPORTS: Machado homers as Padres beat Diamondbacks to clinch home field in wi\u2026 | Guardians clinch third straight AL Central title, No. 2 seed in playo\u2026 | Alvarez goes deep as Astros hit five homers in rout of Athletics to c\u2026 | Rangers push AL West race to final day of regular season with win ove\u2026 | Ward drives in go-ahead run, Crawford hits two-run homer as Mariners\u2026 | "
 }
