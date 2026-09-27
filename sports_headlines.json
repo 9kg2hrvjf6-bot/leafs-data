@@ -1,10 +1,20 @@
 {
-  "generated_at": "2026-09-27T18:31:08.368291-04:00",
+  "generated_at": "2026-09-27T18:48:13.564280-04:00",
   "headlines": [
     {
-      "title": "Meerdink gives Xavi his first win as Netherlands coach in Nations Lea\u2026",
+      "title": "Lawrence throws three TD passes as Jaguars rout Patriots and raise mo\u2026",
       "source": "TSN",
-      "url": "https://www.tsn.ca/soccer/article/meerdink-gives-xavi-his-first-win-as-netherlands-coach-in-nations-league/"
+      "url": "https://www.tsn.ca/nfl/article/lawrence-throws-3-td-passes-as-jaguars-rout-patriots-and-raise-more-questions-about-maye/"
+    },
+    {
+      "title": "Texans\u2019 sputtering offense continues to stall against Colts\u2019 struggli\u2026",
+      "source": "TSN",
+      "url": "https://www.tsn.ca/nfl/article/texans-sputtering-offense-continues-to-stall-against-colts-struggling-defense-in-road-loss/"
+    },
+    {
+      "title": "U.S. storms back against Internationals to win Presidents Cup at Medi\u2026",
+      "source": "TSN",
+      "url": "https://www.tsn.ca/golf/article/us-storms-back-against-internationals-to-win-presidents-cup-at-medinah/"
     },
     {
       "title": "Vikings rule out star WR Jefferson with ankle injury",
@@ -12,20 +22,10 @@
       "url": "https://www.tsn.ca/nfl/article/vikings-rule-out-star-wr-jefferson-with-ankle-injury-n1-50046851/"
     },
     {
-      "title": "Scheffler concedes putt to Echavarria after fan interference",
+      "title": "Maye calls Patriots offence, his own play \u2018unacceptable\u2019",
       "source": "TSN",
-      "url": "https://www.tsn.ca/golf/article/scheffler-concedes-putt-to-echavarria-after-fan-interference-n1-50045136/"
-    },
-    {
-      "title": "WATCH LIVE: NFL RedZone on TSN Premium",
-      "source": "TSN",
-      "url": "https://www.tsn.ca/wires/article/watch-live-nfl-redzone-on-tsn-premium/"
-    },
-    {
-      "title": "Alcantara gets another save; Hern\u00e1ndez, Conine homer as Marlins beat\u2026",
-      "source": "TSN",
-      "url": "https://www.tsn.ca/mlb/article/alcantara-gets-another-save-hernandez-conine-homer-as-marlins-beat-playoff-bound-braves/"
+      "url": "https://www.tsn.ca/nfl/article/maye-calls-patriots-offence-his-own-play-unacceptable-n1-50046497/"
     }
   ],
-  "ticker": "SPORTS: Meerdink gives Xavi his first win as Netherlands coach in Nations Lea\u2026 | Vikings rule out star WR Jefferson with ankle injury | Scheffler concedes putt to Echavarria after fan interference | WATCH LIVE: NFL RedZone on TSN Premium | Alcantara gets another save; Hern\u00e1ndez, Conine homer as Marlins beat\u2026 | "
+  "ticker": "SPORTS: Lawrence throws three TD passes as Jaguars rout Patriots and raise mo\u2026 | Texans\u2019 sputtering offense continues to stall against Colts\u2019 struggli\u2026 | U.S. storms back against Internationals to win Presidents Cup at Medi\u2026 | Vikings rule out star WR Jefferson with ankle injury | Maye calls Patriots offence, his own play \u2018unacceptable\u2019 | "
 }
