@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-26T23:00:22.374459-04:00",
+  "generated_at": "2026-09-26T23:18:43.231903-04:00",
   "headlines": [
     {
       "title": "WNBA playoffs tip-off with exciting Game 1 trio on TSN",
@@ -12,11 +12,6 @@
       "url": "https://www.tsn.ca/wires/cp/article/simmons-ties-program-record-with-five-sacks-as-no-1-texas-beats-no-14-tennessee/"
     },
     {
-      "title": "Hern\u00e1ndez hits tiebreaking home run leading off ninth to lift Dodgers\u2026",
-      "source": "TSN",
-      "url": "https://www.tsn.ca/mlb/article/hernandez-hits-tiebreaking-home-run-leading-off-ninth-to-lift-dodgers-over-giants/"
-    },
-    {
       "title": "Harris\u2019 four hits lift Braves to win, assuring Marlins 15th losing se\u2026",
       "source": "TSN",
       "url": "https://www.tsn.ca/mlb/article/harris-four-hits-lift-braves-to-win-assuring-marlins-15th-losing-season-in-17-years/"
@@ -25,7 +20,12 @@
       "title": "Adams, McMahon help Stampeders hold off Redblacks in Week 17 victory",
       "source": "TSN",
       "url": "https://www.tsn.ca/wires/article/watch-live-stampeders-vs-redblacks/"
+    },
+    {
+      "title": "Wild awaiting word on D Faber after taking puck to head",
+      "source": "TSN",
+      "url": "https://www.tsn.ca/nhl/article/wild-waiting-for-more-information-on-faber-after-defenceman-exited-fridays-game/"
     }
   ],
-  "ticker": "SPORTS: WNBA playoffs tip-off with exciting Game 1 trio on TSN | Simmons ties program-record with five sacks as No. 1 Texas beats No.\u2026 | Hern\u00e1ndez hits tiebreaking home run leading off ninth to lift Dodgers\u2026 | Harris\u2019 four hits lift Braves to win, assuring Marlins 15th losing se\u2026 | Adams, McMahon help Stampeders hold off Redblacks in Week 17 victory | "
+  "ticker": "SPORTS: WNBA playoffs tip-off with exciting Game 1 trio on TSN | Simmons ties program-record with five sacks as No. 1 Texas beats No.\u2026 | Harris\u2019 four hits lift Braves to win, assuring Marlins 15th losing se\u2026 | Adams, McMahon help Stampeders hold off Redblacks in Week 17 victory | Wild awaiting word on D Faber after taking puck to head | "
 }
