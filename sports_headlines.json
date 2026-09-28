@@ -1,10 +1,15 @@
 {
-  "generated_at": "2026-09-28T13:34:37.065624-04:00",
+  "generated_at": "2026-09-28T13:50:28.236141-04:00",
   "headlines": [
     {
-      "title": "James says he envisioned joining Knicks as free agent",
+      "title": "Leonard focused on being a Raptor after Clippers exit",
       "source": "TSN",
-      "url": "https://www.tsn.ca/nba/article/james-says-he-envisioned-joining-knicks-as-free-agent-n1-50053106/"
+      "url": "https://www.tsn.ca/nba/article/leonard-focused-on-being-a-raptor-after-clippers-exit-n1-50053340/"
+    },
+    {
+      "title": "Report: Panthers CB Horn out indefinitely with torn quad",
+      "source": "TSN",
+      "url": "https://www.tsn.ca/nfl/article/report-panthers-cb-horn-out-indefinitely-with-torn-quad-n1-50052968/"
     },
     {
       "title": "Report: Packers signing veteran O-lineman Becton",
@@ -12,20 +17,15 @@
       "url": "https://www.tsn.ca/nfl/article/report-packers-signing-veteran-o-lineman-becton-n1-50052520/"
     },
     {
-      "title": "Buccaneers QB Mayfield out at least three weeks with thumb injury",
+      "title": "Predators sign Jost to one-year, two-way deal",
       "source": "TSN",
-      "url": "https://www.tsn.ca/nfl/article/buccaneers-qb-mayfield-out-at-least-three-weeks-with-thumb-injury-n1-50052996/"
+      "url": "https://www.tsn.ca/nhl/article/predators-sign-jost-to-one-year-two-way-deal/"
     },
     {
-      "title": "MLB average game time up nearly 4 minutes to 2:42, partly because of...",
+      "title": "James says he envisioned joining Knicks as free agent",
       "source": "TSN",
-      "url": "https://www.tsn.ca/mlb/article/mlb-average-game-time-up-nearly-4-minutes-to-242-partly-because-of-robot-umpires/"
-    },
-    {
-      "title": "Leonard focused on being a Raptor after Clippers exit",
-      "source": "TSN",
-      "url": "https://www.tsn.ca/nba/article/leonard-focused-on-being-a-raptor-after-clippers-exit-n1-50053340/"
+      "url": "https://www.tsn.ca/nba/article/james-says-he-envisioned-joining-knicks-as-free-agent-n1-50053106/"
     }
   ],
-  "ticker": "SPORTS: James says he envisioned joining Knicks as free agent | Report: Packers signing veteran O-lineman Becton | Buccaneers QB Mayfield out at least three weeks with thumb injury | MLB average game time up nearly 4 minutes to 2:42, partly because of... | Leonard focused on being a Raptor after Clippers exit | "
+  "ticker": "SPORTS: Leonard focused on being a Raptor after Clippers exit | Report: Panthers CB Horn out indefinitely with torn quad | Report: Packers signing veteran O-lineman Becton | Predators sign Jost to one-year, two-way deal | James says he envisioned joining Knicks as free agent | "
 }
