@@ -42,6 +42,24 @@ Data Source: JSON feed (GitHub Actions recommended)
 Mounting: Desktop stand or wall mount
 Case: 3D‑printed or injection‑molded (your choice)
 
+📘 User Manual (Starter Version)
+Setup
+Plug in the ticker using USB‑C or 5V power.
+Connect to the “TickerSetup” Wi‑Fi network.
+Open the configuration page (192.168.4.1).
+Enter your home Wi‑Fi credentials.
+Enter your JSON feed URL.
+Select your teams (text only).
+Save and reboot.
+
+Daily Use
+The ticker automatically updates every 60 seconds.
+Game Day Mode activates automatically when a tracked team is playing.
+Brightness adjusts based on time of day (optional).
+Firmware Updates
+Upload via web UI or USB.
+OTA updates supported.
+
 This product displays publicly available sports information using text‑only data. It does not include or distribute any team logos, trademarks, or proprietary sports content. All hardware, firmware, and design elements are original and owned by the creator.
 
 <img width="349" height="861" alt="image" src="https://github.com/user-attachments/assets/66b57baa-d27b-40ae-9e1c-2be818c4b9fe" />
