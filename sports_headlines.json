@@ -1,15 +1,15 @@
 {
-  "generated_at": "2026-09-28T07:11:47.994174-04:00",
+  "generated_at": "2026-09-28T07:35:02.165776-04:00",
   "headlines": [
-    {
-      "title": "Chabot: Both power play units were amazing tonight",
-      "source": "TSN",
-      "url": "https://www.tsn.ca/radio/ottawa-1200/article/chabot-both-power-play-units-were-amazing-tonight/"
-    },
     {
       "title": "Report: Warriors, Curry reach two-year extension worth $116 million",
       "source": "TSN",
       "url": "https://www.tsn.ca/nba/article/report-warriors-curry-reach-two-year-extension-worth-116-million-n1-50030670/"
+    },
+    {
+      "title": "Chabot: Both power play units were amazing tonight",
+      "source": "TSN",
+      "url": "https://www.tsn.ca/radio/ottawa-1200/article/chabot-both-power-play-units-were-amazing-tonight/"
     },
     {
       "title": "Hornets star Knueppel sidelined with hamstring injury",
@@ -27,5 +27,5 @@
       "url": "https://www.tsn.ca/nfl/article/gibbs-third-touchdown-late-in-game-lifts-lions-to-win-over-jets/"
     }
   ],
-  "ticker": "SPORTS: Chabot: Both power play units were amazing tonight | Report: Warriors, Curry reach two-year extension worth $116 million | Hornets star Knueppel sidelined with hamstring injury | AEW wrestling star Benjamin Satterley, known as Pac, dies at 40 | Gibbs\u2019 third touchdown late in game lifts Lions to win over Jets | "
+  "ticker": "SPORTS: Report: Warriors, Curry reach two-year extension worth $116 million | Chabot: Both power play units were amazing tonight | Hornets star Knueppel sidelined with hamstring injury | AEW wrestling star Benjamin Satterley, known as Pac, dies at 40 | Gibbs\u2019 third touchdown late in game lifts Lions to win over Jets | "
 }
