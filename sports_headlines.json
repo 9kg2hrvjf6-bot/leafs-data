@@ -1,11 +1,6 @@
 {
-  "generated_at": "2026-09-27T20:21:56.699581-04:00",
+  "generated_at": "2026-09-27T20:46:38.577468-04:00",
   "headlines": [
-    {
-      "title": "WATCH LIVE: Rams, Broncos set to battle on Sunday Night Football",
-      "source": "TSN",
-      "url": "https://www.tsn.ca/wires/article/watch-live-rams-vs-broncos-on-sunday-night-football/"
-    },
     {
       "title": "Watson sparks late Browns rally, sealing a win over Panthers",
       "source": "TSN",
@@ -25,7 +20,12 @@
       "title": "Brewers\u2019 Misiorowski ready for playoffs after completing history-maki\u2026",
       "source": "TSN",
       "url": "https://www.tsn.ca/mlb/article/brewers-misiorowski-ready-for-playoffs-after-completing-history-making-regular-season/"
+    },
+    {
+      "title": "Scherzer shines in possible final outing as Jays cap season with feel\u2026",
+      "source": "TSN",
+      "url": "https://www.tsn.ca/mlb/article/blue-jays-cap-disappointing-season-with-victory-over-reds/"
     }
   ],
-  "ticker": "SPORTS: WATCH LIVE: Rams, Broncos set to battle on Sunday Night Football | Watson sparks late Browns rally, sealing a win over Panthers | Commanders LB Chenal carted off with neck injury against Seahawks | Blue Jays make memories in finale out of a season to forget | Brewers\u2019 Misiorowski ready for playoffs after completing history-maki\u2026 | "
+  "ticker": "SPORTS: Watson sparks late Browns rally, sealing a win over Panthers | Commanders LB Chenal carted off with neck injury against Seahawks | Blue Jays make memories in finale out of a season to forget | Brewers\u2019 Misiorowski ready for playoffs after completing history-maki\u2026 | Scherzer shines in possible final outing as Jays cap season with feel\u2026 | "
 }
