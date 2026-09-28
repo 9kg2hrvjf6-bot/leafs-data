@@ -1,10 +1,20 @@
 {
-  "generated_at": "2026-09-28T14:54:47.670374-04:00",
+  "generated_at": "2026-09-28T15:11:02.206171-04:00",
   "headlines": [
     {
-      "title": "Big contracts, young talent among the storylines heading into NHL sea...",
+      "title": "Buccaneers QB Mayfield out at least three weeks with thumb injury",
       "source": "TSN",
-      "url": "https://www.tsn.ca/nhl/article/big-contracts-young-talent-among-the-storylines-heading-into-nhl-season/"
+      "url": "https://www.tsn.ca/nfl/article/buccaneers-qb-mayfield-out-at-least-three-weeks-with-thumb-injury-n1-50052996/"
+    },
+    {
+      "title": "Big contracts, young talent among the storylines heading into NHL sea...",
+      "source": "CP24",
+      "url": "https://www.cp24.com/news/sports/2026/09/28/big-contracts-young-talent-among-the-storylines-heading-into-nhl-season/"
+    },
+    {
+      "title": "Ice Chips: Maple Leafs F Joshua out week-to-week to start season",
+      "source": "TSN",
+      "url": "https://www.tsn.ca/nhl/article/ice-chips-hagens-19-cracks-bruins-roster/"
     },
     {
       "title": "Maple Leafs working on trade, extension for Blue Jackets F Marchenko;...",
@@ -12,20 +22,10 @@
       "url": "https://www.tsn.ca/nhl/article/maple-leafs-working-on-trade-extension-for-blue-jackets-f-marchenko/"
     },
     {
-      "title": "James on 76ers' debut: 'You guys know who I am, right?'",
-      "source": "TSN",
-      "url": "https://www.tsn.ca/nba/article/james-on-76ers-debut-you-guys-know-who-i-am-right/"
-    },
-    {
-      "title": "Buccaneers QB Mayfield out at least three weeks with thumb injury",
-      "source": "TSN",
-      "url": "https://www.tsn.ca/nfl/article/buccaneers-qb-mayfield-out-at-least-three-weeks-with-thumb-injury-n1-50052996/"
-    },
-    {
       "title": "Leonard focused on being a Raptor after Clippers exit",
       "source": "TSN",
       "url": "https://www.tsn.ca/nba/article/leonard-focused-on-being-a-raptor-after-clippers-exit-n1-50053340/"
     }
   ],
-  "ticker": "SPORTS: Big contracts, young talent among the storylines heading into NHL sea... | Maple Leafs working on trade, extension for Blue Jackets F Marchenko;... | James on 76ers' debut: 'You guys know who I am, right?' | Buccaneers QB Mayfield out at least three weeks with thumb injury | Leonard focused on being a Raptor after Clippers exit | "
+  "ticker": "SPORTS: Buccaneers QB Mayfield out at least three weeks with thumb injury | Big contracts, young talent among the storylines heading into NHL sea... | Ice Chips: Maple Leafs F Joshua out week-to-week to start season | Maple Leafs working on trade, extension for Blue Jackets F Marchenko;... | Leonard focused on being a Raptor after Clippers exit | "
 }
