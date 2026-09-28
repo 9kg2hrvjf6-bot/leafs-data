@@ -1,10 +1,20 @@
 {
-  "generated_at": "2026-09-28T16:22:17.688546-04:00",
+  "generated_at": "2026-09-28T16:42:30.515759-04:00",
   "headlines": [
     {
-      "title": "Giants lose DE Burns for season with torn ACL in right knee",
+      "title": "Lillard: Blazers' crowded backcourt 'will work itself out'",
       "source": "TSN",
-      "url": "https://www.tsn.ca/nfl/article/giants-lose-de-burns-for-season-with-torn-acl-in-right-knee/"
+      "url": "https://www.tsn.ca/nba/article/lillard-blazers-crowded-backcourt-will-work-itself-out-n1-50054292/"
+    },
+    {
+      "title": "Rookie left-hander Tolle will start the AL Wild Card Series opener fo...",
+      "source": "TSN",
+      "url": "https://www.tsn.ca/mlb/article/rookie-left-hander-tolle-will-start-the-al-wild-card-series-opener-for-red-sox/"
+    },
+    {
+      "title": "Report: Vikings' Jefferson has ankle sprain, could play this week",
+      "source": "TSN",
+      "url": "https://www.tsn.ca/nfl/article/report-vikings-jefferson-has-ankle-sprain-could-play-this-week-n1-50054067/"
     },
     {
       "title": "Report: Jets RB Hall week-to-week with quad injury",
@@ -12,20 +22,10 @@
       "url": "https://www.tsn.ca/nfl/article/report-jets-rb-hall-week-to-week-with-quad-injury-n1-50053866/"
     },
     {
-      "title": "CBC's 'Hockey Night in Canada' to return this season with PWHL games",
-      "source": "CP24",
-      "url": "https://www.cp24.com/news/sports/2026/09/28/cbcs-hockey-night-in-canada-to-return-this-season-with-pwhl-games/"
-    },
-    {
-      "title": "WATCH LIVE: Eagles, Bears nearing kickoff on Monday Night Football",
+      "title": "Will McCarthy succeed in New York after trade to Giants?",
       "source": "TSN",
-      "url": "https://www.tsn.ca/wires/article/watch-live-eagles-bears-nearing-kickoff-on-monday-night-football/"
-    },
-    {
-      "title": "James on 76ers' debut: 'You guys know who I am, right?'",
-      "source": "TSN",
-      "url": "https://www.tsn.ca/nba/article/james-on-76ers-debut-you-guys-know-who-i-am-right/"
+      "url": "https://www.tsn.ca/nfl/article/will-mccarthy-succeed-in-new-york-after-trade-to-giants-n1-50053035/"
     }
   ],
-  "ticker": "SPORTS: Giants lose DE Burns for season with torn ACL in right knee | Report: Jets RB Hall week-to-week with quad injury | CBC's 'Hockey Night in Canada' to return this season with PWHL games | WATCH LIVE: Eagles, Bears nearing kickoff on Monday Night Football | James on 76ers' debut: 'You guys know who I am, right?' | "
+  "ticker": "SPORTS: Lillard: Blazers' crowded backcourt 'will work itself out' | Rookie left-hander Tolle will start the AL Wild Card Series opener fo... | Report: Vikings' Jefferson has ankle sprain, could play this week | Report: Jets RB Hall week-to-week with quad injury | Will McCarthy succeed in New York after trade to Giants? | "
 }
