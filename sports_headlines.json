@@ -1,10 +1,20 @@
 {
-  "generated_at": "2026-09-28T14:37:22.329637-04:00",
+  "generated_at": "2026-09-28T14:54:47.670374-04:00",
   "headlines": [
+    {
+      "title": "Big contracts, young talent among the storylines heading into NHL sea...",
+      "source": "TSN",
+      "url": "https://www.tsn.ca/nhl/article/big-contracts-young-talent-among-the-storylines-heading-into-nhl-season/"
+    },
     {
       "title": "Maple Leafs working on trade, extension for Blue Jackets F Marchenko;...",
       "source": "TSN",
       "url": "https://www.tsn.ca/nhl/article/maple-leafs-working-on-trade-extension-for-blue-jackets-f-marchenko/"
+    },
+    {
+      "title": "James on 76ers' debut: 'You guys know who I am, right?'",
+      "source": "TSN",
+      "url": "https://www.tsn.ca/nba/article/james-on-76ers-debut-you-guys-know-who-i-am-right/"
     },
     {
       "title": "Buccaneers QB Mayfield out at least three weeks with thumb injury",
@@ -15,17 +25,7 @@
       "title": "Leonard focused on being a Raptor after Clippers exit",
       "source": "TSN",
       "url": "https://www.tsn.ca/nba/article/leonard-focused-on-being-a-raptor-after-clippers-exit-n1-50053340/"
-    },
-    {
-      "title": "Pacers' Haliburton: No restrictions in return from Achilles tear",
-      "source": "TSN",
-      "url": "https://www.tsn.ca/nba/article/pacers-haliburton-no-restrictions-in-return-from-achilles-tear-n1-50053467/"
-    },
-    {
-      "title": "Towns wants extension to stay with Knicks",
-      "source": "TSN",
-      "url": "https://www.tsn.ca/nba/article/towns-wants-extension-to-stay-with-knicks-n1-50053583/"
     }
   ],
-  "ticker": "SPORTS: Maple Leafs working on trade, extension for Blue Jackets F Marchenko;... | Buccaneers QB Mayfield out at least three weeks with thumb injury | Leonard focused on being a Raptor after Clippers exit | Pacers' Haliburton: No restrictions in return from Achilles tear | Towns wants extension to stay with Knicks | "
+  "ticker": "SPORTS: Big contracts, young talent among the storylines heading into NHL sea... | Maple Leafs working on trade, extension for Blue Jackets F Marchenko;... | James on 76ers' debut: 'You guys know who I am, right?' | Buccaneers QB Mayfield out at least three weeks with thumb injury | Leonard focused on being a Raptor after Clippers exit | "
 }
