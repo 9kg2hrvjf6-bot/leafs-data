@@ -1,6 +1,21 @@
 {
-  "generated_at": "2026-09-28T15:11:02.206171-04:00",
+  "generated_at": "2026-09-28T15:33:39.308452-04:00",
   "headlines": [
+    {
+      "title": "Report: Jets RB Hall week-to-week with quad injury",
+      "source": "TSN",
+      "url": "https://www.tsn.ca/nfl/article/report-jets-rb-hall-week-to-week-with-quad-injury-n1-50053866/"
+    },
+    {
+      "title": "This could be MLB's last postseason for a while with lockout looming,...",
+      "source": "TSN",
+      "url": "https://www.tsn.ca/mlb/article/this-could-be-mlbs-last-postseason-for-a-while-with-a-lockout-looming-players-vowing-to-fight-cap/"
+    },
+    {
+      "title": "'Is the playing field level? No, it isn't': Report suggests Canadian...",
+      "source": "CP24",
+      "url": "https://www.cp24.com/news/sports/2026/09/28/is-the-playing-field-level-no-it-isnt-report-suggests-canadian-nhl-teams-are-disadvantaged-against-us/"
+    },
     {
       "title": "Buccaneers QB Mayfield out at least three weeks with thumb injury",
       "source": "TSN",
@@ -10,22 +25,7 @@
       "title": "Big contracts, young talent among the storylines heading into NHL sea...",
       "source": "CP24",
       "url": "https://www.cp24.com/news/sports/2026/09/28/big-contracts-young-talent-among-the-storylines-heading-into-nhl-season/"
-    },
-    {
-      "title": "Ice Chips: Maple Leafs F Joshua out week-to-week to start season",
-      "source": "TSN",
-      "url": "https://www.tsn.ca/nhl/article/ice-chips-hagens-19-cracks-bruins-roster/"
-    },
-    {
-      "title": "Maple Leafs working on trade, extension for Blue Jackets F Marchenko;...",
-      "source": "TSN",
-      "url": "https://www.tsn.ca/nhl/article/maple-leafs-working-on-trade-extension-for-blue-jackets-f-marchenko/"
-    },
-    {
-      "title": "Leonard focused on being a Raptor after Clippers exit",
-      "source": "TSN",
-      "url": "https://www.tsn.ca/nba/article/leonard-focused-on-being-a-raptor-after-clippers-exit-n1-50053340/"
     }
   ],
-  "ticker": "SPORTS: Buccaneers QB Mayfield out at least three weeks with thumb injury | Big contracts, young talent among the storylines heading into NHL sea... | Ice Chips: Maple Leafs F Joshua out week-to-week to start season | Maple Leafs working on trade, extension for Blue Jackets F Marchenko;... | Leonard focused on being a Raptor after Clippers exit | "
+  "ticker": "SPORTS: Report: Jets RB Hall week-to-week with quad injury | This could be MLB's last postseason for a while with lockout looming,... | 'Is the playing field level? No, it isn't': Report suggests Canadian... | Buccaneers QB Mayfield out at least three weeks with thumb injury | Big contracts, young talent among the storylines heading into NHL sea... | "
 }
