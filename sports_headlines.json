@@ -1,10 +1,20 @@
 {
-  "generated_at": "2026-09-28T17:19:07.031966-04:00",
+  "generated_at": "2026-09-28T17:33:36.994895-04:00",
   "headlines": [
+    {
+      "title": "Maple Leafs acquire Marchenko from Blue Jackets in blockbuster, then...",
+      "source": "TSN",
+      "url": "https://www.tsn.ca/nhl/article/maple-leafs-working-on-trade-extension-for-blue-jackets-f-marchenko/"
+    },
     {
       "title": "Lillard: Blazers' crowded backcourt 'will work itself out'",
       "source": "TSN",
       "url": "https://www.tsn.ca/nba/article/lillard-blazers-crowded-backcourt-will-work-itself-out-n1-50054292/"
+    },
+    {
+      "title": "Report: Vikings' Jefferson has ankle sprain, could play this week",
+      "source": "TSN",
+      "url": "https://www.tsn.ca/nfl/article/report-vikings-jefferson-has-ankle-sprain-could-play-this-week-n1-50054067/"
     },
     {
       "title": "Will McCarthy succeed in New York after trade to Giants?",
@@ -12,20 +22,10 @@
       "url": "https://www.tsn.ca/nfl/article/will-mccarthy-succeed-in-new-york-after-trade-to-giants-n1-50053035/"
     },
     {
-      "title": "Maple Leafs acquire Marchenko from Blue Jackets for Knies, then exten...",
-      "source": "TSN",
-      "url": "https://www.tsn.ca/nhl/article/maple-leafs-working-on-trade-extension-for-blue-jackets-f-marchenko/"
-    },
-    {
       "title": "The Drive - Brendan Bell: If Ullmark is good, this team has an opport...",
       "source": "TSN",
       "url": "https://www.tsn.ca/radio/ottawa-1200/article/the-drive-brendan-bell-if-ullmark-is-good-this-team-has-an-opportunity-to-make-the-playoffs/"
-    },
-    {
-      "title": "Haunted by NBA Finals defeat, Wembanyama, Spurs driven to complete mi...",
-      "source": "TSN",
-      "url": "https://www.tsn.ca/nba/article/haunted-by-nba-finals-defeat-wembanyama-spurs-driven-to-complete-mission-of-being-leagues-best/"
     }
   ],
-  "ticker": "SPORTS: Lillard: Blazers' crowded backcourt 'will work itself out' | Will McCarthy succeed in New York after trade to Giants? | Maple Leafs acquire Marchenko from Blue Jackets for Knies, then exten... | The Drive - Brendan Bell: If Ullmark is good, this team has an opport... | Haunted by NBA Finals defeat, Wembanyama, Spurs driven to complete mi... | "
+  "ticker": "SPORTS: Maple Leafs acquire Marchenko from Blue Jackets in blockbuster, then... | Lillard: Blazers' crowded backcourt 'will work itself out' | Report: Vikings' Jefferson has ankle sprain, could play this week | Will McCarthy succeed in New York after trade to Giants? | The Drive - Brendan Bell: If Ullmark is good, this team has an opport... | "
 }
