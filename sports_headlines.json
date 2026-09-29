@@ -1,6 +1,11 @@
 {
-  "generated_at": "2026-09-29T01:11:04.789967-04:00",
+  "generated_at": "2026-09-29T01:32:53.847818-04:00",
   "headlines": [
+    {
+      "title": "Keenum impresses in first start since 2023 to lead Bears past Eagles...",
+      "source": "TSN",
+      "url": "https://www.tsn.ca/nfl/article/keenum-impresses-in-first-start-since-2023-to-lead-bears-to-mnf-win-over-eagles/"
+    },
     {
       "title": "U.S. Senate votes to pass Protect College Sports Act",
       "source": "TSN",
@@ -17,15 +22,10 @@
       "url": "https://www.tsn.ca/nhl/article/maple-leafs-working-on-trade-extension-for-blue-jackets-f-marchenko/"
     },
     {
-      "title": "Keenum impresses in first start since 2023 to lead Bears past Eagles...",
-      "source": "TSN",
-      "url": "https://www.tsn.ca/nfl/article/keenum-impresses-in-first-start-since-2023-to-lead-bears-to-mnf-win-over-eagles/"
-    },
-    {
       "title": "Raptors return a legacy play for Leonard",
       "source": "TSN",
       "url": "https://www.tsn.ca/nba/article/raptors-return-a-legacy-play-for-leonard/"
     }
   ],
-  "ticker": "SPORTS: U.S. Senate votes to pass Protect College Sports Act | NCAA Football - TSN Broadcast Schedule | Maple Leafs acquire Marchenko from Blue Jackets in blockbuster, then... | Keenum impresses in first start since 2023 to lead Bears past Eagles... | Raptors return a legacy play for Leonard | "
+  "ticker": "SPORTS: Keenum impresses in first start since 2023 to lead Bears past Eagles... | U.S. Senate votes to pass Protect College Sports Act | NCAA Football - TSN Broadcast Schedule | Maple Leafs acquire Marchenko from Blue Jackets in blockbuster, then... | Raptors return a legacy play for Leonard | "
 }
