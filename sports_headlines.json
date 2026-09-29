@@ -1,20 +1,10 @@
 {
-  "generated_at": "2026-09-29T00:19:22.157265-04:00",
+  "generated_at": "2026-09-29T00:35:59.606719-04:00",
   "headlines": [
-    {
-      "title": "U.S. Senate votes to pass Protect College Sports Act",
-      "source": "TSN",
-      "url": "https://www.tsn.ca/ncaa/article/us-senate-votes-77-22-to-pass-protect-college-sports-act-n1-50056206/"
-    },
     {
       "title": "Maple Leafs acquire Marchenko from Blue Jackets in blockbuster, then...",
       "source": "TSN",
       "url": "https://www.tsn.ca/nhl/article/maple-leafs-working-on-trade-extension-for-blue-jackets-f-marchenko/"
-    },
-    {
-      "title": "Clippers' Ingram (Achilles) won't be ready to start season",
-      "source": "TSN",
-      "url": "https://www.tsn.ca/nba/article/clippers-ingram-achilles-wont-be-ready-to-start-season/"
     },
     {
       "title": "Keenum impresses in first start since 2023 to lead Bears past Eagles...",
@@ -22,10 +12,20 @@
       "url": "https://www.tsn.ca/nfl/article/keenum-impresses-in-first-start-since-2023-to-lead-bears-to-mnf-win-over-eagles/"
     },
     {
-      "title": "Seahawks' Macdonald says team still believes in rookie RB Price",
+      "title": "Raptors return a legacy play for Leonard",
       "source": "TSN",
-      "url": "https://www.tsn.ca/nfl/article/seahawks-macdonald-says-team-still-believes-in-rookie-rb-price-n1-50055728/"
+      "url": "https://www.tsn.ca/nba/article/raptors-return-a-legacy-play-for-leonard/"
+    },
+    {
+      "title": "Mets executive Stearns on not re-signing Alonso: `In this job, I don'...",
+      "source": "TSN",
+      "url": "https://www.tsn.ca/mlb/article/mets-executive-stearns-on-not-re-signing-alonso-in-this-job-i-dont-get-mulligans/"
+    },
+    {
+      "title": "U.S. Senate votes to pass Protect College Sports Act",
+      "source": "TSN",
+      "url": "https://www.tsn.ca/ncaa/article/us-senate-votes-77-22-to-pass-protect-college-sports-act-n1-50056206/"
     }
   ],
-  "ticker": "SPORTS: U.S. Senate votes to pass Protect College Sports Act | Maple Leafs acquire Marchenko from Blue Jackets in blockbuster, then... | Clippers' Ingram (Achilles) won't be ready to start season | Keenum impresses in first start since 2023 to lead Bears past Eagles... | Seahawks' Macdonald says team still believes in rookie RB Price | "
+  "ticker": "SPORTS: Maple Leafs acquire Marchenko from Blue Jackets in blockbuster, then... | Keenum impresses in first start since 2023 to lead Bears past Eagles... | Raptors return a legacy play for Leonard | Mets executive Stearns on not re-signing Alonso: `In this job, I don'... | U.S. Senate votes to pass Protect College Sports Act | "
 }
