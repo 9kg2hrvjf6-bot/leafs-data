@@ -1,15 +1,15 @@
 {
-  "generated_at": "2026-09-29T09:49:14.803539-04:00",
+  "generated_at": "2026-09-29T10:02:50.112632-04:00",
   "headlines": [
-    {
-      "title": "U.S. Senate votes to pass Protect College Sports Act",
-      "source": "TSN",
-      "url": "https://www.tsn.ca/ncaa/article/us-senate-votes-77-22-to-pass-protect-college-sports-act-n1-50056206/"
-    },
     {
       "title": "Ferrari gives Vasseur 'full confidence' amid Horner speculation",
       "source": "TSN",
       "url": "https://www.tsn.ca/motorsports/article/ferrari-gives-vasseur-full-confidence-amid-horner-speculation-n1-50057207/"
+    },
+    {
+      "title": "U.S. Senate votes to pass Protect College Sports Act",
+      "source": "TSN",
+      "url": "https://www.tsn.ca/ncaa/article/us-senate-votes-77-22-to-pass-protect-college-sports-act-n1-50056206/"
     },
     {
       "title": "Biles remains undecided on 2028 Olympics, but the lure of competing i...",
@@ -27,5 +27,5 @@
       "url": "https://www.tsn.ca/cfl/article/roughriders-and-stampeders-clash-headlines-week-18-coverage-on-tsn/"
     }
   ],
-  "ticker": "SPORTS: U.S. Senate votes to pass Protect College Sports Act | Ferrari gives Vasseur 'full confidence' amid Horner speculation | Biles remains undecided on 2028 Olympics, but the lure of competing i... | Canucks hoping G Demko to return from hip surgery before Christmas | Roughriders and Stampeders clash headlines Week 18 coverage on TSN | "
+  "ticker": "SPORTS: Ferrari gives Vasseur 'full confidence' amid Horner speculation | U.S. Senate votes to pass Protect College Sports Act | Biles remains undecided on 2028 Olympics, but the lure of competing i... | Canucks hoping G Demko to return from hip surgery before Christmas | Roughriders and Stampeders clash headlines Week 18 coverage on TSN | "
 }
