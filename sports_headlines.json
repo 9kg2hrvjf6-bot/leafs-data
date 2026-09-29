@@ -1,10 +1,20 @@
 {
-  "generated_at": "2026-09-29T18:00:15.632341-04:00",
+  "generated_at": "2026-09-29T18:23:21.970821-04:00",
   "headlines": [
     {
-      "title": "Ex-NBA champ JR Smith arrested on assault charge in Texas",
+      "title": "FOLLOW LIVE: Game 2 - Aces vs. Fever",
       "source": "TSN",
-      "url": "https://www.tsn.ca/nba/article/ex-nba-champ-jr-smith-arrested-on-assault-charge-in-texas-n1-50059977/"
+      "url": "https://www.tsn.ca/wires/article/follow-live-game-2-aces-vs-fever/"
+    },
+    {
+      "title": "Thomas Chabot named next Ottawa Senators captain",
+      "source": "CP24",
+      "url": "https://www.cp24.com/news/sports/2026/09/29/thomas-chabot-named-next-ottawa-senators-captain/"
+    },
+    {
+      "title": "Yamal helps Spain extend unbeaten streak, Gordon and Kane lead England",
+      "source": "TSN",
+      "url": "https://www.tsn.ca/soccer/article/yamal-helps-spain-extend-unbeaten-streak-gordon-and-kane-lead-england/"
     },
     {
       "title": "Sources: NBA reviewing bids from three finalists for Vegas team",
@@ -12,20 +22,10 @@
       "url": "https://www.tsn.ca/nba/article/sources-nba-reviewing-bids-from-three-finalists-for-vegas-team-n1-50060732/"
     },
     {
-      "title": "A's OF Gelof sues Tigers for damages after right knee slammed into Co...",
-      "source": "TSN",
-      "url": "https://www.tsn.ca/mlb/article/as-of-gelof-sues-tigers-for-damages-after-right-knee-slammed-into-comerica-park-fence/"
-    },
-    {
-      "title": "Swiss court rejects Hockey Canada's bid to block Team Canada jersey d...",
-      "source": "CP24",
-      "url": "https://www.cp24.com/news/sports/2026/09/29/swiss-court-rejects-hockey-canadas-bid-to-block-team-canada-jersey-deal/"
-    },
-    {
       "title": "'Unique player': Maple Leafs' GM Chayka reflects on Marchenko deal wi...",
       "source": "TSN",
       "url": "https://www.tsn.ca/nhl/article/unique-player-maple-leafs-gm-chayka-reflects-on-marchenko-deal-with-blue-jackets/"
     }
   ],
-  "ticker": "SPORTS: Ex-NBA champ JR Smith arrested on assault charge in Texas | Sources: NBA reviewing bids from three finalists for Vegas team | A's OF Gelof sues Tigers for damages after right knee slammed into Co... | Swiss court rejects Hockey Canada's bid to block Team Canada jersey d... | 'Unique player': Maple Leafs' GM Chayka reflects on Marchenko deal wi... | "
+  "ticker": "SPORTS: FOLLOW LIVE: Game 2 - Aces vs. Fever | Thomas Chabot named next Ottawa Senators captain | Yamal helps Spain extend unbeaten streak, Gordon and Kane lead England | Sources: NBA reviewing bids from three finalists for Vegas team | 'Unique player': Maple Leafs' GM Chayka reflects on Marchenko deal wi... | "
 }
