@@ -1,20 +1,20 @@
 {
-  "generated_at": "2026-09-29T18:23:21.970821-04:00",
+  "generated_at": "2026-09-29T18:40:45.152981-04:00",
   "headlines": [
-    {
-      "title": "FOLLOW LIVE: Game 2 - Aces vs. Fever",
-      "source": "TSN",
-      "url": "https://www.tsn.ca/wires/article/follow-live-game-2-aces-vs-fever/"
-    },
-    {
-      "title": "Thomas Chabot named next Ottawa Senators captain",
-      "source": "CP24",
-      "url": "https://www.cp24.com/news/sports/2026/09/29/thomas-chabot-named-next-ottawa-senators-captain/"
-    },
     {
       "title": "Yamal helps Spain extend unbeaten streak, Gordon and Kane lead England",
       "source": "TSN",
       "url": "https://www.tsn.ca/soccer/article/yamal-helps-spain-extend-unbeaten-streak-gordon-and-kane-lead-england/"
+    },
+    {
+      "title": "Got your tickets? Future MLS NEXT PRO club releases priority season t...",
+      "source": "CP24",
+      "url": "https://www.cp24.com/news/sports/2026/09/29/got-your-tickets-future-mls-next-pro-club-releases-priority-season-ticket-deposits/"
+    },
+    {
+      "title": "Pope Leo XIV sends blessings to White Sox ahead of playoffs",
+      "source": "TSN",
+      "url": "https://www.tsn.ca/mlb/article/pope-leo-xiv-sends-blessings-to-white-sox-ahead-of-playoffs-n1-50061482/"
     },
     {
       "title": "Sources: NBA reviewing bids from three finalists for Vegas team",
@@ -22,10 +22,10 @@
       "url": "https://www.tsn.ca/nba/article/sources-nba-reviewing-bids-from-three-finalists-for-vegas-team-n1-50060732/"
     },
     {
-      "title": "'Unique player': Maple Leafs' GM Chayka reflects on Marchenko deal wi...",
+      "title": "FOLLOW LIVE: Game 2 - Aces vs. Fever",
       "source": "TSN",
-      "url": "https://www.tsn.ca/nhl/article/unique-player-maple-leafs-gm-chayka-reflects-on-marchenko-deal-with-blue-jackets/"
+      "url": "https://www.tsn.ca/wires/article/follow-live-game-2-aces-vs-fever/"
     }
   ],
-  "ticker": "SPORTS: FOLLOW LIVE: Game 2 - Aces vs. Fever | Thomas Chabot named next Ottawa Senators captain | Yamal helps Spain extend unbeaten streak, Gordon and Kane lead England | Sources: NBA reviewing bids from three finalists for Vegas team | 'Unique player': Maple Leafs' GM Chayka reflects on Marchenko deal wi... | "
+  "ticker": "SPORTS: Yamal helps Spain extend unbeaten streak, Gordon and Kane lead England | Got your tickets? Future MLS NEXT PRO club releases priority season t... | Pope Leo XIV sends blessings to White Sox ahead of playoffs | Sources: NBA reviewing bids from three finalists for Vegas team | FOLLOW LIVE: Game 2 - Aces vs. Fever | "
 }
