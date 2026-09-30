@@ -1,15 +1,20 @@
 {
-  "generated_at": "2026-09-30T16:41:38.349250-04:00",
+  "generated_at": "2026-09-30T16:57:40.410174-04:00",
   "headlines": [
-    {
-      "title": "Phoenix Suns forward, Canadian Olympian Dillon Brooks charged with DUI",
-      "source": "CP24",
-      "url": "https://www.cp24.com/news/sports/2026/09/30/phoenix-suns-forward-canadian-olympian-dillon-brooks-charged-with-dui/"
-    },
     {
       "title": "Sources: NBA reviewing bids from three finalists for Vegas team",
       "source": "TSN",
       "url": "https://www.tsn.ca/nba/article/sources-nba-reviewing-bids-from-three-finalists-for-vegas-team-n1-50060732/"
+    },
+    {
+      "title": "'We're all human': Leafs will be patient as Raddysh works through 'ex...",
+      "source": "TSN",
+      "url": "https://www.tsn.ca/nhl/article/were-all-human-leafs-will-be-patient-as-raddysh-works-through-extra-pressure/"
+    },
+    {
+      "title": "Phoenix Suns forward, Canadian Olympian Dillon Brooks charged with DUI",
+      "source": "CP24",
+      "url": "https://www.cp24.com/news/sports/2026/09/30/phoenix-suns-forward-canadian-olympian-dillon-brooks-charged-with-dui/"
     },
     {
       "title": "FOLLOW LIVE: White Sox vs. Astros - Game 2",
@@ -20,12 +25,7 @@
       "title": "FOLLOW LIVE: Cubs vs. Padres - Game 2",
       "source": "TSN",
       "url": "https://www.tsn.ca/wires/article/follow-live-cubs-vs-padres-game-2/"
-    },
-    {
-      "title": "FOLLOW LIVE: Red Sox vs. Yankees - Game 2",
-      "source": "TSN",
-      "url": "https://www.tsn.ca/wires/article/follow-live-red-sox-vs-yankees-game-2-2/"
     }
   ],
-  "ticker": "SPORTS: Phoenix Suns forward, Canadian Olympian Dillon Brooks charged with DUI | Sources: NBA reviewing bids from three finalists for Vegas team | FOLLOW LIVE: White Sox vs. Astros - Game 2 | FOLLOW LIVE: Cubs vs. Padres - Game 2 | FOLLOW LIVE: Red Sox vs. Yankees - Game 2 | "
+  "ticker": "SPORTS: Sources: NBA reviewing bids from three finalists for Vegas team | 'We're all human': Leafs will be patient as Raddysh works through 'ex... | Phoenix Suns forward, Canadian Olympian Dillon Brooks charged with DUI | FOLLOW LIVE: White Sox vs. Astros - Game 2 | FOLLOW LIVE: Cubs vs. Padres - Game 2 | "
 }
