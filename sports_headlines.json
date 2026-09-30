@@ -1,20 +1,20 @@
 {
-  "generated_at": "2026-09-30T01:51:23.205239-04:00",
+  "generated_at": "2026-09-30T02:14:39.331990-04:00",
   "headlines": [
+    {
+      "title": "No. 8-seeded Liberty sweep top-seeded Lynx, advance to WNBA semifinals",
+      "source": "TSN",
+      "url": "https://www.tsn.ca/wnba/article/no-8-seeded-liberty-sweep-top-seeded-lynx-advance-to-wnba-semifinals/"
+    },
     {
       "title": "Schlittler, Rice torment hometown team as Yankees rout rival Red Sox...",
       "source": "TSN",
       "url": "https://www.tsn.ca/mlb/article/schlittler-rice-torment-hometown-team-as-yankees-rout-rival-red-sox-in-playoff-opener/"
     },
     {
-      "title": "Maple Leafs fall to Canadiens as McKenna, Marchenko make their Toront...",
+      "title": "Padres rout Cubs in emphatic Wild Card opener with Tatis' leadoff hom...",
       "source": "TSN",
-      "url": "https://www.tsn.ca/nhl/article/maple-leafs-fall-to-canadiens-as-mckenna-marchenko-make-their-toronto-debuts/"
-    },
-    {
-      "title": "Eichel hits 700 points as Golden Knights beat Blackhawks in Craig's f...",
-      "source": "TSN",
-      "url": "https://www.tsn.ca/nhl/article/eichel-hits-700-points-as-golden-knights-beat-blackhawks-in-craigs-first-game-behind-the-bench/"
+      "url": "https://www.tsn.ca/mlb/article/padres-rout-cubs-in-emphatic-wild-card-opener-with-tatis-leadoff-homer-kings-no-hit-bid/"
     },
     {
       "title": "Cotter's OT winner gives Malhotra's Canucks win over Babcock's Oilers...",
@@ -27,5 +27,5 @@
       "url": "https://www.tsn.ca/tennis/atp/article/auger-aliassime-falls-to-us-open-semifinalist-khachanov-in-first-round-of-china-open/"
     }
   ],
-  "ticker": "SPORTS: Schlittler, Rice torment hometown team as Yankees rout rival Red Sox... | Maple Leafs fall to Canadiens as McKenna, Marchenko make their Toront... | Eichel hits 700 points as Golden Knights beat Blackhawks in Craig's f... | Cotter's OT winner gives Malhotra's Canucks win over Babcock's Oilers... | Canada's Auger-Aliassime ousted by Khachanov again, this time at Chin... | "
+  "ticker": "SPORTS: No. 8-seeded Liberty sweep top-seeded Lynx, advance to WNBA semifinals | Schlittler, Rice torment hometown team as Yankees rout rival Red Sox... | Padres rout Cubs in emphatic Wild Card opener with Tatis' leadoff hom... | Cotter's OT winner gives Malhotra's Canucks win over Babcock's Oilers... | Canada's Auger-Aliassime ousted by Khachanov again, this time at Chin... | "
 }
