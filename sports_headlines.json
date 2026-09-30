@@ -1,6 +1,11 @@
 {
-  "generated_at": "2026-09-30T06:43:21.016338-04:00",
+  "generated_at": "2026-09-30T06:59:06.120011-04:00",
   "headlines": [
+    {
+      "title": "Ex-NFL star to appear in Miami court for expected plea agreement in a...",
+      "source": "CP24",
+      "url": "https://www.cp24.com/news/sports/2026/09/30/ex-nfl-star-to-appear-in-miami-court-for-expected-plea-agreement-in-attempted-murder-case/"
+    },
     {
       "title": "Commanders rule out guard Cosmi, safety Cross for London game vs. Col...",
       "source": "TSN",
@@ -20,12 +25,7 @@
       "title": "Montreal Canadiens down Toronto Maple Leafs 3-2 in Gavin McKenna's NH...",
       "source": "CP24",
       "url": "https://www.cp24.com/news/sports/2026/09/30/montreal-canadiens-down-toronto-maple-leafs-3-2-in-gavin-mckennas-nhl-debut/"
-    },
-    {
-      "title": "Manchester City and 115 charges: What to know about the controversy e...",
-      "source": "TSN",
-      "url": "https://www.tsn.ca/soccer/article/manchester-city-and-115-charges-what-to-know-about-the-controversy-engulfing-the-top-english-soccer-team/"
     }
   ],
-  "ticker": "SPORTS: Commanders rule out guard Cosmi, safety Cross for London game vs. Col... | Premier League: Man City guilty of almost all its 100-plus charges of... | Maple Leafs fall to Canadiens as McKenna, Marchenko make their Toront... | Montreal Canadiens down Toronto Maple Leafs 3-2 in Gavin McKenna's NH... | Manchester City and 115 charges: What to know about the controversy e... | "
+  "ticker": "SPORTS: Ex-NFL star to appear in Miami court for expected plea agreement in a... | Commanders rule out guard Cosmi, safety Cross for London game vs. Col... | Premier League: Man City guilty of almost all its 100-plus charges of... | Maple Leafs fall to Canadiens as McKenna, Marchenko make their Toront... | Montreal Canadiens down Toronto Maple Leafs 3-2 in Gavin McKenna's NH... | "
 }
