@@ -1,6 +1,16 @@
 {
-  "generated_at": "2026-09-30T11:37:29.747802-04:00",
+  "generated_at": "2026-09-30T11:55:18.801770-04:00",
   "headlines": [
+    {
+      "title": "Will the Redblacks win a game this season?",
+      "source": "TSN",
+      "url": "https://www.tsn.ca/betting/article/will-the-redblacks-win-a-game-this-season/"
+    },
+    {
+      "title": "Ice Chips: Groulx, Stolarz slotting in for Leafs against Islanders",
+      "source": "TSN",
+      "url": "https://www.tsn.ca/nhl/article/ice-chips-senators-expect-d-sanderson-to-be-ready-for-season-opener/"
+    },
     {
       "title": "Can the 0-3 Texans defy history again to make playoffs?",
       "source": "TSN",
@@ -15,17 +25,7 @@
       "title": "Michael Jordan's 'Last Dance' 1998 Finals jersey sells for a record U...",
       "source": "CP24",
       "url": "https://www.cp24.com/news/sports/2026/09/30/michael-jordans-last-dance-1998-finals-jersey-sells-for-a-record-us1226-million/"
-    },
-    {
-      "title": "Blue Jays GM Atkins says 'everything needs to be assessed' after last...",
-      "source": "TSN",
-      "url": "https://www.tsn.ca/mlb/article/blue-jays-gm-atkins-says-everything-needs-to-be-assessed-after-last-place-finish/"
-    },
-    {
-      "title": "Roughriders reacquire kicker Lauther in trade with Redblacks",
-      "source": "TSN",
-      "url": "https://www.tsn.ca/cfl/article/roughriders-reacquire-kicker-lauther-in-trade-with-redblacks/"
     }
   ],
-  "ticker": "SPORTS: Can the 0-3 Texans defy history again to make playoffs? | Report: Packers, guard Zeitler agree to one-year deal | Michael Jordan's 'Last Dance' 1998 Finals jersey sells for a record U... | Blue Jays GM Atkins says 'everything needs to be assessed' after last... | Roughriders reacquire kicker Lauther in trade with Redblacks | "
+  "ticker": "SPORTS: Will the Redblacks win a game this season? | Ice Chips: Groulx, Stolarz slotting in for Leafs against Islanders | Can the 0-3 Texans defy history again to make playoffs? | Report: Packers, guard Zeitler agree to one-year deal | Michael Jordan's 'Last Dance' 1998 Finals jersey sells for a record U... | "
 }
