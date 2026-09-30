@@ -1,10 +1,20 @@
 {
-  "generated_at": "2026-09-30T05:00:11.992247-04:00",
+  "generated_at": "2026-09-30T05:25:12.551494-04:00",
   "headlines": [
     {
       "title": "Premier League: Man City guilty of almost all its 100-plus charges of...",
       "source": "TSN",
       "url": "https://www.tsn.ca/soccer/epl/article/premier-league-man-city-guilty-of-almost-all-its-100-plus-charges-of-financial-wrongdoing/"
+    },
+    {
+      "title": "Maple Leafs fall to Canadiens as McKenna, Marchenko make their Toront...",
+      "source": "TSN",
+      "url": "https://www.tsn.ca/nhl/article/maple-leafs-fall-to-canadiens-as-mckenna-marchenko-make-their-toronto-debuts/"
+    },
+    {
+      "title": "Montreal Canadiens down Toronto Maple Leafs 3-2 in Gavin McKenna's NH...",
+      "source": "CP24",
+      "url": "https://www.cp24.com/news/sports/2026/09/30/montreal-canadiens-down-toronto-maple-leafs-3-2-in-gavin-mckennas-nhl-debut/"
     },
     {
       "title": "Manchester City and 115 charges: What to know about the controversy e...",
@@ -15,17 +25,7 @@
       "title": "No. 8-seeded Liberty sweep top-seeded Lynx, advance to WNBA semifinals",
       "source": "TSN",
       "url": "https://www.tsn.ca/wnba/article/no-8-seeded-liberty-sweep-top-seeded-lynx-advance-to-wnba-semifinals/"
-    },
-    {
-      "title": "Schlittler, Rice torment hometown team as Yankees rout rival Red Sox...",
-      "source": "TSN",
-      "url": "https://www.tsn.ca/mlb/article/schlittler-rice-torment-hometown-team-as-yankees-rout-rival-red-sox-in-playoff-opener/"
-    },
-    {
-      "title": "Padres rout Cubs in emphatic Wild Card opener with Tatis' leadoff hom...",
-      "source": "TSN",
-      "url": "https://www.tsn.ca/mlb/article/padres-rout-cubs-in-emphatic-wild-card-opener-with-tatis-leadoff-homer-kings-no-hit-bid/"
     }
   ],
-  "ticker": "SPORTS: Premier League: Man City guilty of almost all its 100-plus charges of... | Manchester City and 115 charges: What to know about the controversy e... | No. 8-seeded Liberty sweep top-seeded Lynx, advance to WNBA semifinals | Schlittler, Rice torment hometown team as Yankees rout rival Red Sox... | Padres rout Cubs in emphatic Wild Card opener with Tatis' leadoff hom... | "
+  "ticker": "SPORTS: Premier League: Man City guilty of almost all its 100-plus charges of... | Maple Leafs fall to Canadiens as McKenna, Marchenko make their Toront... | Montreal Canadiens down Toronto Maple Leafs 3-2 in Gavin McKenna's NH... | Manchester City and 115 charges: What to know about the controversy e... | No. 8-seeded Liberty sweep top-seeded Lynx, advance to WNBA semifinals | "
 }
