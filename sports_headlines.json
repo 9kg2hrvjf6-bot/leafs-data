@@ -1,31 +1,31 @@
 {
-  "generated_at": "2026-09-30T16:57:40.410174-04:00",
+  "generated_at": "2026-09-30T17:16:29.460876-04:00",
   "headlines": [
+    {
+      "title": "WATCH LIVE: AEW Dynamite",
+      "source": "TSN",
+      "url": "https://www.tsn.ca/wires/article/watch-live-aew-dynamite-49/"
+    },
+    {
+      "title": "Thin MLB crowds in Atlanta, Houston show challenge of selling afterno...",
+      "source": "TSN",
+      "url": "https://www.tsn.ca/mlb/article/thin-mlb-crowds-in-atlanta-houston-show-challenge-of-selling-afternoon-wild-card-series-tickets/"
+    },
     {
       "title": "Sources: NBA reviewing bids from three finalists for Vegas team",
       "source": "TSN",
       "url": "https://www.tsn.ca/nba/article/sources-nba-reviewing-bids-from-three-finalists-for-vegas-team-n1-50060732/"
     },
     {
+      "title": "The Drive - Graeme Nichols: A lot of Ottawa's success hinges on Sande...",
+      "source": "TSN",
+      "url": "https://www.tsn.ca/radio/ottawa-1200/article/the-drive-graeme-nichols-a-lot-of-ottawas-success-hinges-on-sanderson/"
+    },
+    {
       "title": "'We're all human': Leafs will be patient as Raddysh works through 'ex...",
       "source": "TSN",
       "url": "https://www.tsn.ca/nhl/article/were-all-human-leafs-will-be-patient-as-raddysh-works-through-extra-pressure/"
-    },
-    {
-      "title": "Phoenix Suns forward, Canadian Olympian Dillon Brooks charged with DUI",
-      "source": "CP24",
-      "url": "https://www.cp24.com/news/sports/2026/09/30/phoenix-suns-forward-canadian-olympian-dillon-brooks-charged-with-dui/"
-    },
-    {
-      "title": "FOLLOW LIVE: White Sox vs. Astros - Game 2",
-      "source": "TSN",
-      "url": "https://www.tsn.ca/wires/article/follow-live-white-sox-vs-astros-game-2/"
-    },
-    {
-      "title": "FOLLOW LIVE: Cubs vs. Padres - Game 2",
-      "source": "TSN",
-      "url": "https://www.tsn.ca/wires/article/follow-live-cubs-vs-padres-game-2/"
     }
   ],
-  "ticker": "SPORTS: Sources: NBA reviewing bids from three finalists for Vegas team | 'We're all human': Leafs will be patient as Raddysh works through 'ex... | Phoenix Suns forward, Canadian Olympian Dillon Brooks charged with DUI | FOLLOW LIVE: White Sox vs. Astros - Game 2 | FOLLOW LIVE: Cubs vs. Padres - Game 2 | "
+  "ticker": "SPORTS: WATCH LIVE: AEW Dynamite | Thin MLB crowds in Atlanta, Houston show challenge of selling afterno... | Sources: NBA reviewing bids from three finalists for Vegas team | The Drive - Graeme Nichols: A lot of Ottawa's success hinges on Sande... | 'We're all human': Leafs will be patient as Raddysh works through 'ex... | "
 }
