@@ -1,6 +1,11 @@
 {
-  "generated_at": "2026-10-01T06:26:15.041154-04:00",
+  "generated_at": "2026-10-01T06:44:49.594243-04:00",
   "headlines": [
+    {
+      "title": "Montreal, Quebec City named Canada's co-host cities for women's volle...",
+      "source": "CP24",
+      "url": "https://www.cp24.com/news/sports/2026/10/01/montreal-quebec-city-named-canadas-co-host-cities-for-womens-volleyball-world-cup/"
+    },
     {
       "title": "Arizona State places hockey coach Greg Powers on administrative leave...",
       "source": "CP24",
@@ -20,12 +25,7 @@
       "title": "Sheets' pinch-hit homer propels dominant Padres past Cubs for Wild Ca...",
       "source": "TSN",
       "url": "https://www.tsn.ca/mlb/article/sheets-pinch-hit-homer-propels-dominant-padres-past-cubs-for-wild-card-sweep/"
-    },
-    {
-      "title": "Red Sox handed another quick playoff exit after two quick hooks backf...",
-      "source": "TSN",
-      "url": "https://www.tsn.ca/mlb/article/red-sox-handed-another-quick-playoff-exit-after-two-quick-hooks-backfire/"
     }
   ],
-  "ticker": "SPORTS: Arizona State places hockey coach Greg Powers on administrative leave... | Red Sox SP Gray frustrated with early hook: 'Would have liked to have... | Ogunbowale scores WNBA playoff-record 45 as Wings win in OT to force... | Sheets' pinch-hit homer propels dominant Padres past Cubs for Wild Ca... | Red Sox handed another quick playoff exit after two quick hooks backf... | "
+  "ticker": "SPORTS: Montreal, Quebec City named Canada's co-host cities for women's volle... | Arizona State places hockey coach Greg Powers on administrative leave... | Red Sox SP Gray frustrated with early hook: 'Would have liked to have... | Ogunbowale scores WNBA playoff-record 45 as Wings win in OT to force... | Sheets' pinch-hit homer propels dominant Padres past Cubs for Wild Ca... | "
 }
