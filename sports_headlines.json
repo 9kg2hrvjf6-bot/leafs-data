@@ -1,18 +1,18 @@
 {
-  "generated_at": "2026-10-01T00:35:35.688128-04:00",
+  "generated_at": "2026-10-01T00:53:30.650444-04:00",
   "headlines": [
+    {
+      "title": "Reports: Steelers finalizing trade sending Porter to Cowboys",
+      "source": "TSN",
+      "url": "https://www.tsn.ca/nfl/article/reports-steelers-finalizing-trade-sending-porter-to-cowboys/"
+    },
     {
       "title": "Ogunbowale scores WNBA playoff-record 45 as Wings win in OT to force...",
       "source": "TSN",
       "url": "https://www.tsn.ca/wnba/article/ogunbowale-scores-wnba-playoff-record-45-as-wings-win-in-ot-to-force-deciding-game-with-valkyries/"
     },
     {
-      "title": "Judge goes to Yankees' Double-A ballpark for live BP in attempt to pl...",
-      "source": "TSN",
-      "url": "https://www.tsn.ca/mlb/article/judge-goes-to-yankees-double-a-ballpark-for-live-bp-in-attempt-to-play-later-in-postseason/"
-    },
-    {
-      "title": "Yankees complete sweep of Red Sox in Game 2, setting up ALDS against...",
+      "title": "Yankees complete sweep of Red Sox, setting up ALDS against Rays",
       "source": "TSN",
       "url": "https://www.tsn.ca/mlb/article/yankees-complete-sweep-of-red-sox-in-game-2-setting-up-alds-against-rays/"
     },
@@ -22,10 +22,10 @@
       "url": "https://www.tsn.ca/nhl/article/cowan-stolarz-lead-leafs-past-islanders-for-first-win-of-season/"
     },
     {
-      "title": "Red Sox handed another quick playoff exit after two quick hooks backf...",
+      "title": "Judge goes to Yankees' Double-A ballpark for live BP in attempt to pl...",
       "source": "TSN",
-      "url": "https://www.tsn.ca/mlb/article/red-sox-handed-another-quick-playoff-exit-after-two-quick-hooks-backfire/"
+      "url": "https://www.tsn.ca/mlb/article/judge-goes-to-yankees-double-a-ballpark-for-live-bp-in-attempt-to-play-later-in-postseason/"
     }
   ],
-  "ticker": "SPORTS: Ogunbowale scores WNBA playoff-record 45 as Wings win in OT to force... | Judge goes to Yankees' Double-A ballpark for live BP in attempt to pl... | Yankees complete sweep of Red Sox in Game 2, setting up ALDS against... | Cowan, Stolarz lead Maple Leafs past Islanders for first win of season | Red Sox handed another quick playoff exit after two quick hooks backf... | "
+  "ticker": "SPORTS: Reports: Steelers finalizing trade sending Porter to Cowboys | Ogunbowale scores WNBA playoff-record 45 as Wings win in OT to force... | Yankees complete sweep of Red Sox, setting up ALDS against Rays | Cowan, Stolarz lead Maple Leafs past Islanders for first win of season | Judge goes to Yankees' Double-A ballpark for live BP in attempt to pl... | "
 }
