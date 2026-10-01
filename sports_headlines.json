@@ -1,6 +1,11 @@
 {
-  "generated_at": "2026-10-01T12:00:01.577753-04:00",
+  "generated_at": "2026-10-01T12:20:50.054741-04:00",
   "headlines": [
+    {
+      "title": "Brewers or Padres? Yankees or Rays? Previewing every MLB division ser...",
+      "source": "TSN",
+      "url": "https://www.tsn.ca/mlb/article/brewers-or-padres-yankees-or-rays-previewing-every-mlb-division-series-matchup-n1-50070369/"
+    },
     {
       "title": "Montreal, Quebec City named Canada's co-host cities for women's volle...",
       "source": "TSN",
@@ -20,12 +25,7 @@
       "title": "Darche confirms Islanders were in on Marchenko, still looking to boos...",
       "source": "TSN",
       "url": "https://www.tsn.ca/nhl/article/darche-confirms-islanders-were-in-on-marchenko-still-looking-to-boost-offence/"
-    },
-    {
-      "title": "Sabres sign defenceman Crevier to four-year extension",
-      "source": "TSN",
-      "url": "https://www.tsn.ca/nhl/article/sabres-sign-defenceman-crevier-to-four-year-extension/"
     }
   ],
-  "ticker": "SPORTS: Montreal, Quebec City named Canada's co-host cities for women's volle... | Ice Chips: Blue Jackets D Provorov week-to-week with lower-body injury | NHL Signing Tracker | Darche confirms Islanders were in on Marchenko, still looking to boos... | Sabres sign defenceman Crevier to four-year extension | "
+  "ticker": "SPORTS: Brewers or Padres? Yankees or Rays? Previewing every MLB division ser... | Montreal, Quebec City named Canada's co-host cities for women's volle... | Ice Chips: Blue Jackets D Provorov week-to-week with lower-body injury | NHL Signing Tracker | Darche confirms Islanders were in on Marchenko, still looking to boos... | "
 }
