@@ -1,6 +1,16 @@
 {
-  "generated_at": "2026-10-01T15:41:48.348019-04:00",
+  "generated_at": "2026-10-01T15:57:38.545481-04:00",
   "headlines": [
+    {
+      "title": "Braves announce LHP Kerr to start against Phillies' Nola in NL Wild C...",
+      "source": "TSN",
+      "url": "https://www.tsn.ca/mlb/article/braves-announce-lhp-kerr-to-start-against-phillies-nola-in-nl-wild-card-series-finale/"
+    },
+    {
+      "title": "Cristiano Ronaldo's Portugal future in doubt after walkout",
+      "source": "CP24",
+      "url": "https://www.cp24.com/news/sports/2026/10/01/cristiano-ronaldos-portugal-future-in-doubt-after-walkout/"
+    },
     {
       "title": "Oilers F Hyman could miss a couple weeks; Nugent-Hopkins placed on IR",
       "source": "TSN",
@@ -15,17 +25,7 @@
       "title": "Ducks sign D Luneau to six-year contract extension",
       "source": "TSN",
       "url": "https://www.tsn.ca/nhl/article/ducks-sign-d-luneau-to-six-year-contract-extension/"
-    },
-    {
-      "title": "After launch-angle revolution changed baseball, Brewers may be changi...",
-      "source": "TSN",
-      "url": "https://www.tsn.ca/mlb/article/after-launch-angle-revolution-changed-baseball-brewers-may-be-changing-it-back/"
-    },
-    {
-      "title": "Montreal, Quebec City named Canada's co-host cities for women's volle...",
-      "source": "TSN",
-      "url": "https://www.tsn.ca/olympics/article/montreal-quebec-city-named-canadas-co-host-cities-for-womens-volleyball-world-cup/"
     }
   ],
-  "ticker": "SPORTS: Oilers F Hyman could miss a couple weeks; Nugent-Hopkins placed on IR | Report: D-Backs retain Lovullo on two-year deal | Ducks sign D Luneau to six-year contract extension | After launch-angle revolution changed baseball, Brewers may be changi... | Montreal, Quebec City named Canada's co-host cities for women's volle... | "
+  "ticker": "SPORTS: Braves announce LHP Kerr to start against Phillies' Nola in NL Wild C... | Cristiano Ronaldo's Portugal future in doubt after walkout | Oilers F Hyman could miss a couple weeks; Nugent-Hopkins placed on IR | Report: D-Backs retain Lovullo on two-year deal | Ducks sign D Luneau to six-year contract extension | "
 }
