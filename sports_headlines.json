@@ -1,6 +1,11 @@
 {
-  "generated_at": "2026-10-01T00:53:30.650444-04:00",
+  "generated_at": "2026-10-01T01:11:39.433406-04:00",
   "headlines": [
+    {
+      "title": "MacKinnon has two goals and rare fight in Avs' victory over Kings in...",
+      "source": "TSN",
+      "url": "https://www.tsn.ca/nhl/article/mackinnon-has-two-goals-and-rare-fight-in-avs-victory-over-kings-in-opener/"
+    },
     {
       "title": "Reports: Steelers finalizing trade sending Porter to Cowboys",
       "source": "TSN",
@@ -20,12 +25,7 @@
       "title": "Cowan, Stolarz lead Maple Leafs past Islanders for first win of season",
       "source": "TSN",
       "url": "https://www.tsn.ca/nhl/article/cowan-stolarz-lead-leafs-past-islanders-for-first-win-of-season/"
-    },
-    {
-      "title": "Judge goes to Yankees' Double-A ballpark for live BP in attempt to pl...",
-      "source": "TSN",
-      "url": "https://www.tsn.ca/mlb/article/judge-goes-to-yankees-double-a-ballpark-for-live-bp-in-attempt-to-play-later-in-postseason/"
     }
   ],
-  "ticker": "SPORTS: Reports: Steelers finalizing trade sending Porter to Cowboys | Ogunbowale scores WNBA playoff-record 45 as Wings win in OT to force... | Yankees complete sweep of Red Sox, setting up ALDS against Rays | Cowan, Stolarz lead Maple Leafs past Islanders for first win of season | Judge goes to Yankees' Double-A ballpark for live BP in attempt to pl... | "
+  "ticker": "SPORTS: MacKinnon has two goals and rare fight in Avs' victory over Kings in... | Reports: Steelers finalizing trade sending Porter to Cowboys | Ogunbowale scores WNBA playoff-record 45 as Wings win in OT to force... | Yankees complete sweep of Red Sox, setting up ALDS against Rays | Cowan, Stolarz lead Maple Leafs past Islanders for first win of season | "
 }
