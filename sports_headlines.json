@@ -1,20 +1,20 @@
 {
-  "generated_at": "2026-10-01T11:26:25.119776-04:00",
+  "generated_at": "2026-10-01T11:45:43.823745-04:00",
   "headlines": [
     {
-      "title": "Ice Chips: Stars place F Duchene on LTIR",
+      "title": "Montreal, Quebec City named Canada's co-host cities for women's volle...",
+      "source": "TSN",
+      "url": "https://www.tsn.ca/olympics/article/montreal-quebec-city-named-canadas-co-host-cities-for-womens-volleyball-world-cup/"
+    },
+    {
+      "title": "Ice Chips: Blue Jackets D Provorov week-to-week with lower-body injury",
       "source": "TSN",
       "url": "https://www.tsn.ca/nhl/article/ice-chips-sabres-recall-d-gilbert-place-d-zellweger-on-ir/"
     },
     {
-      "title": "Nishikori falls to Tiafoe at Japan Open in career swan song",
+      "title": "NHL Signing Tracker",
       "source": "TSN",
-      "url": "https://www.tsn.ca/tennis/article/nishikori-falls-tiafoe-at-japan-open-in-career-swan-song/"
-    },
-    {
-      "title": "WTA announces 'major milestone' with equal prize money at Italian Ope...",
-      "source": "TSN",
-      "url": "https://www.tsn.ca/tennis/article/wta-announces-major-milestone-with-equal-prize-money-at-italian-open-and-more/"
+      "url": "https://www.tsn.ca/wires/article/nhl-signing-tracker/"
     },
     {
       "title": "Darche confirms Islanders were in on Marchenko, still looking to boos...",
@@ -22,10 +22,10 @@
       "url": "https://www.tsn.ca/nhl/article/darche-confirms-islanders-were-in-on-marchenko-still-looking-to-boost-offence/"
     },
     {
-      "title": "Raptors sign G Shead to three-year, $24M extension",
+      "title": "Sabres sign defenceman Crevier to four-year extension",
       "source": "TSN",
-      "url": "https://www.tsn.ca/nba/article/raptors-sign-g-shead-to-three-year-24m-extension-n1-50076974/"
+      "url": "https://www.tsn.ca/nhl/article/sabres-sign-defenceman-crevier-to-four-year-extension/"
     }
   ],
-  "ticker": "SPORTS: Ice Chips: Stars place F Duchene on LTIR | Nishikori falls to Tiafoe at Japan Open in career swan song | WTA announces 'major milestone' with equal prize money at Italian Ope... | Darche confirms Islanders were in on Marchenko, still looking to boos... | Raptors sign G Shead to three-year, $24M extension | "
+  "ticker": "SPORTS: Montreal, Quebec City named Canada's co-host cities for women's volle... | Ice Chips: Blue Jackets D Provorov week-to-week with lower-body injury | NHL Signing Tracker | Darche confirms Islanders were in on Marchenko, still looking to boos... | Sabres sign defenceman Crevier to four-year extension | "
 }
