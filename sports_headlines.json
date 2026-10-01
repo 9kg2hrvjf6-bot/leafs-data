@@ -1,6 +1,16 @@
 {
-  "generated_at": "2026-10-01T16:52:26.597219-04:00",
+  "generated_at": "2026-10-01T17:11:13.748102-04:00",
   "headlines": [
+    {
+      "title": "FOLLOW LIVE: Phillies vs. Braves - Game 3",
+      "source": "TSN",
+      "url": "https://www.tsn.ca/mlb/article/follow-live-phillies-vs-braves/"
+    },
+    {
+      "title": "Canada U18 guard Olajuwon commits to SMU",
+      "source": "TSN",
+      "url": "https://www.tsn.ca/ncaa/article/canada-u18-guard-olajuwon-commits-to-smu/"
+    },
     {
       "title": "Saints putting RB Etienne (hamstring) on IR",
       "source": "TSN",
@@ -15,17 +25,7 @@
       "title": "WATCH LIVE: Bahrain Grand Prix Practice on TSN Multiplex",
       "source": "TSN",
       "url": "https://www.tsn.ca/wires/article/watch-live-bahrain-grand-prix-practice-on-tsn-multiplex/"
-    },
-    {
-      "title": "WATCH LIVE: Fever vs. Aces - Game 3",
-      "source": "TSN",
-      "url": "https://www.tsn.ca/wires/article/watch-live-fever-vs-aces-game-3/"
-    },
-    {
-      "title": "Boudreau on why he has high expectations for the Leafs' goaltenders,...",
-      "source": "TSN",
-      "url": "https://www.tsn.ca/radio/toronto-1050/article/boudreau-on-why-he-has-high-expectations-for-the-leafs-goaltenders-cowan-flashing-potential-and-challenges-of-coaching-new-faces/"
     }
   ],
-  "ticker": "SPORTS: Saints putting RB Etienne (hamstring) on IR | With playoffs out of reach, Tiger-Cats, Redblacks face off with an ey... | WATCH LIVE: Bahrain Grand Prix Practice on TSN Multiplex | WATCH LIVE: Fever vs. Aces - Game 3 | Boudreau on why he has high expectations for the Leafs' goaltenders,... | "
+  "ticker": "SPORTS: FOLLOW LIVE: Phillies vs. Braves - Game 3 | Canada U18 guard Olajuwon commits to SMU | Saints putting RB Etienne (hamstring) on IR | With playoffs out of reach, Tiger-Cats, Redblacks face off with an ey... | WATCH LIVE: Bahrain Grand Prix Practice on TSN Multiplex | "
 }
