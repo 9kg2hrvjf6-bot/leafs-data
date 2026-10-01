@@ -1,6 +1,16 @@
 {
-  "generated_at": "2026-10-01T16:37:09.535916-04:00",
+  "generated_at": "2026-10-01T16:52:26.597219-04:00",
   "headlines": [
+    {
+      "title": "Saints putting RB Etienne (hamstring) on IR",
+      "source": "TSN",
+      "url": "https://www.tsn.ca/nfl/article/saints-putting-rb-etienne-hamstring-on-ir-n1-50079185/"
+    },
+    {
+      "title": "With playoffs out of reach, Tiger-Cats, Redblacks face off with an ey...",
+      "source": "TSN",
+      "url": "https://www.tsn.ca/cfl/article/with-playoffs-out-of-reach-tiger-cats-redblacks-face-off-with-an-eye-on-2027/"
+    },
     {
       "title": "WATCH LIVE: Bahrain Grand Prix Practice on TSN Multiplex",
       "source": "TSN",
@@ -15,17 +25,7 @@
       "title": "Boudreau on why he has high expectations for the Leafs' goaltenders,...",
       "source": "TSN",
       "url": "https://www.tsn.ca/radio/toronto-1050/article/boudreau-on-why-he-has-high-expectations-for-the-leafs-goaltenders-cowan-flashing-potential-and-challenges-of-coaching-new-faces/"
-    },
-    {
-      "title": "WATCH LIVE: Steelers vs. Browns",
-      "source": "TSN",
-      "url": "https://www.tsn.ca/wires/article/watch-live-steelers-vs-browns/"
-    },
-    {
-      "title": "Ducks sign D Luneau to six-year, $43.2 million contract extension",
-      "source": "TSN",
-      "url": "https://www.tsn.ca/nhl/article/ducks-sign-d-luneau-to-six-year-contract-extension/"
     }
   ],
-  "ticker": "SPORTS: WATCH LIVE: Bahrain Grand Prix Practice on TSN Multiplex | WATCH LIVE: Fever vs. Aces - Game 3 | Boudreau on why he has high expectations for the Leafs' goaltenders,... | WATCH LIVE: Steelers vs. Browns | Ducks sign D Luneau to six-year, $43.2 million contract extension | "
+  "ticker": "SPORTS: Saints putting RB Etienne (hamstring) on IR | With playoffs out of reach, Tiger-Cats, Redblacks face off with an ey... | WATCH LIVE: Bahrain Grand Prix Practice on TSN Multiplex | WATCH LIVE: Fever vs. Aces - Game 3 | Boudreau on why he has high expectations for the Leafs' goaltenders,... | "
 }
