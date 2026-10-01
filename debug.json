@@ -1,18 +1,13 @@
 {
   "errors": [
     "cdn.nba.com/static/json/staticData/scheduleLeagueV2.json -> HTTP Error 403: Forbidden",
-    "cdn.nba.com/static/json/staticData/scheduleLeagueV2_1.json -> HTTP Error 403: Forbidden",
-    "site.api.espn.com/apis/site/v2/sports/basketball/nba/teams/tor/schedule -> HTTP Error 403: Forbidden",
-    "site.api.espn.com/apis/site/v2/sports/basketball/nba/teams/28/schedule -> HTTP Error 403: Forbidden",
-    "site.api.espn.com/apis/site/v2/sports/basketball/nba/teams/tor/schedule -> HTTP Error 403: Forbidden",
-    "site.api.espn.com/apis/site/v2/sports/basketball/nba/teams/28/schedule -> HTTP Error 403: Forbidden",
-    "BDL_KEY secret not set - skipped BallDontLie"
+    "cdn.nba.com/static/json/staticData/scheduleLeagueV2_1.json -> HTTP Error 403: Forbidden"
   ],
   "news_stats": [
-    "[NEWS] CP24: 95 items checked, 2 matched; CBC: 0 items checked, 0 matched",
+    "[NEWS] CP24: 97 items checked, 2 matched; CBC: 0 items checked, 0 matched",
     "[LEAFS NEWS] TSN: 26 items checked, 2 matched; CBC: 0 items checked, 0 matched",
     "[RAPTORS NEWS] TSN: 77 items checked, 2 matched; CBC: 0 items checked, 0 matched",
     "[JAYS NEWS] TSN: 81 items checked, 1 matched; CBC: 10 items checked, 1 matched",
-    "[SPORTS HEADLINES] TSN: 81 items; CP24: 10 sports items of 95 total"
+    "[SPORTS HEADLINES] TSN: 81 items; CP24: 10 sports items of 97 total"
   ]
 }
