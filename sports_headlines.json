@@ -1,10 +1,20 @@
 {
-  "generated_at": "2026-10-02T01:11:18.843540-04:00",
+  "generated_at": "2026-10-02T01:33:18.767642-04:00",
   "headlines": [
+    {
+      "title": "Dunn's three-point night spurs Kraken to win over Flames",
+      "source": "TSN",
+      "url": "https://www.tsn.ca/nhl/article/dunns-three-point-night-spurs-kraken-to-win-over-flames/"
+    },
     {
       "title": "McDavid leads with five points as Oilers outlast Canucks for wild win",
       "source": "TSN",
       "url": "https://www.tsn.ca/nhl/article/oilers-tally-eight-goals-in-less-than-two-periods-vs-canucks-mcdavid-leads-with-four-points/"
+    },
+    {
+      "title": "Harper after Phillies' early playoff exit: 'You're here to win games,...",
+      "source": "TSN",
+      "url": "https://www.tsn.ca/mlb/article/harper-after-phillies-early-playoff-exit-youre-here-to-win-games-and-we-didnt/"
     },
     {
       "title": "Watson leads another game-winning drive, Szmyt hits 56-yard FG as Bro...",
@@ -15,17 +25,7 @@
       "title": "Wilson scores 36 points as Aces send Fever home again with Game 3 win",
       "source": "TSN",
       "url": "https://www.tsn.ca/wnba/article/wilson-scores-36-points-as-aces-send-fever-home-again-with-game-3-win/"
-    },
-    {
-      "title": "Fast first period sets tone as Wild open with win over Predators",
-      "source": "TSN",
-      "url": "https://www.tsn.ca/nhl/article/fast-first-period-sets-tone-as-wild-open-with-win-over-predators/"
-    },
-    {
-      "title": "Guenther has two power-play goals in Mammoth's shutout victory over B...",
-      "source": "TSN",
-      "url": "https://www.tsn.ca/nhl/article/guenther-has-two-power-play-goals-in-mammoths-shutout-victory-over-blackhawks/"
     }
   ],
-  "ticker": "SPORTS: McDavid leads with five points as Oilers outlast Canucks for wild win | Watson leads another game-winning drive, Szmyt hits 56-yard FG as Bro... | Wilson scores 36 points as Aces send Fever home again with Game 3 win | Fast first period sets tone as Wild open with win over Predators | Guenther has two power-play goals in Mammoth's shutout victory over B... | "
+  "ticker": "SPORTS: Dunn's three-point night spurs Kraken to win over Flames | McDavid leads with five points as Oilers outlast Canucks for wild win | Harper after Phillies' early playoff exit: 'You're here to win games,... | Watson leads another game-winning drive, Szmyt hits 56-yard FG as Bro... | Wilson scores 36 points as Aces send Fever home again with Game 3 win | "
 }
