@@ -20,6 +20,9 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
+      - name: Install nba_api (diagnostic only - not required by the script)
+        run: pip install nba_api --quiet
+
       - name: Build leafs.json
         env:
           # Optional: only needed if you still want a GitHub-side Raptors fallback.
@@ -342,6 +345,44 @@ jobs:
                   if not cursor:
                       break
               return out or None
+
+
+          def try_nba_api():
+              """One-off diagnostic, not wired into the real Raptors data yet. nba_api
+              is a Python wrapper around the same NBA.com endpoints (stats.nba.com,
+              cdn.nba.com) that already 403'd GitHub's servers earlier in this project -
+              it doesn't bypass that, it just calls them with the right headers baked
+              in. This tests both the stats-data path and the schedule path separately
+              and reports each result into debug.json, so we get a definitive answer
+              instead of guessing. Safe to leave running indefinitely: if nba_api
+              isn't installed, or either call fails, it just logs that and moves on -
+              nothing else in this script depends on it."""
+              result = {"installed": False, "stats_endpoint": None, "schedule_endpoint": None}
+              try:
+                  from nba_api.stats.endpoints import leaguegamefinder
+                  from nba_api.stats.endpoints import scheduleleaguev2
+                  result["installed"] = True
+              except ImportError:
+                  result["stats_endpoint"] = "nba_api not installed"
+                  result["schedule_endpoint"] = "nba_api not installed"
+                  return result
+
+              # stats.nba.com - historical game log, what a real season-record would use
+              try:
+                  gf = leaguegamefinder.LeagueGameFinder(team_id_nullable=1610612761, timeout=15)
+                  games = gf.get_data_frames()[0]
+                  result["stats_endpoint"] = f"OK - {len(games)} games returned"
+              except Exception as e:
+                  result["stats_endpoint"] = f"FAILED - {type(e).__name__}: {str(e)[:150]}"
+
+              # cdn.nba.com - schedule data, the same host that already 403'd us directly
+              try:
+                  sched = scheduleleaguev2.ScheduleLeagueV2(timeout=15)
+                  result["schedule_endpoint"] = "OK - fetched successfully"
+              except Exception as e:
+                  result["schedule_endpoint"] = f"FAILED - {type(e).__name__}: {str(e)[:150]}"
+
+              return result
 
 
           def raptors():
@@ -766,10 +807,13 @@ jobs:
                   }, f, indent=2)
                   f.write("\n")
 
+              nba_api_test = try_nba_api()
+
               with open("debug.json", "w") as f:
                   json.dump({
                       "errors": [clean(e) for e in ERRORS[-8:]],
                       "news_stats": [clean(e) for e in NEWS_STATS],
+                      "nba_api_test": nba_api_test,
                   }, f, indent=2)
                   f.write("\n")
 
