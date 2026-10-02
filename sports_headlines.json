@@ -1,6 +1,11 @@
 {
-  "generated_at": "2026-10-02T11:02:05.587382-04:00",
+  "generated_at": "2026-10-02T11:26:55.666152-04:00",
   "headlines": [
+    {
+      "title": "Argonauts QB Kelly out with hand injury for game against Lions",
+      "source": "TSN",
+      "url": "https://www.tsn.ca/cfl/article/argonauts-qb-kelly-out-with-hand-injury-for-game-against-lions/"
+    },
     {
       "title": "Mariota starts for Commanders against Colts in London with Daniels ru...",
       "source": "TSN",
@@ -20,12 +25,7 @@
       "title": "Man City lodges 'comprehensive' appeal after being found guilty of fi...",
       "source": "TSN",
       "url": "https://www.tsn.ca/soccer/article/man-city-lodges-comprehensive-appeal-after-being-found-guilty-of-financial-rule-breaking/"
-    },
-    {
-      "title": "Rousseau's sacks, Allen's rushing TDs are on record paces",
-      "source": "TSN",
-      "url": "https://www.tsn.ca/nfl/article/rousseaus-sacks-allens-rushing-tds-are-on-record-paces-n1-50077206/"
     }
   ],
-  "ticker": "SPORTS: Mariota starts for Commanders against Colts in London with Daniels ru... | Yankees sending Cole to start vs. Rays' Rasmussen in Game 1 of AL Div... | Fever seek to build on playoff experience after loss to Aces | Man City lodges 'comprehensive' appeal after being found guilty of fi... | Rousseau's sacks, Allen's rushing TDs are on record paces | "
+  "ticker": "SPORTS: Argonauts QB Kelly out with hand injury for game against Lions | Mariota starts for Commanders against Colts in London with Daniels ru... | Yankees sending Cole to start vs. Rays' Rasmussen in Game 1 of AL Div... | Fever seek to build on playoff experience after loss to Aces | Man City lodges 'comprehensive' appeal after being found guilty of fi... | "
 }
