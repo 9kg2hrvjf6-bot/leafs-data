@@ -1,6 +1,11 @@
 {
-  "generated_at": "2026-10-02T06:18:36.879003-04:00",
+  "generated_at": "2026-10-02T06:35:30.425516-04:00",
   "headlines": [
+    {
+      "title": "Report: Duren, Pistons agree on five-year, $200M deal",
+      "source": "TSN",
+      "url": "https://www.tsn.ca/nba/article/report-duren-pistons-agree-on-five-year-200m-deal-n1-50081576/"
+    },
     {
       "title": "Watson leads another game-winning drive, Szmyt hits 56-yard FG as Bro...",
       "source": "TSN",
@@ -20,12 +25,7 @@
       "title": "Long day for Steelers starts with Porter Jr. trade, ends with loss to...",
       "source": "TSN",
       "url": "https://www.tsn.ca/nfl/article/long-day-for-steelers-starts-with-porter-jr-trade-ends-with-loss-to-division-rival-browns/"
-    },
-    {
-      "title": "Clark rues what could have been as Fever head into offseason after be...",
-      "source": "TSN",
-      "url": "https://www.tsn.ca/wnba/article/clark-rues-what-could-have-been-as-fever-head-into-offseason-after-being-eliminated-by-aces/"
     }
   ],
-  "ticker": "SPORTS: Watson leads another game-winning drive, Szmyt hits 56-yard FG as Bro... | Antonelli aims to bounce back from 'worst' weekend but faces a possib... | Harris' three-run shot powers Braves over Phillies to win Wild Card S... | Long day for Steelers starts with Porter Jr. trade, ends with loss to... | Clark rues what could have been as Fever head into offseason after be... | "
+  "ticker": "SPORTS: Report: Duren, Pistons agree on five-year, $200M deal | Watson leads another game-winning drive, Szmyt hits 56-yard FG as Bro... | Antonelli aims to bounce back from 'worst' weekend but faces a possib... | Harris' three-run shot powers Braves over Phillies to win Wild Card S... | Long day for Steelers starts with Porter Jr. trade, ends with loss to... | "
 }
