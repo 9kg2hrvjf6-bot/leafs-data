@@ -1,10 +1,20 @@
 {
-  "generated_at": "2026-10-02T16:33:25.576042-04:00",
+  "generated_at": "2026-10-02T16:40:27.494132-04:00",
   "headlines": [
+    {
+      "title": "WATCH LIVE: NSL - Montreal vs. Ottawa on TSN Premium",
+      "source": "TSN",
+      "url": "https://www.tsn.ca/wires/article/watch-live-nsl-montreal-vs-ottawa-on-tsn-premium/"
+    },
     {
       "title": "Report: Duren, Pistons agree on five-year, $200M deal",
       "source": "TSN",
       "url": "https://www.tsn.ca/nba/article/report-duren-pistons-agree-on-five-year-200m-deal-n1-50081576/"
+    },
+    {
+      "title": "WATCH LIVE: Bruins vs. Jets (regional)",
+      "source": "TSN",
+      "url": "https://www.tsn.ca/wires/article/watch-live-bruins-vs-jets-regional-2/"
     },
     {
       "title": "Chad Kelly sidelined as Argos turn to Nick Arbuckle against Lions",
@@ -15,17 +25,7 @@
       "title": "WATCH LIVE: Wings vs. Valkyries - Game 3",
       "source": "TSN",
       "url": "https://www.tsn.ca/wires/article/watch-live-wings-vs-valkyries-game-3/"
-    },
-    {
-      "title": "WATCH LIVE: Pittsburgh vs. Virginia Tech",
-      "source": "TSN",
-      "url": "https://www.tsn.ca/wires/article/watch-live-pittsburgh-vs-virginia-tech/"
-    },
-    {
-      "title": "WATCH LIVE: Stampeders vs. Roughriders",
-      "source": "TSN",
-      "url": "https://www.tsn.ca/wires/article/watch-live-stampeders-vs-roughriders/"
     }
   ],
-  "ticker": "SPORTS: Report: Duren, Pistons agree on five-year, $200M deal | Chad Kelly sidelined as Argos turn to Nick Arbuckle against Lions | WATCH LIVE: Wings vs. Valkyries - Game 3 | WATCH LIVE: Pittsburgh vs. Virginia Tech | WATCH LIVE: Stampeders vs. Roughriders | "
+  "ticker": "SPORTS: WATCH LIVE: NSL - Montreal vs. Ottawa on TSN Premium | Report: Duren, Pistons agree on five-year, $200M deal | WATCH LIVE: Bruins vs. Jets (regional) | Chad Kelly sidelined as Argos turn to Nick Arbuckle against Lions | WATCH LIVE: Wings vs. Valkyries - Game 3 | "
 }
