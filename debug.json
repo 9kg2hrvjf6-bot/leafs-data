@@ -4,10 +4,10 @@
     "cdn.nba.com/static/json/staticData/scheduleLeagueV2_1.json -> HTTP Error 403: Forbidden"
   ],
   "news_stats": [
-    "[NEWS] CP24: 104 items checked, 2 matched; CBC: 0 items checked, 0 matched",
-    "[LEAFS NEWS] TSN: 81 items checked, 1 matched; CBC: 6 items checked, 1 matched",
-    "[RAPTORS NEWS] TSN: 81 items checked, 0 matched; CBC: 40 items checked, 0 matched",
-    "[JAYS NEWS] TSN: 81 items checked, 0 matched; CBC: 40 items checked, 0 matched",
-    "[SPORTS HEADLINES] TSN: 81 items; CP24: 6 sports items of 104 total"
+    "[NEWS] CP24: 107 items checked, 2 matched; CBC: 0 items checked, 0 matched",
+    "[LEAFS NEWS] TSN: 83 items checked, 1 matched; CBC: 6 items checked, 1 matched",
+    "[RAPTORS NEWS] TSN: 83 items checked, 0 matched; CBC: 40 items checked, 0 matched",
+    "[JAYS NEWS] TSN: 83 items checked, 0 matched; CBC: 40 items checked, 0 matched",
+    "[SPORTS HEADLINES] TSN: 83 items; CP24: 6 sports items of 107 total"
   ]
 }
