@@ -1,6 +1,16 @@
 {
-  "generated_at": "2026-10-02T12:00:06.820088-04:00",
+  "generated_at": "2026-10-02T12:21:10.608801-04:00",
   "headlines": [
+    {
+      "title": "Romo, CBS Sports agree to part after ex-QB's DWI arrest",
+      "source": "TSN",
+      "url": "https://www.tsn.ca/nfl/article/romo-cbs-sports-agree-to-part-after-ex-qbs-dwi-arrest-n1-50085245/"
+    },
+    {
+      "title": "There are two horses named in memory of Gaudreau running in the same...",
+      "source": "TSN",
+      "url": "https://www.tsn.ca/nhl/article/there-are-two-horses-named-in-memory-of-gaudreau-running-in-the-same-race/"
+    },
     {
       "title": "Ice Chips: Skinner expected to start as Jets open season vs. Bruins",
       "source": "TSN",
@@ -15,17 +25,7 @@
       "title": "Argonauts QB Kelly out with hand injury for game against Lions",
       "source": "TSN",
       "url": "https://www.tsn.ca/cfl/article/argonauts-qb-kelly-out-with-hand-injury-for-game-against-lions/"
-    },
-    {
-      "title": "Mariota starts for Commanders against Colts in London with Daniels ru...",
-      "source": "TSN",
-      "url": "https://www.tsn.ca/nfl/article/mariota-starts-for-commanders-against-colts-in-london-with-daniels-ruled-out/"
-    },
-    {
-      "title": "Yankees sending Cole to start vs. Rays' Rasmussen in Game 1 of AL Div...",
-      "source": "TSN",
-      "url": "https://www.tsn.ca/mlb/article/yankees-sending-cole-to-start-vs-rays-rasmussen-in-game-1-of-al-division-series/"
     }
   ],
-  "ticker": "SPORTS: Ice Chips: Skinner expected to start as Jets open season vs. Bruins | PWHL establishes Eastern and Western conferences, expands to eight-te... | Argonauts QB Kelly out with hand injury for game against Lions | Mariota starts for Commanders against Colts in London with Daniels ru... | Yankees sending Cole to start vs. Rays' Rasmussen in Game 1 of AL Div... | "
+  "ticker": "SPORTS: Romo, CBS Sports agree to part after ex-QB's DWI arrest | There are two horses named in memory of Gaudreau running in the same... | Ice Chips: Skinner expected to start as Jets open season vs. Bruins | PWHL establishes Eastern and Western conferences, expands to eight-te... | Argonauts QB Kelly out with hand injury for game against Lions | "
 }
