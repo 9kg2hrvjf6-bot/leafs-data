@@ -1,6 +1,16 @@
 {
-  "generated_at": "2026-10-02T17:11:18.369183-04:00",
+  "generated_at": "2026-10-02T17:33:13.730670-04:00",
   "headlines": [
+    {
+      "title": "Yankees sending Cole to start vs. Rays' Rasmussen in Game 1 of AL Div...",
+      "source": "TSN",
+      "url": "https://www.tsn.ca/mlb/article/yankees-sending-cole-to-start-vs-rays-rasmussen-in-game-1-of-al-division-series/"
+    },
+    {
+      "title": "Philpot closes in on Canadian receiving record as Alouettes host Blue...",
+      "source": "TSN",
+      "url": "https://www.tsn.ca/cfl/article/philpot-closes-in-on-canadian-receiving-record-as-alouettes-host-blue-bombers/"
+    },
     {
       "title": "Post Media Callum Fraser: \"Jake Sanderson is the best defensive defen...",
       "source": "TSN",
@@ -15,17 +25,7 @@
       "title": "WATCH LIVE: Bahrain Grand Prix in Malaysia Practice 3 on TSN Multiplex",
       "source": "TSN",
       "url": "https://www.tsn.ca/wires/article/watch-live-bahrain-grand-prix-in-malaysia-practice-3-on-tsn-multiplex/"
-    },
-    {
-      "title": "WATCH LIVE: NSL - Montreal vs. Ottawa on TSN Premium",
-      "source": "TSN",
-      "url": "https://www.tsn.ca/wires/article/watch-live-nsl-montreal-vs-ottawa-on-tsn-premium/"
-    },
-    {
-      "title": "Report: Duren, Pistons agree on five-year, $200M deal",
-      "source": "TSN",
-      "url": "https://www.tsn.ca/nba/article/report-duren-pistons-agree-on-five-year-200m-deal-n1-50081576/"
     }
   ],
-  "ticker": "SPORTS: Post Media Callum Fraser: \"Jake Sanderson is the best defensive defen... | Raptors coach Rajakovic leaves the door open a crack for Leonard to p... | WATCH LIVE: Bahrain Grand Prix in Malaysia Practice 3 on TSN Multiplex | WATCH LIVE: NSL - Montreal vs. Ottawa on TSN Premium | Report: Duren, Pistons agree on five-year, $200M deal | "
+  "ticker": "SPORTS: Yankees sending Cole to start vs. Rays' Rasmussen in Game 1 of AL Div... | Philpot closes in on Canadian receiving record as Alouettes host Blue... | Post Media Callum Fraser: \"Jake Sanderson is the best defensive defen... | Raptors coach Rajakovic leaves the door open a crack for Leonard to p... | WATCH LIVE: Bahrain Grand Prix in Malaysia Practice 3 on TSN Multiplex | "
 }
