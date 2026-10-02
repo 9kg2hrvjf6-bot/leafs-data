@@ -1,6 +1,21 @@
 {
-  "generated_at": "2026-10-02T12:21:10.608801-04:00",
+  "generated_at": "2026-10-02T12:44:42.620224-04:00",
   "headlines": [
+    {
+      "title": "Sanderson expects to play in Sens' opener, Stanley loaned to AHL",
+      "source": "TSN",
+      "url": "https://www.tsn.ca/nhl/article/sanderson-expects-to-play-in-sens-opener-stanley-loaned-to-ahl/"
+    },
+    {
+      "title": "Kuzmenko back with Penguins after leave of absence",
+      "source": "TSN",
+      "url": "https://www.tsn.ca/nhl/article/kuzmenko-back-with-penguins-after-leave-of-absence/"
+    },
+    {
+      "title": "Ice Chips: Jets' Bjorck, Bauer to make NHL debuts vs. Bruins",
+      "source": "TSN",
+      "url": "https://www.tsn.ca/nhl/article/ice-chips-skinner-expected-to-start-as-jets-open-season-vs-bruins/"
+    },
     {
       "title": "Romo, CBS Sports agree to part after ex-QB's DWI arrest",
       "source": "TSN",
@@ -10,22 +25,7 @@
       "title": "There are two horses named in memory of Gaudreau running in the same...",
       "source": "TSN",
       "url": "https://www.tsn.ca/nhl/article/there-are-two-horses-named-in-memory-of-gaudreau-running-in-the-same-race/"
-    },
-    {
-      "title": "Ice Chips: Skinner expected to start as Jets open season vs. Bruins",
-      "source": "TSN",
-      "url": "https://www.tsn.ca/nhl/article/ice-chips-skinner-expected-to-start-as-jets-open-season-vs-bruins/"
-    },
-    {
-      "title": "PWHL establishes Eastern and Western conferences, expands to eight-te...",
-      "source": "TSN",
-      "url": "https://www.tsn.ca/pwhl/article/pwhl-establishes-eastern-and-western-conferences-expands-to-eight-team-playoffs/"
-    },
-    {
-      "title": "Argonauts QB Kelly out with hand injury for game against Lions",
-      "source": "TSN",
-      "url": "https://www.tsn.ca/cfl/article/argonauts-qb-kelly-out-with-hand-injury-for-game-against-lions/"
     }
   ],
-  "ticker": "SPORTS: Romo, CBS Sports agree to part after ex-QB's DWI arrest | There are two horses named in memory of Gaudreau running in the same... | Ice Chips: Skinner expected to start as Jets open season vs. Bruins | PWHL establishes Eastern and Western conferences, expands to eight-te... | Argonauts QB Kelly out with hand injury for game against Lions | "
+  "ticker": "SPORTS: Sanderson expects to play in Sens' opener, Stanley loaned to AHL | Kuzmenko back with Penguins after leave of absence | Ice Chips: Jets' Bjorck, Bauer to make NHL debuts vs. Bruins | Romo, CBS Sports agree to part after ex-QB's DWI arrest | There are two horses named in memory of Gaudreau running in the same... | "
 }
