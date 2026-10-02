@@ -1,6 +1,11 @@
 {
-  "generated_at": "2026-10-02T16:40:27.494132-04:00",
+  "generated_at": "2026-10-02T16:51:46.678434-04:00",
   "headlines": [
+    {
+      "title": "WATCH LIVE: Bahrain Grand Prix in Malaysia Practice 3 on TSN Multiplex",
+      "source": "TSN",
+      "url": "https://www.tsn.ca/wires/article/watch-live-bahrain-grand-prix-in-malaysia-practice-3-on-tsn-multiplex/"
+    },
     {
       "title": "WATCH LIVE: NSL - Montreal vs. Ottawa on TSN Premium",
       "source": "TSN",
@@ -20,12 +25,7 @@
       "title": "Chad Kelly sidelined as Argos turn to Nick Arbuckle against Lions",
       "source": "CP24",
       "url": "https://www.cp24.com/news/sports/2026/10/02/chad-kelly-sidelined-as-argos-turn-to-nick-arbuckle-against-lions/"
-    },
-    {
-      "title": "WATCH LIVE: Wings vs. Valkyries - Game 3",
-      "source": "TSN",
-      "url": "https://www.tsn.ca/wires/article/watch-live-wings-vs-valkyries-game-3/"
     }
   ],
-  "ticker": "SPORTS: WATCH LIVE: NSL - Montreal vs. Ottawa on TSN Premium | Report: Duren, Pistons agree on five-year, $200M deal | WATCH LIVE: Bruins vs. Jets (regional) | Chad Kelly sidelined as Argos turn to Nick Arbuckle against Lions | WATCH LIVE: Wings vs. Valkyries - Game 3 | "
+  "ticker": "SPORTS: WATCH LIVE: Bahrain Grand Prix in Malaysia Practice 3 on TSN Multiplex | WATCH LIVE: NSL - Montreal vs. Ottawa on TSN Premium | Report: Duren, Pistons agree on five-year, $200M deal | WATCH LIVE: Bruins vs. Jets (regional) | Chad Kelly sidelined as Argos turn to Nick Arbuckle against Lions | "
 }
