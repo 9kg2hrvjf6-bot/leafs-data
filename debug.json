@@ -4,15 +4,15 @@
     "cdn.nba.com/static/json/staticData/scheduleLeagueV2_1.json -> HTTP Error 403: Forbidden"
   ],
   "news_stats": [
-    "[NEWS] CP24: 150 items checked, 2 matched; CBC: 0 items checked, 0 matched",
-    "[LEAFS NEWS] TSN: 110 items checked, 1 matched; CBC: 6 items checked, 1 matched",
-    "[RAPTORS NEWS] TSN: 110 items checked, 1 matched; CBC: 39 items checked, 0 matched",
-    "[JAYS NEWS] TSN: 110 items checked, 0 matched; CBC: 39 items checked, 0 matched",
-    "[SPORTS HEADLINES] TSN: 110 items; CP24: 11 sports items of 150 total"
+    "[NEWS] CP24: 148 items checked, 2 matched; CBC: 0 items checked, 0 matched",
+    "[LEAFS NEWS] TSN: 109 items checked, 1 matched; CBC: 6 items checked, 1 matched",
+    "[RAPTORS NEWS] TSN: 109 items checked, 1 matched; CBC: 39 items checked, 0 matched",
+    "[JAYS NEWS] TSN: 109 items checked, 0 matched; CBC: 39 items checked, 0 matched",
+    "[SPORTS HEADLINES] TSN: 109 items; CP24: 11 sports items of 148 total"
   ],
   "nba_api_test": {
     "installed": true,
-    "stats_endpoint": "FAILED - ReadTimeout: HTTPSConnectionPool(host='stats.nba.com', port=443): Read timed out. (read timeout=15)",
-    "schedule_endpoint": "FAILED - ReadTimeout: HTTPSConnectionPool(host='stats.nba.com', port=443): Read timed out. (read timeout=15)"
+    "stats_endpoint": "OK - 2738 games returned",
+    "schedule_endpoint": "OK - fetched successfully"
   }
 }
