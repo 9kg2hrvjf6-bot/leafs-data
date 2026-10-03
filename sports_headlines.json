@@ -1,15 +1,20 @@
 {
-  "generated_at": "2026-10-03T14:37:58.132573-04:00",
+  "generated_at": "2026-10-03T15:13:07.146976-04:00",
   "headlines": [
     {
-      "title": "WATCH LIVE: Canada takes lead over Peru on Shaffelburg goal",
+      "title": "Fever's Mitchell says she'll be 'selfish' with free agency decision",
+      "source": "TSN",
+      "url": "https://www.tsn.ca/wnba/article/fevers-mitchell-says-shell-be-selfish-with-free-agency-decision-n1-50091891/"
+    },
+    {
+      "title": "WATCH LIVE: Shaffelburg has Canada up two on Peru at halftime",
       "source": "TSN",
       "url": "https://www.tsn.ca/wires/article/watch-live-canada-peru-nearing-kickoff-in-friendly-from-montreal/"
     },
     {
-      "title": "Ice Chips: Canucks' DeBrusk (illness) out vs. Flames",
+      "title": "Kane, Saka score two each as England crushes Croatia in Nations League",
       "source": "TSN",
-      "url": "https://www.tsn.ca/nhl/article/ice-chips-sanderson-foegele-set-to-return-in-sens-season-opener/"
+      "url": "https://www.tsn.ca/soccer/article/kane-saka-score-two-each-as-england-crushes-croatia-in-nations-league/"
     },
     {
       "title": "Fever GM defends fanbase: Attacks have no basis in reality, must stop",
@@ -17,15 +22,10 @@
       "url": "https://www.tsn.ca/wnba/article/fever-gm-defends-fanbase-attacks-have-no-basis-in-reality-must-stop-n1-50091375/"
     },
     {
-      "title": "Panthers place Barkov on LTIR with injury to left leg",
+      "title": "WATCH LIVE: Lions, Argos set to battle in Toronto",
       "source": "TSN",
-      "url": "https://www.tsn.ca/nhl/article/panthers-place-barkov-on-ltir-with-injury-to-left-leg/"
-    },
-    {
-      "title": "Blackhawks D Byram to miss home-coming against Sabres because of fami...",
-      "source": "TSN",
-      "url": "https://www.tsn.ca/nhl/article/blackhawks-d-byram-to-miss-home-coming-against-sabres-because-of-family-matter/"
+      "url": "https://www.tsn.ca/wires/article/watch-live-lions-argos-set-to-battle-in-toronto/"
     }
   ],
-  "ticker": "SPORTS: WATCH LIVE: Canada takes lead over Peru on Shaffelburg goal | Ice Chips: Canucks' DeBrusk (illness) out vs. Flames | Fever GM defends fanbase: Attacks have no basis in reality, must stop | Panthers place Barkov on LTIR with injury to left leg | Blackhawks D Byram to miss home-coming against Sabres because of fami... | "
+  "ticker": "SPORTS: Fever's Mitchell says she'll be 'selfish' with free agency decision | WATCH LIVE: Shaffelburg has Canada up two on Peru at halftime | Kane, Saka score two each as England crushes Croatia in Nations League | Fever GM defends fanbase: Attacks have no basis in reality, must stop | WATCH LIVE: Lions, Argos set to battle in Toronto | "
 }
