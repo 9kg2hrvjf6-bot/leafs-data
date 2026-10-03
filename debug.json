@@ -12,7 +12,7 @@
   ],
   "nba_api_test": {
     "installed": true,
-    "stats_endpoint": "FAILED - ReadTimeout: HTTPSConnectionPool(host='stats.nba.com', port=443): Read timed out. (read timeout=15)",
-    "schedule_endpoint": "FAILED - ReadTimeout: HTTPSConnectionPool(host='stats.nba.com', port=443): Read timed out. (read timeout=15)"
+    "stats_endpoint": "OK - 2738 games returned",
+    "schedule_endpoint": "OK - fetched successfully"
   }
 }
