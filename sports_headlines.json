@@ -1,6 +1,11 @@
 {
-  "generated_at": "2026-10-03T02:31:04.624863-04:00",
+  "generated_at": "2026-10-03T03:03:03.664881-04:00",
   "headlines": [
+    {
+      "title": "Stampeders continue playoff pursuit with third straight win, beat Rou...",
+      "source": "TSN",
+      "url": "https://www.tsn.ca/cfl/article/stampeders-continue-playoff-pursuit-with-third-straight-win-beat-roughriders/"
+    },
     {
       "title": "Mariota starts for Commanders against Colts in London with Daniels ru...",
       "source": "TSN",
@@ -10,11 +15,6 @@
       "title": "Antonelli sets impressive pace in final practice at Bahrain GP, Red B...",
       "source": "TSN",
       "url": "https://www.tsn.ca/motorsports/formula-1/article/antonelli-sets-impressive-pace-in-final-practice-at-bahrain-gp-red-bull-duo-behind-n1-50074947/"
-    },
-    {
-      "title": "Stampeders continue playoff pursuit with third straight win, beat Rou...",
-      "source": "TSN",
-      "url": "https://www.tsn.ca/cfl/article/stampeders-continue-playoff-pursuit-with-third-straight-win-beat-roughriders/"
     },
     {
       "title": "WATCH LIVE: Bahrain Grand Prix in Malaysia Qualifying on TSN Multiplex",
@@ -27,5 +27,5 @@
       "url": "https://www.tsn.ca/wnba/article/valkyries-coach-nakase-goes-down-on-sideline-late-in-playoff-clinching-win-over-wings/"
     }
   ],
-  "ticker": "SPORTS: Mariota starts for Commanders against Colts in London with Daniels ru... | Antonelli sets impressive pace in final practice at Bahrain GP, Red B... | Stampeders continue playoff pursuit with third straight win, beat Rou... | WATCH LIVE: Bahrain Grand Prix in Malaysia Qualifying on TSN Multiplex | Valkyries coach Nakase goes down on sideline late in playoff-clinchin... | "
+  "ticker": "SPORTS: Stampeders continue playoff pursuit with third straight win, beat Rou... | Mariota starts for Commanders against Colts in London with Daniels ru... | Antonelli sets impressive pace in final practice at Bahrain GP, Red B... | WATCH LIVE: Bahrain Grand Prix in Malaysia Qualifying on TSN Multiplex | Valkyries coach Nakase goes down on sideline late in playoff-clinchin... | "
 }
