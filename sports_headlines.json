@@ -1,15 +1,15 @@
 {
-  "generated_at": "2026-10-03T01:17:04.246891-04:00",
+  "generated_at": "2026-10-03T01:42:41.120579-04:00",
   "headlines": [
-    {
-      "title": "Valkyries coach Nakase goes down on sideline late in playoff-clinchin...",
-      "source": "TSN",
-      "url": "https://www.tsn.ca/wnba/article/valkyries-coach-nakase-goes-down-on-sideline-late-in-playoff-clinching-win-over-wings/"
-    },
     {
       "title": "Stampeders continue playoff pursuit with third straight win, beat Rou...",
       "source": "TSN",
       "url": "https://www.tsn.ca/cfl/article/stampeders-continue-playoff-pursuit-with-third-straight-win-beat-roughriders/"
+    },
+    {
+      "title": "Valkyries coach Nakase goes down on sideline late in playoff-clinchin...",
+      "source": "TSN",
+      "url": "https://www.tsn.ca/wnba/article/valkyries-coach-nakase-goes-down-on-sideline-late-in-playoff-clinching-win-over-wings/"
     },
     {
       "title": "Williams leads as Valkyries rally from 16 down to beat Wings, reach W...",
@@ -27,5 +27,5 @@
       "url": "https://www.tsn.ca/nhl/article/mctavish-scores-right-away-in-blues-debut-in-opening-night-win-over-stars/"
     }
   ],
-  "ticker": "SPORTS: Valkyries coach Nakase goes down on sideline late in playoff-clinchin... | Stampeders continue playoff pursuit with third straight win, beat Rou... | Williams leads as Valkyries rally from 16 down to beat Wings, reach W... | Ducks hold on for victory over Golden Knights to open season | McTavish scores right away in Blues debut in opening-night win over S... | "
+  "ticker": "SPORTS: Stampeders continue playoff pursuit with third straight win, beat Rou... | Valkyries coach Nakase goes down on sideline late in playoff-clinchin... | Williams leads as Valkyries rally from 16 down to beat Wings, reach W... | Ducks hold on for victory over Golden Knights to open season | McTavish scores right away in Blues debut in opening-night win over S... | "
 }
